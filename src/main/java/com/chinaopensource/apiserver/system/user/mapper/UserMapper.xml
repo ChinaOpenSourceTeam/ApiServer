@@ -2,25 +2,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.chinaopensource.apiserver.system.user.mapper.UserMapper" >  
       
-      <!-- 
-      
-    private int id;
-	private String loginName;
-	private String password;
-	private String userName;
-	private int age;
-	private String phone;
-	private String photo;
-	private String address;
-	private String email;
-
-       -->
-      
+    <resultMap id="baseUser" type="com.chinaopensource.apiserver.system.user.data.User" >
+    	<id column="id" property="id" jdbcType="INTEGER"/>
+    	<result column="login_name" property="loginName" jdbcType="VARCHAR" />
+    	<result column="user_name" property="userName" jdbcType="VARCHAR" />
+    	<result column="age" property="age" jdbcType="INTEGER" />
+    	<result column="phone" property="phone" jdbcType="VARCHAR" />
+    	<result column="photo" property="photo" jdbcType="VARCHAR" />
+    	<result column="address" property="address" jdbcType="VARCHAR" />
+    	<result column="email" property="email" jdbcType="VARCHAR" />
+    </resultMap>
       
     <insert id="save" parameterType="com.chinaopensource.apiserver.system.user.data.User">  
         insert into user(login_name,password,user_name,age,phone,photo,address,email)
                   values(#{loginName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{age,jdbcType=NUMERIC},
                          #{phone,jdbcType=VARCHAR},#{photo,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR})  
     </insert>  
+    
+    <update id="update" parameterType="Integer">
+    	update user set
+	    	login_name=#{loginName,jdbcType=VARCHAR},
+	    	password=#{password,jdbcType=VARCHAR},
+	    	user_name=#{userName,jdbcType=VARCHAR},
+	    	age=#{age,jdbcType=NUMERIC},
+	    	phone=#{phone,jdbcType=VARCHAR},
+	    	photo=#{photo,jdbcType=VARCHAR},
+	    	address=#{address,jdbcType=VARCHAR},
+	    	email=#{email,jdbcType=VARCHAR}
+	    where id=#{id,jdbcType=NUMERIC}
+    	
+    </update>
+    
+    <delete id="delete" parameterType="Integer">
+    	delete from user where id=#{id,jdbcType=NUMERIC}
+    </delete>
+    
+    <select id="findUserById" parameterType="Integer" resultMap="baseUser">
+    	select * from user where id=#{id,jdbcType=NUMERIC}
+    </select>
+    
+    <select id="findAllUser" resultMap="baseUser">
+    	select * from user
+    </select>
+    
+    <select id="findPasswordByLoginName" parameterType="String" resultType="String">
+    	select password from user where login_name=#{loginName,jdbcType=VARCHAR}
+    </select>
     
 </mapper>  

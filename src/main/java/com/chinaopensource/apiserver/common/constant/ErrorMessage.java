@@ -3,10 +3,7 @@ package com.chinaopensource.apiserver.common.constant;
 public enum ErrorMessage {
 
 	SUCCESS("成功",ErrorCode.OK),
-    FAIL("失败",ErrorCode.ERROR);
-	
-	
-	
+    FAIL("用户名或密码错误",ErrorCode.ERR_SYS_LOGIN_PASSWORD);
 	
 	private String message;
 	private int code;
