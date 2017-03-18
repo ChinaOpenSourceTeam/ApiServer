@@ -22,7 +22,6 @@
     <update id="update" parameterType="Integer">
     	update user set
 	    	login_name=#{loginName,jdbcType=VARCHAR},
-	    	password=#{password,jdbcType=VARCHAR},
 	    	user_name=#{userName,jdbcType=VARCHAR},
 	    	age=#{age,jdbcType=NUMERIC},
 	    	phone=#{phone,jdbcType=VARCHAR},

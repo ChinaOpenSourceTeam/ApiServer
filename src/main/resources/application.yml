@@ -16,6 +16,11 @@ spring:
       test-while-idle: true
       test-on-borrow: false
       test-on-return: false
+  redis:
+    host: localhost
+    port: 6379
+    database: 0
+    
     
 jwt:
   header: Authorization
@@ -24,3 +29,4 @@ jwt:
   
 mybatis:   
   mapper-locations: classpath*:com/chinaopensource/apiserver/**/mapper/*Mapper.xml
+  
