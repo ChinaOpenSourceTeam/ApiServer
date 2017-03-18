@@ -11,6 +11,8 @@
 .project
 .settings/
 .springBeans
+.factorypath
+.apt_generated/
 
 # building target files
 target/
