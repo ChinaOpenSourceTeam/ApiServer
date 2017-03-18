@@ -9,7 +9,6 @@ import com.alibaba.fastjson.JSON;
 import com.chinaopensource.apiserver.common.constant.ErrorCode;
 import com.chinaopensource.apiserver.common.constant.ErrorMessage;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
-import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.IRedisOperate;
 import com.chinaopensource.apiserver.system.login.data.Token;
