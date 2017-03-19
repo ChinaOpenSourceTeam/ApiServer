@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    name: myqa
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://127.0.0.1:3306/opensource-ali
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+    dbcp:
+      min-idle: 1
+      max-active: 5
+      initial-size: 1
+      time-between-eviction-runs-millis: 3000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'ZTM' FROM DUAL
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+  redis:
+    host: localhost
+    port: 6379
+    database: 2

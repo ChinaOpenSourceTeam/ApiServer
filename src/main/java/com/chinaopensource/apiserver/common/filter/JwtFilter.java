@@ -71,6 +71,8 @@ public class JwtFilter implements Filter {
             	 out.append(JSON.toJSONString(rep)); 
             	 return;
         	 } else {
+        		 // TODO 请求的日志记录  用户是否存在  请求的接口的权限
+        		 
         		 chain.doFilter(httpRequest, httpResponse);
         	 }
         	 
