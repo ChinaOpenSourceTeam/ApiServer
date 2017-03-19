@@ -93,7 +93,7 @@ public class JwtTokenUtil implements Serializable {
         return new Date(System.currentTimeMillis() + expiration * 1000);
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         final Date expiration = getExpirationDateFromToken(token);
         return expiration.before(new Date());
     }
@@ -135,13 +135,11 @@ public class JwtTokenUtil implements Serializable {
         return refreshedToken;
     }
 
-//    public Boolean validateToken(String token, UserDetails userDetails) {
-//        final String username = getUsernameFromToken(token);
-//        final Date created = getCreatedDateFromToken(token);
-//        //final Date expiration = getExpirationDateFromToken(token);
-//        return (
-//                username.equals(user.getUsername())
-//                        && !isTokenExpired(token)
-//                        && !isCreatedBeforeLastPasswordReset(created, user.getLastPasswordResetDate()));
-//    }
+    public Boolean validateToken(String token, String loginName ) {
+        final String name = getUsernameFromToken(token);
+        /**
+         * name 为空验证失败
+         */
+        return (name!=null) && name.equals(loginName) && !isTokenExpired(token);
+    }
 }

@@ -2,8 +2,11 @@ package com.chinaopensource.apiserver.common.constant;
 
 public enum ErrorMessage {
 
-	SUCCESS("成功",ErrorCode.OK),
-    FAIL("用户名或密码错误",ErrorCode.ERR_SYS_LOGIN_PASSWORD);
+	OK("成功",ErrorCode.OK),
+	ERR_SYS_LOGIN_PASSWORD("用户名或密码错误",ErrorCode.ERR_SYS_LOGIN_PASSWORD),
+	ERR_SYS_TOKEN_NONE("token 不存在",ErrorCode.ERR_SYS_TOKEN_NONE),
+	ERR_SYS_TOKEN_INVALID("token 验证无效",ErrorCode.ERR_SYS_TOKEN_INVALID);
+	
 	
 	private String message;
 	private int code;

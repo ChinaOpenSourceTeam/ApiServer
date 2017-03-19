@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import com.chinaopensource.apiserver.common.constant.ErrorCode;
 import com.chinaopensource.apiserver.common.constant.ErrorMessage;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
+import com.chinaopensource.apiserver.common.controller.ResponseBase;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.IRedisOperate;
 import com.chinaopensource.apiserver.system.login.data.Token;
@@ -33,11 +34,12 @@ public class LoginController extends ControllerBase{
 		if(userService.loginValidate(username, password)){
 			Token token = new Token();
 			token.setToken(jwtTokenUtil.generateToken(username));
+			rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 			rep.setData(token);
+			
 			redisOperate.set(username+":token", token.getToken());
 		}else{
-			rep.setCode(ErrorCode.ERR_SYS_LOGIN_PASSWORD);
-			rep.setMessage(ErrorMessage.getMessage(ErrorCode.ERR_SYS_LOGIN_PASSWORD));
+			rep=new ResponseBase(ErrorCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ErrorCode.ERR_SYS_LOGIN_PASSWORD));
 		}
 		return JSON.toJSONString(rep);
 	}
