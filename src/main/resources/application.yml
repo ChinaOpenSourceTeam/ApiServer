@@ -2,7 +2,25 @@ spring:
   profiles:
     active:
       - dev
-    
+server:
+  port: 18080
+---
+spring:
+  profiles:
+    active:
+      - qa
+server:
+  port: 28080
+---
+
+spring:
+  profiles:
+    active:
+      - ali
+server:
+  port: 38080
+---
+
 jwt:
   header: Authorization
   secret: mySecret
