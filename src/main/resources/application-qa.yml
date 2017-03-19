@@ -1,3 +1,6 @@
+server:
+  port: 18080
+  
 spring:
   datasource:
     name: myqa
