@@ -7,24 +7,17 @@ server:
 ---
 spring:
   profiles:
-    active:
-      - qa
+       qa
 server:
   port: 28080
 ---
 
 spring:
   profiles:
-    active:
-      - ali
+       ali
 server:
   port: 38080
 ---
-
-jwt:
-  header: Authorization
-  secret: mySecret
-  expiration: 604800
   
 mybatis:
   mapper-locations: classpath*:com/chinaopensource/apiserver/**/mapper/*Mapper.xml

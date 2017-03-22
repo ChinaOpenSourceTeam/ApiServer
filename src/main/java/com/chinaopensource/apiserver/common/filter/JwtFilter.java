@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
+import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.constant.ErrorCode;
 import com.chinaopensource.apiserver.common.constant.ErrorMessage;
 import com.chinaopensource.apiserver.common.controller.ResponseBase;
@@ -54,7 +55,7 @@ public class JwtFilter implements Filter {
             chain.doFilter(httpRequest, httpResponse);
             return;
         } else {
-        	 String token = httpRequest.getHeader("Authorization");
+        	 String token = httpRequest.getHeader(Constants.JWT_HEADER);
         	 String name = httpRequest.getHeader("loginName");
         	 if(token==null){
         		 httpResponse.setCharacterEncoding("UTF-8");  
