@@ -2,22 +2,6 @@ spring:
   profiles:
     active:
       - dev
-server:
-  port: 18080
----
-spring:
-  profiles:
-       qa
-server:
-  port: 28080
----
-
-spring:
-  profiles:
-       ali
-server:
-  port: 38080
----
   
 mybatis:
   mapper-locations: classpath*:com/chinaopensource/apiserver/**/mapper/*Mapper.xml

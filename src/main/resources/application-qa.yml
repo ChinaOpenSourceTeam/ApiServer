@@ -1,8 +1,7 @@
 spring:
   datasource:
     name: myqa
-    type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://127.0.0.1:3306/opensource-ali
+    url: jdbc:mysql://127.0.0.1:3306/opensource-qa
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
@@ -20,3 +19,6 @@ spring:
     host: localhost
     port: 6379
     database: 2
+    
+server:
+  port: 28080
