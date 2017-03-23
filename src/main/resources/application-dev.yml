@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: mydev 
-    url: jdbc:mysql://127.0.0.1:3306/opensource-dev
+    url: jdbc:mysql://localhost:3306/opensource-dev
     username: root
     password: 123456
     driver-class-name: com.mysql.jdbc.Driver
@@ -19,6 +19,16 @@ spring:
     host: localhost
     port: 6379
     database: 0
+    pool:
+      max-active: 1024
+      max-idle: 200
+      max-wait: 1000
+      min-idle: 50
+    timeout: 60
+    test-on-borrow: true
+    max-total: 1024
+    max-wait-millis: 1000
+    time-between-eviction-runs-millis: 60
     
 server:
   port: 18080
