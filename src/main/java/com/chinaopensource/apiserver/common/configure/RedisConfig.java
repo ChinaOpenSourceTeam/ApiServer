@@ -21,6 +21,7 @@ public class RedisConfig {
     @ConfigurationProperties(prefix="spring.redis")  
     public JedisPoolConfig getRedisConfig(){  
         JedisPoolConfig config = new JedisPoolConfig();  
+        config.setMinIdle(3);
         return config;  
     }  
       
