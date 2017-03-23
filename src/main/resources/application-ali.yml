@@ -16,9 +16,8 @@ spring:
       test-on-borrow: false
       test-on-return: false
   redis:
-    host: 115.29.4.13
+    host: localhost
     port: 6379
-    password : dphd123
     database: 1
     pool:
       max-active: 1024
