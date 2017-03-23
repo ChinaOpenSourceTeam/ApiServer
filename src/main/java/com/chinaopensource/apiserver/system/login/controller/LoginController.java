@@ -36,8 +36,8 @@ public class LoginController extends ControllerBase{
 			token.setToken(jwtTokenUtil.generateToken(username));
 			rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 			rep.setData(token);
-			
-			redisOperate.set(username+":token", token.getToken());
+			//TODO  没有解决服务器redis无法获取连接池  本地可以
+	//		redisOperate.set(username+":token", token.getToken());
 		}else{
 			rep=new ResponseBase(ErrorCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ErrorCode.ERR_SYS_LOGIN_PASSWORD));
 		}
