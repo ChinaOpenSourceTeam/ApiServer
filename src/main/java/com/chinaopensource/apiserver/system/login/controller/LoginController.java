@@ -11,7 +11,7 @@ import com.chinaopensource.apiserver.common.constant.ErrorMessage;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.controller.ResponseBase;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
-import com.chinaopensource.apiserver.common.util.redis.IRedisOperate;
+import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.Token;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 
@@ -27,7 +27,7 @@ public class LoginController extends ControllerBase{
 	private UserService userService;
 	
 	@Autowired
-	private IRedisOperate redisOperate;
+	private RedisOperate redisOperate;
 	
 	@RequestMapping(value = "signIn", method = RequestMethod.GET)
 	public String signIn(String username , String password){
