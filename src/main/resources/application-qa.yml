@@ -2,8 +2,8 @@ spring:
   datasource:
     name: myqa
     url: jdbc:mysql://localhost:3306/opensource-qa
-    username: root
-    password: 123456
+    username: opensource
+    password: opensource
     driver-class-name: com.mysql.jdbc.Driver
     dbcp:
       min-idle: 3
