@@ -39,4 +39,11 @@ public interface UserService {
 	 * @return
 	 */
 	boolean loginValidate(String loginName,String password);
+
+	/**
+	 * 通过登录名称查找用户信息
+	 * @param loginName
+	 * @return
+	 */
+	Object findUserByLoginName(String loginName);
 }

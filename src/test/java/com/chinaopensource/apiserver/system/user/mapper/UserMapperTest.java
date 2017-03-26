@@ -1,5 +1,6 @@
 package com.chinaopensource.apiserver.system.user.mapper;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,6 +25,13 @@ public class UserMapperTest extends ApiServerApplicationTests{
 		user.setUserName("沙沙");
 		
 		mapper.save(user);
+	}
+	
+	@Test
+	public void testFindUserByLoginName(){
+		User user = mapper.findUserByLoginName("liqiwei");
+		Assert.assertEquals("liqiwei", user.getLoginName()) ;
+		
 	}
 	
 }

@@ -20,4 +20,6 @@ public interface UserMapper {
 	void update(User user);
 
 	String findPasswordByLoginName(String loginName);
+
+	User findUserByLoginName(String loginName);
 }

@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: myqa
-    url: jdbc:mysql://localhost:3306/opensource-qa
+    url: jdbc:mysql://localhost:3306/opensource-qa?useUnicode=true&characterEncoding=utf-8
     username: opensource
     password: opensource
     driver-class-name: com.mysql.jdbc.Driver

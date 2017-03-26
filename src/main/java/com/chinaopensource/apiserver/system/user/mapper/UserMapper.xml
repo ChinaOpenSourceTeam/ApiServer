@@ -40,6 +40,10 @@
     	select * from user where id=#{id,jdbcType=NUMERIC}
     </select>
     
+    <select id="findUserByLoginName" parameterType="String" resultMap="baseUser">
+    	select * from user where login_name=#{login_name,jdbcType=NUMERIC}
+    </select>
+    
     <select id="findAllUser" resultMap="baseUser">
     	select * from user
     </select>

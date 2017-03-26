@@ -3,9 +3,10 @@
 
 使用springboot+springMVC+spring+mybatis+mysql+redis+jwt技术。
 ### 环境
-  * jdk8
-  * mysql5
-  * redis
+  * jdk 8
+  * mysql 5+
+  * redis 3.2
+  * maven 3.3。9
 
 ### 下载
 ```
@@ -19,4 +20,11 @@ mvn clean package
 运行命令
 ```
 java -jar target/*.jar --spring.profiles.active=ali
+```
+
+### 接口访问地址     
+
+阿里云        
+```
+http://120.55.171.108:38080
 ```

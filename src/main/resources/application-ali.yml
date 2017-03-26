@@ -1,7 +1,7 @@
 spring:
   datasource:
     name: myali
-    url: jdbc:mysql://localhost:3306/opensource-ali
+    url: jdbc:mysql://localhost:3306/opensource-ali?useUnicode=true&characterEncoding=utf-8
     username: opensource
     password: opensource
     driver-class-name: com.mysql.jdbc.Driver

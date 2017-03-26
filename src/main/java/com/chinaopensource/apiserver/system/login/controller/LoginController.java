@@ -30,14 +30,13 @@ public class LoginController extends ControllerBase{
 	private RedisOperate redisOperate;
 	
 	@RequestMapping(value = "signIn", method = RequestMethod.GET)
-	public String signIn(String username , String password){
-		if(userService.loginValidate(username, password)){
+	public String signIn(String loginName , String password){
+		if(userService.loginValidate(loginName, password)){
 			Token token = new Token();
-			token.setToken(jwtTokenUtil.generateToken(username));
+			token.setToken(jwtTokenUtil.generateToken(loginName));
 			rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 			rep.setData(token);
-			//TODO  没有解决服务器redis无法获取连接池  本地可以
-			redisOperate.set(username+":token", token.getToken());
+			redisOperate.set(loginName+":token", token.getToken());
 		}else{
 			rep=new ResponseBase(ErrorCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ErrorCode.ERR_SYS_LOGIN_PASSWORD));
 		}

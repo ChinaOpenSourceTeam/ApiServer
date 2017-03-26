@@ -41,6 +41,14 @@ public class UserController extends ControllerBase {
 		rep.setData(userService.findUserById(id));
 		return JSON.toJSONString(rep);
 	}
+	
+	@RequestMapping(value = "findUserByLoginName", method = RequestMethod.GET)
+	public String findUserByLoginName(String loginName){
+		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
+		rep.setData(userService.findUserByLoginName(loginName));
+		return JSON.toJSONString(rep);
+	}
+	
 	@RequestMapping(value = "findAllUser", method = RequestMethod.GET)
 	public String findAllUser(){
 		UserList userList = new UserList();
