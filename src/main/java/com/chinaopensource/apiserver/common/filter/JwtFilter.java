@@ -40,6 +40,8 @@ public class JwtFilter implements Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
     	urls.add("system/login/signIn");
     	urls.add("favicon.ico");
+    	urls.add("swagger-ui.html");
+    	urls.add("v2/api-docs");
     }
 
     @Override
@@ -51,7 +53,7 @@ public class JwtFilter implements Filter {
         if (url.startsWith("/") && url.length() > 1) {
             url = url.substring(1);
         }
-        if (urls.contains(url)){
+        if (urls.contains(url)||url.indexOf("swagger")!=-1){
             chain.doFilter(httpRequest, httpResponse);
             return;
         } else {

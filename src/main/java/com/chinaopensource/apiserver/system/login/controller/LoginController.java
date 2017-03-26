@@ -15,6 +15,8 @@ import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.Token;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 
+import io.swagger.annotations.ApiOperation;
+
 
 @RestController
 @RequestMapping("/system/login/")
@@ -29,6 +31,7 @@ public class LoginController extends ControllerBase{
 	@Autowired
 	private RedisOperate redisOperate;
 	
+	@ApiOperation(value="测试-getCount", notes="getCount更多说明")
 	@RequestMapping(value = "signIn", method = RequestMethod.GET)
 	public String signIn(String loginName , String password){
 		if(userService.loginValidate(loginName, password)){
