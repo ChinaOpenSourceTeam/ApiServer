@@ -45,5 +45,5 @@ public interface UserService {
 	 * @param loginName
 	 * @return
 	 */
-	Object findUserByLoginName(String loginName);
+	User findUserByLoginName(String loginName);
 }

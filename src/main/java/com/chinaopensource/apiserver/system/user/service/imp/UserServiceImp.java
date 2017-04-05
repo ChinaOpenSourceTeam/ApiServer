@@ -56,7 +56,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public Object findUserByLoginName(String loginName) {
+	public User findUserByLoginName(String loginName) {
 		return userMapper.findUserByLoginName(loginName);
 	}
 

@@ -1,5 +1,7 @@
 package com.chinaopensource.apiserver.system.login.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +24,8 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/system/login/")
 public class LoginController extends ControllerBase{
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+	
 	@Autowired
     private JwtTokenUtil jwtTokenUtil;
 	
@@ -34,6 +38,8 @@ public class LoginController extends ControllerBase{
 	@ApiOperation(value="测试-getCount", notes="getCount更多说明")
 	@RequestMapping(value = "signIn", method = RequestMethod.GET)
 	public String signIn(String loginName , String password){
+		
+	
 		if(userService.loginValidate(loginName, password)){
 			Token token = new Token();
 			token.setToken(jwtTokenUtil.generateToken(loginName));
