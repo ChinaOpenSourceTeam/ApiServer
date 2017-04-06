@@ -1,5 +1,7 @@
 package com.chinaopensource.apiserver.system.login.controller;
 
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import com.chinaopensource.apiserver.common.controller.ResponseBase;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.Token;
+import com.chinaopensource.apiserver.system.login.data.ValData;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -37,15 +40,15 @@ public class LoginController extends ControllerBase{
 	
 	@ApiOperation(value="测试-getCount", notes="getCount更多说明")
 	@RequestMapping(value = "signIn", method = RequestMethod.GET)
-	public String signIn(String loginName , String password){
+	public String signIn(@Valid ValData data){
 		
 	
-		if(userService.loginValidate(loginName, password)){
+		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
 			Token token = new Token();
-			token.setToken(jwtTokenUtil.generateToken(loginName));
+			token.setToken(jwtTokenUtil.generateToken(data.getLoginName()));
 			rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 			rep.setData(token);
-			redisOperate.set(loginName+":token", token.getToken());
+			redisOperate.set(data.getLoginName()+":token", token.getToken());
 		}else{
 			rep=new ResponseBase(ErrorCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ErrorCode.ERR_SYS_LOGIN_PASSWORD));
 		}
