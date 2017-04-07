@@ -33,3 +33,9 @@ spring:
     
 server:
   port: 18080
+  
+opensource:
+  jwt:
+    header: Authorization 
+    secret: mySecret 
+    expiration: 1800 
