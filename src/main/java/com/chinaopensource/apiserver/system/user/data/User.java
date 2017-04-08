@@ -1,10 +1,21 @@
 package com.chinaopensource.apiserver.system.user.data;
 
-public class User {
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
+import org.springframework.stereotype.Component;
+
+@Component
+public class User {
 	private int id;
+	@NotNull
+	@Length(min=6,max=20)
 	private String loginName;
+	@NotNull
+	@Min(6)
 	private String password;
+	@NotNull
 	private String userName;
 	private int age;
 	private String phone;

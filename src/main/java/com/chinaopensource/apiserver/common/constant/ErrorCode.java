@@ -8,5 +8,5 @@ public class ErrorCode {
 	public static final int ERR_SYS_TOKEN_NONE = 10011;
 	public static final int ERR_SYS_TOKEN_INVALID = 10012;
 
-	
+	public static final int ERR_SYS_PARAMETER_VALIDATE = 10020;
 }

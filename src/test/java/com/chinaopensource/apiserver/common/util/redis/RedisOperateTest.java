@@ -26,5 +26,10 @@ public class RedisOperateTest extends ApiServerApplicationTests{
 	public void testGet() {
 		Assert.assertEquals("姓名", redisOperate.get("name"));
 	}
+	
+	@Test
+	public void testDelete() {
+		redisOperate.delete("liqiwei*");
+	}
 
 }

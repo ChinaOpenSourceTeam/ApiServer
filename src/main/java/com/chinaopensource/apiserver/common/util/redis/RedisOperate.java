@@ -1,8 +1,10 @@
 package com.chinaopensource.apiserver.common.util.redis;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -37,6 +39,16 @@ public class RedisOperate {
 	}
 	
 	/**
+	 * 设置键
+	 * @param key
+	 * @param value
+	 */
+	public void  setMap(final String key,final Map<?, ?> value) {
+		HashOperations<String, Object, Object>  ops = this.template.opsForHash();
+		ops.putAll(key, value);
+	}
+	
+	/**
 	 * 获取值
 	 * @param key
 	 * @return
@@ -44,5 +56,15 @@ public class RedisOperate {
 	public String get(final String key) {
 		ValueOperations<String, String> ops = this.template.opsForValue();
 		return ops.get(key);
+	}
+	
+	/**
+	 * 删除值
+	 * @param key
+	 * @return
+	 */
+	public void delete(final String key){
+		ValueOperations<String, String> ops = this.template.opsForValue();
+		ops.getOperations().delete(key);
 	}
 }

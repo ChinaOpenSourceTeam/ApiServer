@@ -3,9 +3,12 @@ package com.chinaopensource.apiserver.common.util.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.chinaopensource.apiserver.common.constant.Constants;
+import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -27,6 +30,9 @@ public class JwtTokenUtil implements Serializable {
     static final String CLAIM_KEY_AUDIENCE = "audience";
     static final String CLAIM_KEY_CREATED = "created";
 
+	@Autowired
+	private RedisOperate redisOperate;
+	
     public String getUsernameFromToken(String token) {
         String username;
         try {
@@ -131,10 +137,13 @@ public class JwtTokenUtil implements Serializable {
     }
 
     public Boolean validateToken(String token, String loginName ) {
+    	// 获取登录名
         final String name = getUsernameFromToken(token);
-        /**
-         * name 为空验证失败
-         */
-        return (name!=null) && name.equals(loginName) && !isTokenExpired(token);
+        // 验证token的有效性
+        if((name==null) || !name.equals(loginName)) 
+        	return false;
+        token = redisOperate.get(name+Constants.REDIS_COLON+Constants.USERINFO_TOKEN);
+        // 验证token是否过期        
+        return !isTokenExpired(token);
     }
 }

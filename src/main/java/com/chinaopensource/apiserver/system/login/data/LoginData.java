@@ -3,12 +3,17 @@ package com.chinaopensource.apiserver.system.login.data;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Component;
-
+/**
+ * 登录参数校验
+ * 
+ * @author lqw
+ * 2017年4月8日 下午8:27:09
+ */
 @Component
-public class ValData {
+public class LoginData {
 	
 	@NotEmpty()
-	@Length(min=6,max=10)
+	@Length(min=6,max=20)
 	private String loginName;
 	@Length(min=6)
 	private String password;
