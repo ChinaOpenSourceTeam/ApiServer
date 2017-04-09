@@ -1,10 +1,12 @@
 package com.chinaopensource.apiserver.system.login.controller;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,8 @@ import com.chinaopensource.apiserver.system.login.data.Token;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 /**
@@ -47,8 +51,8 @@ public class LoginController extends ControllerBase{
 	private RedisOperate redisOperate;
 	
 	@ApiOperation(value="获取token", notes="登录系统获取token值")
-	@RequestMapping(value = "signIn", method = RequestMethod.GET)
-	public String signIn(@Valid LoginData data){
+	@RequestMapping(value = "signIn", method = RequestMethod.POST)
+	public String signIn(@Valid @RequestBody LoginData data){
 		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
 			Token token = new Token();
 			token.setToken(jwtTokenUtil.generateToken(data.getLoginName()));
@@ -64,7 +68,12 @@ public class LoginController extends ControllerBase{
 	
 	@ApiOperation(value="删除token", notes="退出系统删除token")
 	@RequestMapping(value = "signOut", method = RequestMethod.GET)
-	public String signOut(String loginName){
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "header"),
+		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
+		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
+	})
+	public String signOut(@Min(6) String loginName){
 		redisOperate.delete(loginName+Constants.REDIS_ALL);
 		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 		return JSON.toJSONString(rep);

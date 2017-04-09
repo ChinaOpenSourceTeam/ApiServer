@@ -25,7 +25,12 @@ import com.chinaopensource.apiserver.common.controller.ResponseBase;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 
-
+/**
+ * 验证 接口token
+ * 
+ * @author lqw
+ * 2017年4月8日 下午9:46:03
+ */
 @WebFilter(filterName="jwtFilter",value="/*")
 public class JwtFilter implements Filter {
     
@@ -65,6 +70,7 @@ public class JwtFilter implements Filter {
         } else {
         	 String token = httpRequest.getHeader(Constants.JWT_HEADER);
         	 String name = httpRequest.getHeader("loginName");
+        	 // 是否有token
         	 if(token==null){
         		 httpResponse.setCharacterEncoding("UTF-8");  
             	 httpResponse.setContentType("application/json; charset=utf-8");  

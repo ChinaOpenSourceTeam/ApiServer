@@ -3,6 +3,7 @@ package com.chinaopensource.apiserver.system.user.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ import io.swagger.annotations.ApiOperation;
 
 @RestController
 @RequestMapping("/system/user/")
-@Api(description = "用于管理")
+@Api(description = "用户管理")
 public class UserController extends ControllerBase {
 
 	@Autowired
@@ -35,13 +36,18 @@ public class UserController extends ControllerBase {
 	@Autowired
 	private RedisOperate redisOperate;
 	
+	@ApiOperation(value="保存用户信息", notes="添加或修改用户信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "header"),
+		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
+	})
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
-	public String saveUser(@Valid User user){
+	public String saveUser(@Valid @RequestBody User user){
 		userService.save(user);
 		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 		return JSON.toJSONString(rep);
 	}
-	
+
 	@RequestMapping(value = "deleteUserById", method = RequestMethod.DELETE)
 	public String deleteUserById(Integer id){
 		userService.deleteUserById(id);

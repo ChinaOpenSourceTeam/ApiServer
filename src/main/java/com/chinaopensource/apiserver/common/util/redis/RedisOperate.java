@@ -9,6 +9,12 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 
+/**
+ * redis 的操作工具类
+ * 
+ * @author lqw
+ * 2017年4月8日 下午10:04:01
+ */
 @Component
 public class RedisOperate {
 
@@ -64,7 +70,8 @@ public class RedisOperate {
 	 * @return
 	 */
 	public void delete(final String key){
-		ValueOperations<String, String> ops = this.template.opsForValue();
-		ops.getOperations().delete(key);
+//		ValueOperations<String, String> ops = this.template.opsForValue();
+//		ops.getOperations().delete(key);
+		this.template.delete(key);
 	}
 }
