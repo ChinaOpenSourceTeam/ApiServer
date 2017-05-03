@@ -136,13 +136,15 @@ public class JwtTokenUtil implements Serializable {
         return refreshedToken;
     }
 
-    public Boolean validateToken(String token, String loginName ) {
+    public Boolean validateToken(String token) {
     	// 获取登录名
         final String name = getUsernameFromToken(token);
         // 验证token的有效性
-        if((name==null) || !name.equals(loginName)) 
+        if(name==null) 
         	return false;
         token = redisOperate.get(name+Constants.REDIS_COLON+Constants.USERINFO_TOKEN);
+        if(token==null) 
+        	return false;
         // 验证token是否过期        
         return !isTokenExpired(token);
     }

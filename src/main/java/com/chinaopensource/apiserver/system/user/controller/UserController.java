@@ -38,7 +38,6 @@ public class UserController extends ControllerBase {
 	
 	@ApiOperation(value="保存用户信息", notes="添加或修改用户信息")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "header"),
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
@@ -48,6 +47,11 @@ public class UserController extends ControllerBase {
 		return JSON.toJSONString(rep);
 	}
 
+	@ApiOperation(value="删除用户信息", notes="删除用户信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
+		@ApiImplicitParam(name = "id", value = "用户Id", required = true , dataType = "Integer" ,paramType = "query")
+	})
 	@RequestMapping(value = "deleteUserById", method = RequestMethod.DELETE)
 	public String deleteUserById(Integer id){
 		userService.deleteUserById(id);
@@ -55,6 +59,11 @@ public class UserController extends ControllerBase {
 		return JSON.toJSONString(rep);
 	}
 	
+	@ApiOperation(value="通过ID用户信息", notes="通过ID用户信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
+		@ApiImplicitParam(name = "id", value = "用户Id", required = true , dataType = "Integer" ,paramType = "query")
+	})
 	@RequestMapping(value = "findUserById", method = RequestMethod.GET)
 	public String findUserById(Integer id){
 		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
@@ -62,9 +71,8 @@ public class UserController extends ControllerBase {
 		return JSON.toJSONString(rep);
 	}
 	
-	@ApiOperation(value="通过登录名获取用户信息", notes="")
+	@ApiOperation(value="通过登录名获取用户信息", notes="通过登录名获取用户信息")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "header"),
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
 	})
@@ -77,6 +85,10 @@ public class UserController extends ControllerBase {
 		return JSON.toJSONString(rep);
 	}
 	
+	@ApiOperation(value="查找所有用户", notes="查找所有用户信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
+	})
 	@RequestMapping(value = "findAllUser", method = RequestMethod.GET)
 	public String findAllUser(){
 		UserList userList = new UserList();

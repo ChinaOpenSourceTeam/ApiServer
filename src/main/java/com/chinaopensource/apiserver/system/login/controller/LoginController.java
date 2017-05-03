@@ -69,12 +69,11 @@ public class LoginController extends ControllerBase{
 	@ApiOperation(value="删除token", notes="退出系统删除token")
 	@RequestMapping(value = "signOut", method = RequestMethod.GET)
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "header"),
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
 	})
 	public String signOut(@Min(6) String loginName){
-		redisOperate.delete(loginName+Constants.REDIS_ALL);
+		redisOperate.deletes(loginName+Constants.REDIS_COLON+Constants.REDIS_ALL);
 		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 		return JSON.toJSONString(rep);
 	}

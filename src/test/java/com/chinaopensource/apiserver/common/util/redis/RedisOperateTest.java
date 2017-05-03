@@ -29,7 +29,7 @@ public class RedisOperateTest extends ApiServerApplicationTests{
 	
 	@Test
 	public void testDelete() {
-		redisOperate.delete("liqiwei*");
+		redisOperate.deletes("liqiwei:*");
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.chinaopensource.apiserver.common.util.redis;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -70,8 +71,15 @@ public class RedisOperate {
 	 * @return
 	 */
 	public void delete(final String key){
-//		ValueOperations<String, String> ops = this.template.opsForValue();
-//		ops.getOperations().delete(key);
 		this.template.delete(key);
+	}
+	
+	/**
+	 * 删除值 模糊匹配
+	 * @param keys
+	 * @return
+	 */
+	public void deletes(final String keys){
+		this.template.delete(this.template.keys(keys));
 	}
 }

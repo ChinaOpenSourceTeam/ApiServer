@@ -69,7 +69,6 @@ public class JwtFilter implements Filter {
             return;
         } else {
         	 String token = httpRequest.getHeader(Constants.JWT_HEADER);
-        	 String name = httpRequest.getHeader("loginName");
         	 // 是否有token
         	 if(token==null){
         		 httpResponse.setCharacterEncoding("UTF-8");  
@@ -78,7 +77,7 @@ public class JwtFilter implements Filter {
             	 ResponseBase rep = new ResponseBase(ErrorCode.ERR_SYS_TOKEN_NONE, ErrorMessage.getMessage(ErrorCode.ERR_SYS_TOKEN_NONE));
             	 out.append(JSON.toJSONString(rep)); 
             	 return;
-        	 } else if(!(jwtTokenUtil.validateToken(token, name))){
+        	 } else if(!(jwtTokenUtil.validateToken(token))){
         		 httpResponse.setCharacterEncoding("UTF-8");  
             	 httpResponse.setContentType("application/json; charset=utf-8");  
             	 PrintWriter out = httpResponse.getWriter();  
@@ -87,7 +86,7 @@ public class JwtFilter implements Filter {
             	 return;
         	 } else {
         		 // 刷新token值
-        		 redisOperate.set(name+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, jwtTokenUtil.refreshToken(token));
+        		 redisOperate.set(jwtTokenUtil.getUsernameFromToken(token)+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, jwtTokenUtil.refreshToken(token));
         		 // TODO 请求的日志记录  用户是否存在  请求的接口的权限
         		 chain.doFilter(httpRequest, httpResponse);
         	 }
