@@ -1,9 +1,9 @@
 spring:
   datasource:
     name: mydev 
-    url: jdbc:mysql://120.55.171.108:3306/opensource-dev?useUnicode=true&characterEncoding=utf-8
-    username: opensource
-    password: opensource
+    url: jdbc:mysql://localhost:3306/opensource-dev?useUnicode=true&characterEncoding=utf-8
+    username: root
+    password: 123456
     driver-class-name: com.mysql.jdbc.Driver
     dbcp:
       min-idle: 3

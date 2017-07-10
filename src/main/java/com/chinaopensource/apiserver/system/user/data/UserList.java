@@ -4,15 +4,16 @@ import java.util.List;
 
 public class UserList {
 
-	private List<User> userList;
+	private List<BaseUser> userList;
 
-	public List<User> getUserList() {
+	public List<BaseUser> getUserList() {
 		return userList;
 	}
 
-	public void setUserList(List<User> userList) {
+	public void setUserList(List<BaseUser> userList) {
 		this.userList = userList;
 	}
-	
+
+		
 	
 }

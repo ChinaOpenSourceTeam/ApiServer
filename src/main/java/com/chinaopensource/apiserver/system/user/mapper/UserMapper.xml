@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>  
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.chinaopensource.apiserver.system.user.mapper.UserMapper" >  
-      
-    <resultMap id="baseUser" type="com.chinaopensource.apiserver.system.user.data.User" >
+    
+    <!-- 返回基础数据 -->  
+    <resultMap id="baseUser" type="com.chinaopensource.apiserver.system.user.data.BaseUser" >
     	<id column="id" property="id" jdbcType="INTEGER"/>
     	<result column="login_name" property="loginName" jdbcType="VARCHAR" />
     	<result column="user_name" property="userName" jdbcType="VARCHAR" />
@@ -12,14 +13,16 @@
     	<result column="address" property="address" jdbcType="VARCHAR" />
     	<result column="email" property="email" jdbcType="VARCHAR" />
     </resultMap>
-      
+    
+    <!-- 保存用户信息 -->
     <insert id="save" parameterType="com.chinaopensource.apiserver.system.user.data.User">  
         insert into user(login_name,password,user_name,age,phone,photo,address,email)
                   values(#{loginName,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{userName,jdbcType=VARCHAR},#{age,jdbcType=NUMERIC},
                          #{phone,jdbcType=VARCHAR},#{photo,jdbcType=VARCHAR},#{address,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR})  
     </insert>  
     
-    <update id="update" parameterType="Integer">
+    <!-- 通过用户Id更新用户 -->
+    <update id="update"  parameterType="com.chinaopensource.apiserver.system.user.data.BaseUser">
     	update user set
 	    	login_name=#{loginName,jdbcType=VARCHAR},
 	    	user_name=#{userName,jdbcType=VARCHAR},
@@ -32,22 +35,27 @@
     	
     </update>
     
+    <!-- 通过Id删除用户 -->
     <delete id="delete" parameterType="Integer">
     	delete from user where id=#{id,jdbcType=NUMERIC}
     </delete>
     
+    <!-- 通过用户ID查找用户 -->
     <select id="findUserById" parameterType="Integer" resultMap="baseUser">
     	select * from user where id=#{id,jdbcType=NUMERIC}
     </select>
     
+    <!-- 通过登录名查询用户 -->
     <select id="findUserByLoginName" parameterType="String" resultMap="baseUser">
-    	select * from user where login_name=#{login_name,jdbcType=NUMERIC}
+    	select * from user where login_name=#{login_name,jdbcType=VARCHAR}
     </select>
     
+    <!-- 查询所有用户 -->
     <select id="findAllUser" resultMap="baseUser">
     	select * from user
     </select>
     
+    <!-- 通过登录名查询密码 -->
     <select id="findPasswordByLoginName" parameterType="String" resultType="String">
     	select password from user where login_name=#{loginName,jdbcType=VARCHAR}
     </select>

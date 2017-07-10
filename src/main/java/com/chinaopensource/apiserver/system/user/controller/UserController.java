@@ -14,8 +14,10 @@ import com.chinaopensource.apiserver.common.constant.ErrorCode;
 import com.chinaopensource.apiserver.common.constant.ErrorMessage;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.controller.ResponseBase;
+import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
+import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.data.UserList;
 import com.chinaopensource.apiserver.system.user.service.UserService;
@@ -36,13 +38,25 @@ public class UserController extends ControllerBase {
 	@Autowired
 	private RedisOperate redisOperate;
 	
-	@ApiOperation(value="保存用户信息", notes="添加或修改用户信息")
+	@ApiOperation(value="保存用户信息", notes="添加用户信息")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
-	public String saveUser(@Valid @RequestBody User user){
+	public String saveUser(@Valid @RequestBody User user) throws BaseException{
 		userService.save(user);
+		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
+		return JSON.toJSONString(rep);
+	}
+	
+	@ApiOperation(value="修改用户信息", notes="修改用户信息")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
+	})
+	@RequestMapping(value = "updateUser", method = RequestMethod.PUT)
+	//TODO 分组验证
+	public String updateUser(@Valid @RequestBody BaseUser user) throws BaseException{
+		userService.update(user);
 		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
 		return JSON.toJSONString(rep);
 	}
@@ -79,7 +93,7 @@ public class UserController extends ControllerBase {
 	@RequestMapping(value = "findUserByLoginName", method = RequestMethod.GET)
 	public String findUserByLoginName(String loginName){
 		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
-		User user = userService.findUserByLoginName(loginName);
+		BaseUser user = userService.findUserByLoginName(loginName);
 		redisOperate.setMap(user.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_INFO, BeanMapTransformation.transBeanToMap(user, null));
 		rep.setData(user);
 		return JSON.toJSONString(rep);

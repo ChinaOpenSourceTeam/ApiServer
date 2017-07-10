@@ -2,17 +2,30 @@ package com.chinaopensource.apiserver.system.user.service;
 
 import java.util.List;
 
+import org.springframework.transaction.annotation.Transactional;
+
+import com.chinaopensource.apiserver.common.exception.BaseException;
+import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
 
+@Transactional
 public interface UserService {
 
 	/**
 	 * 保存用户
 	 * @param user
 	 * @return
+	 * @throws BaseException 
 	 */
-	int save(User user);
+	int save(User user) throws BaseException;
 
+	/**
+	 * 更新用户信息
+	 * @param user
+	 * @return
+	 * @throws BaseException 
+	 */
+	int update(BaseUser user) throws BaseException;
 	/**
 	 * 通过ID删除用户
 	 * @param id
@@ -24,13 +37,13 @@ public interface UserService {
 	 * @param id
 	 * @return
 	 */
-	User findUserById(Integer id);
+	BaseUser findUserById(Integer id);
 
 	/**
 	 * 查找所有用户
 	 * @return
 	 */
-	List<User> findAllUser();
+	List<BaseUser> findAllUser();
 	
 	/**
 	 * 登录用户验证
@@ -45,5 +58,5 @@ public interface UserService {
 	 * @param loginName
 	 * @return
 	 */
-	User findUserByLoginName(String loginName);
+	BaseUser findUserByLoginName(String loginName);
 }
