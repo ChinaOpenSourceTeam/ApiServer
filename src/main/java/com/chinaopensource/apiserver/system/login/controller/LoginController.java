@@ -1,8 +1,17 @@
 package com.chinaopensource.apiserver.system.login.controller;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-
+import com.chinaopensource.apiserver.common.constant.Constants;
+import com.chinaopensource.apiserver.common.constant.ResponseCode;
+import com.chinaopensource.apiserver.common.controller.ControllerBase;
+import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
+import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
+import com.chinaopensource.apiserver.system.login.data.LoginData;
+import com.chinaopensource.apiserver.system.login.data.Token;
+import com.chinaopensource.apiserver.system.user.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,22 +20,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSON;
-import com.chinaopensource.apiserver.common.constant.Constants;
-import com.chinaopensource.apiserver.common.constant.ErrorCode;
-import com.chinaopensource.apiserver.common.constant.ErrorMessage;
-import com.chinaopensource.apiserver.common.controller.ControllerBase;
-import com.chinaopensource.apiserver.common.controller.ResponseBase;
-import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
-import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
-import com.chinaopensource.apiserver.system.login.data.LoginData;
-import com.chinaopensource.apiserver.system.login.data.Token;
-import com.chinaopensource.apiserver.system.user.service.UserService;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 /**
  * 用户登录相关操作
@@ -56,14 +51,16 @@ public class LoginController extends ControllerBase{
 		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
 			Token token = new Token();
 			token.setToken(jwtTokenUtil.generateToken(data.getLoginName()));
-			rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
-			rep.setData(token);
+//			rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
+//			rep.setData(token);
 			// 报错token值到redis
 			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token.getToken());
+			return renderOk(ResponseCode.OK,token);
 		}else{
-			rep=new ResponseBase(ErrorCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ErrorCode.ERR_SYS_LOGIN_PASSWORD));
+			return renderError(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
+//			rep=new ResponseBase(ResponseCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ResponseCode.ERR_SYS_LOGIN_PASSWORD));
 		}
-		return JSON.toJSONString(rep);
+//		return JSON.toJSONString(rep);
 	}
 	
 	@ApiOperation(value="删除token", notes="退出系统删除token")
@@ -74,8 +71,9 @@ public class LoginController extends ControllerBase{
 	})
 	public String signOut(@Min(6) String loginName){
 		redisOperate.deletes(loginName+Constants.REDIS_COLON+Constants.REDIS_ALL);
-		rep=new ResponseBase(ErrorCode.OK, ErrorMessage.getMessage(ErrorCode.OK));
-		return JSON.toJSONString(rep);
+//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
+//		return JSON.toJSONString(rep);
+		return renderOk();
 	}
 	
 }

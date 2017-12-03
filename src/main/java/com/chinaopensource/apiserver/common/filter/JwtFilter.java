@@ -1,29 +1,21 @@
 package com.chinaopensource.apiserver.common.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.chinaopensource.apiserver.common.constant.Constants;
+import com.chinaopensource.apiserver.common.constant.ResponseCode;
+import com.chinaopensource.apiserver.common.controller.ResponseBase;
+import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
+import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.alibaba.fastjson.JSON;
-import com.chinaopensource.apiserver.common.constant.Constants;
-import com.chinaopensource.apiserver.common.constant.ErrorCode;
-import com.chinaopensource.apiserver.common.constant.ErrorMessage;
-import com.chinaopensource.apiserver.common.controller.ResponseBase;
-import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
-import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 
 /**
  * 验证 接口token
@@ -74,14 +66,14 @@ public class JwtFilter implements Filter {
         		 httpResponse.setCharacterEncoding("UTF-8");  
             	 httpResponse.setContentType("application/json; charset=utf-8");  
             	 PrintWriter out = httpResponse.getWriter();  
-            	 ResponseBase rep = new ResponseBase(ErrorCode.ERR_SYS_TOKEN_NONE, ErrorMessage.getMessage(ErrorCode.ERR_SYS_TOKEN_NONE));
+            	 ResponseBase rep = new ResponseBase(ResponseCode.ERR_SYS_TOKEN_NONE);
             	 out.append(JSON.toJSONString(rep)); 
             	 return;
         	 } else if(!(jwtTokenUtil.validateToken(token))){
         		 httpResponse.setCharacterEncoding("UTF-8");  
             	 httpResponse.setContentType("application/json; charset=utf-8");  
             	 PrintWriter out = httpResponse.getWriter();  
-            	 ResponseBase rep = new ResponseBase(ErrorCode.ERR_SYS_TOKEN_INVALID, ErrorMessage.getMessage(ErrorCode.ERR_SYS_TOKEN_INVALID));
+            	 ResponseBase rep = new ResponseBase(ResponseCode.ERR_SYS_TOKEN_INVALID);
             	 out.append(JSON.toJSONString(rep)); 
             	 return;
         	 } else {
