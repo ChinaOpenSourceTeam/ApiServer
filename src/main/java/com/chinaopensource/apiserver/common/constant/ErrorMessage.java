@@ -17,10 +17,10 @@ public enum ErrorMessage {
 	}
 
 	// 普通方法  
-    public static String getMessage(int code) {  
+    public static String getMessage(int code,Object... args) {  
         for (ErrorMessage e : ErrorMessage.values()) {  
             if (e.getCode() == code) {  
-                return e.message;  
+                return String.format(e.message, args); 
             }  
         }  
         return null;  
