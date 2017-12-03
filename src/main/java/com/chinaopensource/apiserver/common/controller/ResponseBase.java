@@ -1,4 +1,8 @@
 package com.chinaopensource.apiserver.common.controller;
+
+import com.chinaopensource.apiserver.common.constant.ResponseCode;
+import org.hibernate.validator.constraints.NotEmpty;
+
 /**
  * 返回json数据的基本格式
  * 
@@ -14,7 +18,7 @@ public class ResponseBase {
 	// 返回数据
 	private Object data;
 
-	public ResponseBase(ResponseCode  code ,@NotEmpty String message) {
+	public ResponseBase(ResponseCode code , @NotEmpty String message) {
 		this.code=code.getCode();
 		this.message=message;
 	}
