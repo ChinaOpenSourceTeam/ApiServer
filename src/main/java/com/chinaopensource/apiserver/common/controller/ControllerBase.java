@@ -2,8 +2,8 @@ package com.chinaopensource.apiserver.common.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
-import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,19 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ControllerBase {
 
+    protected static final Logger LOGGER = LoggerFactory.getLogger(ControllerBase.class);
 	/**
-	 * hibernate validator 参数错误
+	 * controller层统一异常捕获
+     *
 	 * @param e
 	 * @return
 	 */
-	@ExceptionHandler
-	public String exception(BindException e) { 
-		// 存放错误信息
-		String errorMessage = "";
-		for(FieldError field: e.getFieldErrors()){
-			errorMessage+="参数:"+field.getField()+",值:"+field.getRejectedValue()+",验证失败原因:"+field.getDefaultMessage();
-		}
-        return renderError(ResponseCode.ERR_SYS_PARAMETER_VALIDATE,errorMessage);
+	@ExceptionHandler(value = Exception.class)
+	public String exception(Exception e) {
+	    LOGGER.error("统一异常捕获：{}",e);
+        return renderError(ResponseCode.ERR_SYS_PARAMETER_VALIDATE,e.getMessage());
     }
 
     protected String renderOk(){

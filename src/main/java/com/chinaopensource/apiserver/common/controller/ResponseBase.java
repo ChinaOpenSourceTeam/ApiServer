@@ -20,7 +20,7 @@ public class ResponseBase {
 
 	public ResponseBase(ResponseCode code , @NotEmpty String message) {
 		this.code=code.getCode();
-		this.message=message;
+		this.message=code.getMessgae()+"["+message+"]";
 	}
 
 	public ResponseBase(ResponseCode code){
