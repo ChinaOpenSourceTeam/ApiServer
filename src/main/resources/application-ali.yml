@@ -2,10 +2,8 @@ spring:
   datasource:
     name: myali
     url: jdbc:mysql://localhost:3306/opensource-ali?useUnicode=true&characterEncoding=utf-8
-#    username: opensource
-#    password: opensource
-    username: dev
-    password: lzl1593572798.
+    username: opensource
+    password: opensource
     driver-class-name: com.mysql.jdbc.Driver
     dbcp:
       min-idle: 3
@@ -34,4 +32,4 @@ spring:
     time-between-eviction-runs-millis: 60
     
 server:
-  port: 38080
+  port: 9080
