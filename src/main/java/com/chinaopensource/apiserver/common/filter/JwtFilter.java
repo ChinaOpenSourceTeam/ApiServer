@@ -45,6 +45,7 @@ public class JwtFilter implements Filter {
     	// 排除swagger过滤
     	urls.add("swagger-ui.html");
     	urls.add("v2/api-docs");
+    	urls.add("test/get");
     }
 
     @Override
