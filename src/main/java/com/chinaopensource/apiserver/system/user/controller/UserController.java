@@ -40,8 +40,6 @@ public class UserController extends ControllerBase {
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
 	public String saveUser(@Valid @RequestBody User user) throws BaseException{
 		userService.save(user);
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//		return JSON.toJSONString(rep);
 		return renderOk();
 	}
 	
@@ -53,8 +51,6 @@ public class UserController extends ControllerBase {
 	//TODO 分组验证
 	public String updateUser(@Valid @RequestBody BaseUser user) throws BaseException{
 		userService.update(user);
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//		return JSON.toJSONString(rep);
 		return renderOk();
 	}
 
@@ -66,8 +62,6 @@ public class UserController extends ControllerBase {
 	@RequestMapping(value = "deleteUserById", method = RequestMethod.DELETE)
 	public String deleteUserById(Integer id){
 		userService.deleteUserById(id);
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//		return JSON.toJSONString(rep);
 		return renderOk();
 	}
 	
@@ -78,10 +72,7 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "findUserById", method = RequestMethod.GET)
 	public String findUserById(Integer id){
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//		rep.setData(userService.findUserById(id));
 		return renderOk(ResponseCode.OK,userService.findUserById(id));
-//		return JSON.toJSONString(rep);
 	}
 	
 	@ApiOperation(value="通过登录名获取用户信息", notes="通过登录名获取用户信息")
@@ -91,11 +82,8 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "findUserByLoginName", method = RequestMethod.GET)
 	public String findUserByLoginName(String loginName){
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
 		BaseUser user = userService.findUserByLoginName(loginName);
 		redisOperate.setMap(user.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_INFO, BeanMapTransformation.transBeanToMap(user, null));
-//		rep.setData(user);
-//		return JSON.toJSONString(rep);
 		return renderOk(ResponseCode.OK,user);
 	}
 	
@@ -107,9 +95,6 @@ public class UserController extends ControllerBase {
 	public String findAllUser(){
 		UserList userList = new UserList();
 		userList.setUserList(userService.findAllUser());
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//		rep.setData(userList);
-//		return JSON.toJSONString(rep);
 		return renderOk(ResponseCode.OK,userList);
 	}
 
