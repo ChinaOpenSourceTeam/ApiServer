@@ -23,11 +23,11 @@ public class ControllerBase {
 	 * @param e
 	 * @return
 	 */
-	@ExceptionHandler(value = Exception.class)
-	public String exception(Exception e) {
-	    LOGGER.error("统一异常捕获：{}",e);
-        return renderError(ResponseCode.ERR_SYS_PARAMETER_VALIDATE,e.getMessage());
-    }
+//	@ExceptionHandler(value = Exception.class)
+//	public String exception(Exception e) {
+//	    LOGGER.error("统一异常捕获：{}",e);
+//        return renderError(ResponseCode.ERR_SYS_PARAMETER_VALIDATE,e.getMessage());
+//    }
 
     protected String renderOk(){
 		return JSON.toJSONString(new ResponseBase(ResponseCode.OK));
