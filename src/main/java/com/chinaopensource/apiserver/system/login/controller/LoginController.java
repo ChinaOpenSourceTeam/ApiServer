@@ -7,6 +7,7 @@ import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.LoginData;
 import com.chinaopensource.apiserver.system.login.data.Token;
+import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import java.util.Objects;
 
 /**
  * 用户登录相关操作
@@ -63,9 +65,11 @@ public class LoginController extends ControllerBase{
 		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
 	})
 	public String signOut(@Min(6) String loginName){
+        BaseUser user = userService.findUserByLoginName(loginName);
+	    if(Objects.isNull(user)){
+            return renderError(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+        }
 		redisOperate.deletes(loginName+Constants.REDIS_COLON+Constants.REDIS_ALL);
-//		rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//		return JSON.toJSONString(rep);
 		return renderOk();
 	}
 	
