@@ -11,6 +11,7 @@ import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -106,7 +107,7 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(CLAIM_KEY_USERNAME, username);
-        claims.put(CLAIM_KEY_CREATED, new Date());
+        claims.put(CLAIM_KEY_CREATED, LocalDateTime.now());
         return generateToken(claims);
     }
 
