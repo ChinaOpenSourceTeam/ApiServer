@@ -15,10 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -30,7 +27,7 @@ import javax.validation.constraints.Min;
  * 2017年4月7日 下午10:30:16
  */
 @RestController
-@RequestMapping("/system/login/")
+@RequestMapping("/system/login")
 @Api(description = "登录管理")
 public class LoginController extends ControllerBase{
 
@@ -46,21 +43,17 @@ public class LoginController extends ControllerBase{
 	private RedisOperate redisOperate;
 	
 	@ApiOperation(value="获取token", notes="登录系统获取token值")
-	@RequestMapping(value = "signIn", method = RequestMethod.POST)
+	@PostMapping(value = "/signIn" )
 	public String signIn(@Valid @RequestBody LoginData data){
 		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
 			Token token = new Token();
 			token.setToken(jwtTokenUtil.generateToken(data.getLoginName()));
-//			rep=new ResponseBase(ResponseCode.OK, ErrorMessage.getMessage(ResponseCode.OK));
-//			rep.setData(token);
-			// 报错token值到redis
+			// 保存token值到redis
 			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token.getToken());
 			return renderOk(ResponseCode.OK,token);
 		}else{
 			return renderError(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
-//			rep=new ResponseBase(ResponseCode.ERR_SYS_LOGIN_PASSWORD,ErrorMessage.getMessage(ResponseCode.ERR_SYS_LOGIN_PASSWORD));
 		}
-//		return JSON.toJSONString(rep);
 	}
 	
 	@ApiOperation(value="删除token", notes="退出系统删除token")

@@ -1,14 +1,13 @@
 package com.chinaopensource.apiserver.common.util.redis;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * redis 的操作工具类
@@ -21,7 +20,6 @@ public class RedisOperate {
 
 	@Autowired
 	private StringRedisTemplate template;
-	
 
 	/**
 	 * 设置键
@@ -32,7 +30,6 @@ public class RedisOperate {
 	public void  set(final String key,final String value,final long expireTime) {
 		ValueOperations<String, String> ops = this.template.opsForValue();
 		ops.set(key, value, expireTime, TimeUnit.MINUTES);
-		
 	}
 	
 	/**
