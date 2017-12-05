@@ -16,7 +16,7 @@ spring:
       test-on-borrow: false
       test-on-return: false
   redis:
-    host: 120.55.171.108
+    host: 39.106.101.36
     port: 6379
     database: 0
     password: opensource
