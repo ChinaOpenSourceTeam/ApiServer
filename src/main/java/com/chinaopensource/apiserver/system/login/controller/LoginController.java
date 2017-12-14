@@ -3,6 +3,7 @@ package com.chinaopensource.apiserver.system.login.controller;
 import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
+import com.chinaopensource.apiserver.common.util.email.SendEmailUtils;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.LoginData;
@@ -59,7 +60,7 @@ public class LoginController extends ControllerBase{
 	}
 	
 	@ApiOperation(value="删除token", notes="退出系统删除token")
-	@RequestMapping(value = "signOut", method = RequestMethod.GET)
+    @GetMapping(value = "/signOut")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
@@ -72,5 +73,13 @@ public class LoginController extends ControllerBase{
 		redisOperate.deletes(loginName+Constants.REDIS_COLON+Constants.REDIS_ALL);
 		return renderOk();
 	}
-	
+
+
+	@GetMapping("/send")
+	public String sendEmail(){
+        return renderOk(ResponseCode.OK,SendEmailUtils.sendEmail("2769917694@qq.com","lzl1593572798.",
+                "907678041@qq.com","test","test"));
+
+	}
+
 }
