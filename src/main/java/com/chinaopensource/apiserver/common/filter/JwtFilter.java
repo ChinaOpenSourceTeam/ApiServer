@@ -46,6 +46,7 @@ public class JwtFilter implements Filter {
     	urls.add("swagger-ui.html");
     	urls.add("v2/api-docs");
     	urls.add("test/get");
+    	urls.add("test/authCode");
     }
 
     @Override
