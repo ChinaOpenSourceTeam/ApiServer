@@ -47,6 +47,7 @@ public class JwtFilter implements Filter {
     	urls.add("v2/api-docs");
     	urls.add("test/get");
     	urls.add("test/authCode");
+    	urls.add("system/login/send");
     }
 
     @Override
