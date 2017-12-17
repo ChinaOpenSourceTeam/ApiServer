@@ -34,4 +34,15 @@ spring:
 server:
   port: 28080
   
-  
+
+email:
+  smtp-host-key: mail.smtp.host
+  smtp-host-value: mx1.qq.com
+  smtp-protocol-key: mail.store.protocol
+  smtp-protocol-value: smtp
+  smtp-port-key: mail.smtp.port
+  smtp-port-value: 25
+  smtp-auth-key: mail.smtp.auth
+  smtp-auth-value: true
+  encode-pattern: gb2312
+  content-pattern: text/html;charset=
