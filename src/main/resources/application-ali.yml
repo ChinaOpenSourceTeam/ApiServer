@@ -34,6 +34,12 @@ spring:
 server:
   port: 9080
 
+opensource:
+  jwt:
+    header: Authorization
+    secret: mySecret
+    expiration: 1800
+
 email:
   smtp-host-key: mail.smtp.host
   smtp-host-value: mx1.qq.com

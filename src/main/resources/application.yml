@@ -1,7 +1,6 @@
 spring:
   profiles:
-    active:
-      - dev
+    active: dev
   
 mybatis:
   mapper-locations: classpath*:com/chinaopensource/apiserver/**/mapper/*Mapper.xml
