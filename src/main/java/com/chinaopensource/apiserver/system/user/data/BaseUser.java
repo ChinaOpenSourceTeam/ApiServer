@@ -2,9 +2,10 @@ package com.chinaopensource.apiserver.system.user.data;
 
 import javax.validation.constraints.NotNull;
 
+import com.chinaopensource.apiserver.common.base.BaseDomain;
 import org.hibernate.validator.constraints.Length;
 
-public class BaseUser {
+public class BaseUser extends BaseDomain {
 	
 	int id;
 	@NotNull

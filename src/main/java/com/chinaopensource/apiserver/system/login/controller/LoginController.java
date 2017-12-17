@@ -53,11 +53,27 @@ public class LoginController extends ControllerBase{
 			token.setToken(jwtTokenUtil.generateToken(data.getLoginName()));
 			// 保存token值到redis
 			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token.getToken());
-			return renderOk(ResponseCode.OK,token);
+			BaseUser user = userService.findUserByLoginName(data.getLoginName());
+			return renderOk(ResponseCode.OK,
+                    mapOf("token",token,"user",modifyBaseUserAttribute(user)));
 		}else{
 			return renderError(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
 		}
 	}
+
+    /**
+     * 传入的user，根据需要展示user的某些属性
+     * @param user
+     * @return
+     */
+	private BaseUser modifyBaseUserAttribute(BaseUser user){
+        BaseUser baseUser = new BaseUser();
+        baseUser.setLoginName(user.getLoginName());
+        baseUser.setPhone(user.getPhone());
+        baseUser.setEmail(user.getEmail());
+        baseUser.setAddress(user.getAddress());
+        return baseUser;
+    }
 	
 	@ApiOperation(value="删除token", notes="退出系统删除token")
     @GetMapping(value = "/signOut")
