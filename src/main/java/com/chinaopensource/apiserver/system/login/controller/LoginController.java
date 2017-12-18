@@ -49,10 +49,9 @@ public class LoginController extends ControllerBase{
 	@PostMapping(value = "/signIn" )
 	public String signIn(@Valid @RequestBody LoginData data){
 		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
-			Token token = new Token();
-			token.setToken(jwtTokenUtil.generateToken(data.getLoginName()));
+			String token = jwtTokenUtil.generateToken(data.getLoginName());
 			// 保存token值到redis
-			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token.getToken());
+			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token);
 			BaseUser user = userService.findUserByLoginName(data.getLoginName());
 			return renderOk(ResponseCode.OK,
                     mapOf("token",token,"user",modifyBaseUserAttribute(user)));
