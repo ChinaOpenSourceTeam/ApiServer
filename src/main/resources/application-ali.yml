@@ -39,15 +39,17 @@ opensource:
     header: Authorization
     secret: mySecret
     expiration: 1800
-
-email:
-  smtp-host-key: mail.smtp.host
-  smtp-host-value: mx1.qq.com
-  smtp-protocol-key: mail.store.protocol
-  smtp-protocol-value: smtp
-  smtp-port-key: mail.smtp.port
-  smtp-port-value: 25
-  smtp-auth-key: mail.smtp.auth
-  smtp-auth-value: true
-  encode-pattern: gb2312
-  content-pattern: text/html;charset=gb2312
+  image:
+    width: 120
+    height: 30
+  email:
+    smtp-host-key: mail.smtp.host
+    smtp-host-value: mx1.qq.com
+    smtp-protocol-key: mail.store.protocol
+    smtp-protocol-value: smtp
+    smtp-port-key: mail.smtp.port
+    smtp-port-value: 25
+    smtp-auth-key: mail.smtp.auth
+    smtp-auth-value: true
+    encode-pattern: gb2312
+    content-pattern: text/html;charset=gb2312
