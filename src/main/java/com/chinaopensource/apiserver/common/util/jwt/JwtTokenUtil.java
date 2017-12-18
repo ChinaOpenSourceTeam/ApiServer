@@ -1,14 +1,13 @@
 package com.chinaopensource.apiserver.common.util.jwt;
 
+import com.chinaopensource.apiserver.common.configure.OpenSourceConfig;
+import com.chinaopensource.apiserver.common.constant.Constants;
+import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.chinaopensource.apiserver.common.constant.Constants;
-import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -33,6 +32,9 @@ public class JwtTokenUtil implements Serializable {
 
 	@Autowired
 	private RedisOperate redisOperate;
+
+	@Autowired
+    private OpenSourceConfig openSourceConfig;
 	
     public String getUsernameFromToken(String token) {
         String username;
@@ -82,7 +84,7 @@ public class JwtTokenUtil implements Serializable {
         Claims claims;
         try {
             claims = Jwts.parser()
-                    .setSigningKey(Constants.JWT_SECRET)
+                    .setSigningKey(openSourceConfig.getJwtSecret())
                     .parseClaimsJws(token)
                     .getBody();
         } catch (Exception e) {
@@ -92,7 +94,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + Constants.JWT_EXPIRATION * 1000);
+        return new Date(System.currentTimeMillis() + openSourceConfig.getJwtExpiration() * 1000);
     }
 
     public Boolean isTokenExpired(String token) {
@@ -115,7 +117,7 @@ public class JwtTokenUtil implements Serializable {
         return Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
-                .signWith(SignatureAlgorithm.HS512, Constants.JWT_SECRET)
+                .signWith(SignatureAlgorithm.HS512, openSourceConfig.getJwtSecret())
                 .compact();
     }
 

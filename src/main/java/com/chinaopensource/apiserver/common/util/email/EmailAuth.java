@@ -9,12 +9,33 @@ import javax.mail.PasswordAuthentication;
  */
 public class EmailAuth extends Authenticator {
 
+    /**
+     * 用户名
+     */
     private String name;
+    /**
+     * 密码
+     */
     private String passwd;
+    /**
+     * 注册时填写的邮箱
+     */
+    private String email;
+    /**
+     *  图形验证码
+     */
+    private String imageVerificationCode;
 
     public EmailAuth(String name, String passwd) {
         this.name = name;
         this.passwd = passwd;
+    }
+
+    public EmailAuth(String name, String passwd, String email, String imageVerificationCode) {
+        this.name = name;
+        this.passwd = passwd;
+        this.email = email;
+        this.imageVerificationCode = imageVerificationCode;
     }
 
     @Override
@@ -36,5 +57,21 @@ public class EmailAuth extends Authenticator {
 
     public void setPasswd(String passwd) {
         this.passwd = passwd;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getImageVerificationCode() {
+        return imageVerificationCode;
+    }
+
+    public void setImageVerificationCode(String imageVerificationCode) {
+        this.imageVerificationCode = imageVerificationCode;
     }
 }

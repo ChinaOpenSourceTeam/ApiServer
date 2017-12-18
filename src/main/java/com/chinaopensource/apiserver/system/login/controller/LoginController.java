@@ -3,11 +3,9 @@ package com.chinaopensource.apiserver.system.login.controller;
 import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
-import com.chinaopensource.apiserver.common.util.email.SendEmailUtils;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.LoginData;
-import com.chinaopensource.apiserver.system.login.data.Token;
 import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -92,9 +90,9 @@ public class LoginController extends ControllerBase{
 
 	@GetMapping("/send")
 	public String sendEmail(){
-        return renderOk(ResponseCode.OK,SendEmailUtils.sendEmail("2769917694@qq.com","lzl1593572798.",
-                "907678041@qq.com","test","test"));
-
+//        return renderOk(ResponseCode.OK,SendEmailUtils.sendEmail("2769917694@qq.com","lzl1593572798.",
+//                "907678041@qq.com","test","test"));
+		return renderOk();
 	}
 
 }

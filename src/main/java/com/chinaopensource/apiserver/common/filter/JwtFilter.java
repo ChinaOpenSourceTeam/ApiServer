@@ -1,6 +1,7 @@
 package com.chinaopensource.apiserver.common.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.chinaopensource.apiserver.common.configure.OpenSourceConfig;
 import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ResponseBase;
@@ -31,7 +32,10 @@ public class JwtFilter implements Filter {
 	
 	@Autowired
 	private RedisOperate redisOperate;
-	
+
+	@Autowired
+	private OpenSourceConfig openSourceConfig;
+
     /**
      * 封装，不需要过滤的list列表
      */
@@ -63,7 +67,7 @@ public class JwtFilter implements Filter {
             chain.doFilter(httpRequest, httpResponse);
             return;
         } else {
-        	 String token = httpRequest.getHeader(Constants.JWT_HEADER);
+        	 String token = httpRequest.getHeader(openSourceConfig.getJwtHeader());
         	 // 是否有token
         	 if(token==null){
         		 httpResponse.setCharacterEncoding("UTF-8");  
