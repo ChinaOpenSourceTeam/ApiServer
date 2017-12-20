@@ -20,27 +20,17 @@ public class ControllerBase {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(ControllerBase.class);
 
-    protected String renderOk(){
-		return JSON.toJSONString(new ResponseBase(ResponseCode.OK));
+	protected String renderOk(ResponseCode code){
+    	return JSON.toJSONString(new ResponseBase(code));
 	}
 
 	protected String  renderOk(ResponseCode code , Object object){
 		return JSON.toJSONString(new ResponseBase(code,object));
 	}
 
-	protected String renderError(ResponseCode responseCode,String message){
+	protected String renderOk(ResponseCode responseCode,String message){
 		return JSON.toJSONString(new ResponseBase(responseCode,message));
 	}
-	protected String renderError(ResponseCode code){
-		return JSON.toJSONString(new ResponseBase(code));
-	}
-	private String renderError(ResponseCode code,String message,Object data){
-		return JSON.toJSONString(new ResponseBase(code,message,data));
-	}
-	private String renderError(ResponseCode code,Object data){
-		return JSON.toJSONString(new ResponseBase(code,data));
-	}
-
 	public Map<String, Object> mapOf(String key, Object  value){
         return ImmutableMap.of(key,value);
     }

@@ -7,7 +7,11 @@ public enum  ResponseCode {
 	ERR_SYS_TOKEN_NONE(50003,"token 不存在"),
 	ERR_SYS_TOKEN_INVALID(50004,"token 验证无效"),
 	ERR_SYS_PARAMETER_VALIDATE(50005,"参数无效"),
-	;
+	ACCOUNT_EXISTS(50006,"账号已存在"),
+	PHONE_EXISTS(50007,"手机号码已存在"),
+	EMAIL_EXITS(50008,"邮箱已存在"),
+	ERR_VIRIFICATIOIN(50009,"验证码错误"),
+    ;
 
 	ResponseCode(Integer code,String message){
 		this.code = code;

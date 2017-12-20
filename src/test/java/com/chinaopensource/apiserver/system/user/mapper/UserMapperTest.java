@@ -9,7 +9,6 @@ import org.springframework.dao.DuplicateKeyException;
 
 import com.chinaopensource.apiserver.ApiServerApplicationTests;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
-import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
 
 public class UserMapperTest extends ApiServerApplicationTests{
@@ -63,7 +62,7 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	 */
 	@Test
 	public void testFindUserByLoginName(){
-		BaseUser user = mapper.findUserByLoginName("liqiwei");
+		User user = mapper.findUserByLoginName("liqiwei");
 		Assert.assertEquals("liqiwei", user.getLoginName()) ;
 	}
 	
@@ -72,9 +71,7 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	 */
 	@Test
 	public void testDelete() {
-		BaseUser user = mapper.findUserById(1);
-		Assert.assertEquals(1, user.getId());
-		Assert.assertNotNull(user);
+		User user = mapper.findUserById(1);
 		mapper.delete(1);
 		user = mapper.findUserById(1);
 		Assert.assertNull(user);
@@ -85,9 +82,8 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	 */
 	@Test
 	public void testFindUserById() {
-		BaseUser user = mapper.findUserById(1);
+		User user = mapper.findUserById(1);
 		Assert.assertNotNull(user);
-		Assert.assertEquals(1, user.getId());
 	}
 
 	/**
@@ -95,7 +91,7 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	 */
 	@Test
 	public void testFindAllUser() {
-		List<BaseUser> userList = mapper.findAllUser();
+		List<User> userList = mapper.findAllUser();
 		Assert.assertEquals(2, userList.size());
  	}
 	

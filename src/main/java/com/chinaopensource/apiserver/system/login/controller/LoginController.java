@@ -6,7 +6,7 @@ import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.LoginData;
-import com.chinaopensource.apiserver.system.user.data.BaseUser;
+import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -50,11 +50,11 @@ public class LoginController extends ControllerBase{
 			String token = jwtTokenUtil.generateToken(data.getLoginName());
 			// 保存token值到redis
 			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token);
-			BaseUser user = userService.findUserByLoginName(data.getLoginName());
+			User user = userService.findUserByLoginName(data.getLoginName());
 			return renderOk(ResponseCode.OK,
                     mapOf("token",token,"user",modifyBaseUserAttribute(user)));
 		}else{
-			return renderError(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
+			return renderOk(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
 		}
 	}
 
@@ -63,8 +63,8 @@ public class LoginController extends ControllerBase{
      * @param user
      * @return
      */
-	private BaseUser modifyBaseUserAttribute(BaseUser user){
-        BaseUser baseUser = new BaseUser();
+	private User modifyBaseUserAttribute(User user){
+        User baseUser = new User();
         baseUser.setLoginName(user.getLoginName());
         baseUser.setPhone(user.getPhone());
         baseUser.setEmail(user.getEmail());
@@ -79,12 +79,12 @@ public class LoginController extends ControllerBase{
 		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
 	})
 	public String signOut(@Min(6) String loginName){
-        BaseUser user = userService.findUserByLoginName(loginName);
+        User user = userService.findUserByLoginName(loginName);
 	    if(Objects.isNull(user)){
-            return renderError(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+            return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
         }
 		redisOperate.deletes(loginName+Constants.REDIS_COLON+Constants.REDIS_ALL);
-		return renderOk();
+		return renderOk(ResponseCode.OK);
 	}
 
 
@@ -92,7 +92,7 @@ public class LoginController extends ControllerBase{
 	public String sendEmail(){
 //        return renderOk(ResponseCode.OK,SendEmailUtils.sendEmail("2769917694@qq.com","lzl1593572798.",
 //                "907678041@qq.com","test","test"));
-		return renderOk();
+		return renderOk(ResponseCode.OK);
 	}
 
 }

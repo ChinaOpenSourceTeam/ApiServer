@@ -14,6 +14,6 @@ public class ControllerAdviceBase extends ControllerBase {
     @ExceptionHandler(value = Exception.class)
     public String handleException(Exception e){
         LOGGER.error("controller层全局异常捕获:{}",e);
-        return renderError(ResponseCode.ERROR,e.getMessage());
+        return renderOk(ResponseCode.ERROR,e.getMessage());
     }
 }

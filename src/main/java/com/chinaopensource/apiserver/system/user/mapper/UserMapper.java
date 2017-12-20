@@ -2,24 +2,23 @@ package com.chinaopensource.apiserver.system.user.mapper;
 
 import java.util.List;
 
+import com.chinaopensource.apiserver.system.user.data.User;
 import org.apache.ibatis.annotations.Mapper;
-
-import com.chinaopensource.apiserver.system.user.data.BaseUser;
 
 @Mapper
 public interface UserMapper {
 
-	int save(BaseUser user);
+	int save(User user);
 
 	void delete(Integer id);
 
-	BaseUser findUserById(Integer id);
+	User findUserById(Integer id);
 
-	List<BaseUser> findAllUser();
+	List<User> findAllUser();
 
-	void update(BaseUser user);
+	void update(User user);
 
 	String findPasswordByLoginName(String loginName);
 
-	BaseUser findUserByLoginName(String loginName);
+	User findUserByLoginName(String loginName);
 }

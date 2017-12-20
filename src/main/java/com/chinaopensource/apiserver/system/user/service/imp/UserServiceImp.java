@@ -4,7 +4,6 @@ import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.exception.HasException;
 import com.chinaopensource.apiserver.common.exception.NoHasException;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
-import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
 import com.chinaopensource.apiserver.system.user.service.UserService;
@@ -29,7 +28,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public int update(BaseUser user) throws BaseException {
+	public int update(User user) throws BaseException {
 		this.existValidate(user.getLoginName(), false);
 		userMapper.update(user);
 		return 0;
@@ -41,12 +40,12 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public BaseUser findUserById(Integer id) {
+	public User findUserById(Integer id) {
 		return userMapper.findUserById(id);
 	}
 
 	@Override
-	public List<BaseUser> findAllUser() {
+	public List<User> findAllUser() {
 		return userMapper.findAllUser();
 	}
 
@@ -57,7 +56,7 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public BaseUser findUserByLoginName(String loginName) {
+	public User findUserByLoginName(String loginName) {
 		return userMapper.findUserByLoginName(loginName);
 	}
 
@@ -70,7 +69,7 @@ public class UserServiceImp implements UserService {
 	 */
 	private void existValidate(String loginName,boolean flag) throws BaseException{
 		//登录名是否存在
-		BaseUser u= this.findUserByLoginName(loginName);
+		User u= this.findUserByLoginName(loginName);
 		if (flag){
 			if(u==null){
 				throw new NoHasException(loginName);

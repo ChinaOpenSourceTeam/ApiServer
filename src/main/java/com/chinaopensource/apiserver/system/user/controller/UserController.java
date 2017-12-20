@@ -7,24 +7,20 @@ import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.email.EmailAuth;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
-import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
-import com.chinaopensource.apiserver.system.user.data.UserList;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Objects;
 
 @RestController
-@RequestMapping("/system/user/")
+@RequestMapping("/system/user")
 @Api(description = "用户管理")
 public class UserController extends ControllerBase {
 
@@ -34,16 +30,29 @@ public class UserController extends ControllerBase {
 	@Autowired
 	private RedisOperate redisOperate;
 	
-	@ApiOperation(value="保存用户信息", notes="添加用户信息")
+	@ApiOperation(value="注册用户", notes="添加用户信息")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
-	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
+    @PostMapping("/saveUser")
 	public String saveUser(@Valid @RequestBody EmailAuth emailAuth) throws BaseException{
+//	    1、校验图片验证是否正确
+        if(!emailAuth.getImageVerificationCode().equals("")){
+            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
+        }
+        User user = userService.findUserByLoginName(emailAuth.getName());
+        if(!Objects.isNull(user)){
+            return renderOk(ResponseCode.ACCOUNT_EXISTS);
+        }
+//		校验用户名是否存在
+//		校验邮箱是否存在
+//		校验图片验证是否正确
+//        把密码进行加密运算,保存db
+
 //
 
 //		userService.save(user);
-		return renderOk();
+		return renderOk(ResponseCode.OK);
 	}
 	
 	@ApiOperation(value="修改用户信息", notes="修改用户信息")
@@ -52,9 +61,9 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "updateUser", method = RequestMethod.PUT)
 	//TODO 分组验证
-	public String updateUser(@Valid @RequestBody BaseUser user) throws BaseException{
+	public String updateUser(@Valid @RequestBody User user) throws BaseException{
 		userService.update(user);
-		return renderOk();
+		return renderOk(ResponseCode.OK);
 	}
 
 	@ApiOperation(value="删除用户信息", notes="删除用户信息")
@@ -65,7 +74,7 @@ public class UserController extends ControllerBase {
 	@RequestMapping(value = "deleteUserById", method = RequestMethod.DELETE)
 	public String deleteUserById(Integer id){
 		userService.deleteUserById(id);
-		return renderOk();
+		return renderOk(ResponseCode.OK);
 	}
 	
 	@ApiOperation(value="通过ID用户信息", notes="通过ID用户信息")
@@ -85,7 +94,7 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "findUserByLoginName", method = RequestMethod.GET)
 	public String findUserByLoginName(String loginName){
-		BaseUser user = userService.findUserByLoginName(loginName);
+		User user = userService.findUserByLoginName(loginName);
 		redisOperate.setMap(user.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_INFO, BeanMapTransformation.transBeanToMap(user, null));
 		return renderOk(ResponseCode.OK,user);
 	}
@@ -96,9 +105,7 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "findAllUser", method = RequestMethod.GET)
 	public String findAllUser(){
-		UserList userList = new UserList();
-		userList.setUserList(userService.findAllUser());
-		return renderOk(ResponseCode.OK,userList);
+		return renderOk(ResponseCode.OK,mapOf("allUser",userService.findAllUser()));
 	}
 
 }
