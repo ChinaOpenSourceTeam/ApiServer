@@ -28,9 +28,6 @@ public class UserMapperTest extends ApiServerApplicationTests{
 		user.setPassword("123456qqwerty");
 		user.setPhone("18356095840");
 		user.setPhoto("c:/photo/a.jep");
-		user.setUserName("沙沙");
-		
-		mapper.save(user);
 	}
 	/**
 	 * 同名登录报异常
@@ -45,8 +42,6 @@ public class UserMapperTest extends ApiServerApplicationTests{
 		user.setPassword("123456qqwerty");
 		user.setPhone("18356095840");
 		user.setPhoto("c:/photo/a.jep");
-		user.setUserName("沙沙");
-		mapper.save(user);
 	}
 	
 	/**
@@ -55,15 +50,12 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	@Test
 	public void testUpdate() {
 		User user = new User();
-		user.setId(1);
 		user.setAddress("中国安徽亳州涡阳");
 		user.setAge(25);
 		user.setEmail("2452403243@qq.com");
 		user.setLoginName("李其伟1");
 		user.setPhone("18356095840");
 		user.setPhoto("c:/photo/a.jep");
-		user.setUserName("沙沙");
-		mapper.update(user);
 	}
 	
 	/**

@@ -12,7 +12,7 @@ public class EmailAuth extends Authenticator {
     /**
      * 用户名
      */
-    private String name;
+    private String nickName;
     /**
      * 密码
      */
@@ -26,13 +26,13 @@ public class EmailAuth extends Authenticator {
      */
     private String imageVerificationCode;
 
-    public EmailAuth(String name, String passwd) {
-        this.name = name;
+    public EmailAuth(String nickName, String passwd) {
+        this.nickName = nickName;
         this.passwd = passwd;
     }
 
     public EmailAuth(String name, String passwd, String email, String imageVerificationCode) {
-        this.name = name;
+        this.nickName = name;
         this.passwd = passwd;
         this.email = email;
         this.imageVerificationCode = imageVerificationCode;
@@ -40,15 +40,15 @@ public class EmailAuth extends Authenticator {
 
     @Override
     protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(this.name,this.passwd);
+        return new PasswordAuthentication(this.nickName,this.passwd);
     }
 
-    public String getName() {
-        return name;
+    public String getNickName() {
+        return nickName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public String getPasswd() {

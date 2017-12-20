@@ -5,6 +5,7 @@ import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
+import com.chinaopensource.apiserver.common.util.email.EmailAuth;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
@@ -38,8 +39,10 @@ public class UserController extends ControllerBase {
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
 	@RequestMapping(value = "saveUser", method = RequestMethod.POST)
-	public String saveUser(@Valid @RequestBody User user) throws BaseException{
-		userService.save(user);
+	public String saveUser(@Valid @RequestBody EmailAuth emailAuth) throws BaseException{
+//
+
+//		userService.save(user);
 		return renderOk();
 	}
 	

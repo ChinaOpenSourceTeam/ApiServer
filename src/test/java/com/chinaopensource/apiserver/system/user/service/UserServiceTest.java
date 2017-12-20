@@ -24,29 +24,10 @@ public class UserServiceTest extends ApiServerApplicationTests{
 		user.setPassword("123321");
 		user.setPhone("18356095840");
 		user.setPhoto("c:/photo/a.jep");
-		user.setUserName("李沙沙");
+//		user.setUserName("李沙沙");
 		this.userService.save(user);
 	}
 	
-	//保存用户信息  修改用户
-	@Test
-	public void testUpdate() {
-		User user = new User();
-		user.setAddress("中国");
-		user.setAge(25);
-		user.setEmail("2452403243@qq.com");
-		user.setLoginName("liqiwei");
-		user.setPassword("123321");
-		user.setPhone("18356095840");
-		user.setPhoto("c:/photo/a.jep");
-		user.setUserName("李沙沙");
-		user.setId(1);
-		try {
-			this.userService.update(user);
-		} catch (BaseException e) {
-			Assert.assertEquals("liqiwei的值已经存在", e.getMessage());		
-		}
-	}
 
 	// 通过用户ID删除用户信息
 	@Test

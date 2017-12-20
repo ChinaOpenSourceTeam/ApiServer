@@ -1,10 +1,5 @@
 package com.chinaopensource.apiserver.system.user.service.imp;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.exception.HasException;
 import com.chinaopensource.apiserver.common.exception.NoHasException;
@@ -13,8 +8,12 @@ import com.chinaopensource.apiserver.system.user.data.BaseUser;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
 import com.chinaopensource.apiserver.system.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Component("userService")
+import java.util.List;
+
+@Service
 public class UserServiceImp implements UserService {
 
 	@Autowired
@@ -25,7 +24,7 @@ public class UserServiceImp implements UserService {
 		this.existValidate(user.getLoginName(),false);
 		//进行加密
 		user.setPassword(EncryptionUtil.getHash(user.getPassword(), "MD5"));
-		userMapper.save(user);
+//		userMapper.save(user);
 		return 0;
 	}
 
