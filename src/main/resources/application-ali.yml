@@ -44,7 +44,7 @@ opensource:
     height: 30
   email:
     auth: 907678041@qq.com
-    passwd: lzl1593572798.
+    passwd: lzl1593572798
     smtp-host-key: mail.smtp.host
     smtp-host-value: mx1.qq.com
     smtp-protocol-key: mail.store.protocol

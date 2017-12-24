@@ -20,9 +20,9 @@ import java.util.Properties;
  * create by lzl ON 2017/12/11
  */
 @Component
-public class SendEmailUtils {
+public class SendEmailUtil {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SendEmailUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(SendEmailUtil.class);
 
     @Autowired
     private OpenSourceConfig openSourceConfig;

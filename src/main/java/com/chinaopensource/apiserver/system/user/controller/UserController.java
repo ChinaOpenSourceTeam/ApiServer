@@ -7,7 +7,7 @@ import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.email.EmailAuth;
-import com.chinaopensource.apiserver.common.util.email.SendEmailUtils;
+import com.chinaopensource.apiserver.common.util.email.SendEmailUtil;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.user.data.User;
@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Objects;
 
 @RestController
 @RequestMapping("/system/user")
@@ -34,7 +33,7 @@ public class UserController extends ControllerBase {
 	private RedisOperate redisOperate;
 
 	@Autowired
-	private SendEmailUtils sendEmailUtils;
+	private SendEmailUtil sendEmailUtil;
 
 	@ApiOperation(value="注册用户", notes="添加用户信息")
 	@ApiImplicitParams({

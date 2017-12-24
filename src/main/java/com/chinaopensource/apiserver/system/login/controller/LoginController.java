@@ -90,7 +90,7 @@ public class LoginController extends ControllerBase{
 
 	@GetMapping("/send")
 	public String sendEmail(){
-//        return renderOk(ResponseCode.OK,SendEmailUtils.sendEmail("2769917694@qq.com","lzl1593572798.",
+//        return renderOk(ResponseCode.OK,SendEmailUtil.sendEmail("2769917694@qq.com","lzl1593572798.",
 //                "907678041@qq.com","test","test"));
 		return renderOk(ResponseCode.OK);
 	}
