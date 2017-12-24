@@ -46,6 +46,7 @@ public class LoginController extends ControllerBase{
 	@ApiOperation(value="获取token", notes="登录系统获取token值")
 	@PostMapping(value = "/signIn" )
 	public String signIn(@Valid @RequestBody LoginData data){
+//		需要整合shiro框架做后台的权限管理
 		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
 			String token = jwtTokenUtil.generateToken(data.getLoginName());
 			// 保存token值到redis

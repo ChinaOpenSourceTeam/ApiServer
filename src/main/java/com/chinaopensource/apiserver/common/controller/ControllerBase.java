@@ -20,6 +20,10 @@ public class ControllerBase {
 
     protected static final Logger LOGGER = LoggerFactory.getLogger(ControllerBase.class);
 
+    protected String renderOk(){
+        return JSON.toJSONString(new ResponseBase(ResponseCode.OK));
+    }
+
 	protected String renderOk(ResponseCode code){
     	return JSON.toJSONString(new ResponseBase(code));
 	}
