@@ -60,7 +60,7 @@ public class User {
     /**
      * 邮箱验证码
      */
-    private String verification_code;
+    private String verificationCode;
 
     public Long getId() {
         return id;
@@ -158,12 +158,12 @@ public class User {
         this.deleteFlag = deleteFlag;
     }
 
-    public String getVerification_code() {
-        return verification_code;
+    public String getVerificationCode() {
+        return verificationCode;
     }
 
-    public void setVerification_code(String verification_code) {
-        this.verification_code = verification_code;
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
 //	@NotNull

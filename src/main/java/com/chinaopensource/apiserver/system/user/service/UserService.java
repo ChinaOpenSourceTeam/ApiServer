@@ -1,5 +1,6 @@
 package com.chinaopensource.apiserver.system.user.service;
 
+import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.system.user.data.User;
 import org.springframework.transaction.annotation.Transactional;
@@ -78,4 +79,17 @@ public interface UserService {
 	 */
 	Boolean existsByPhone(String phone);
 
+	/**
+	 * 通过验证码获取user
+	 * @param verificationCode
+	 * @return
+	 */
+	User findUserByVerificationCode(String verificationCode);
+
+	/**
+	 * 根据id 激活用户状态
+	 * @param id
+	 * @return
+	 */
+	Boolean updateStatus(Long id, UserStatusEnum userStatusEnum);
 }

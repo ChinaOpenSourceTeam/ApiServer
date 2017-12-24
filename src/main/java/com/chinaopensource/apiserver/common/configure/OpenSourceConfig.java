@@ -17,6 +17,15 @@ public class OpenSourceConfig {
     private Map<String,String> jwt = new HashMap<>();
     private Map<String,Integer> image = new HashMap<>();
     private Map<String,String> email = new HashMap<>();
+    private Map<String,String> host = new HashMap<>();
+
+    public Map<String, String> getHost() {
+        return host;
+    }
+
+    public void setHost(Map<String, String> host) {
+        this.host = host;
+    }
 
     public Map<String, String> getJwt() {
         return jwt;
@@ -110,4 +119,7 @@ public class OpenSourceConfig {
         return email.get("passwd");
     }
 
+    public String getHostIp(){
+        return host.get("ip");
+    }
 }

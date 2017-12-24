@@ -42,6 +42,8 @@ opensource:
   image:
     width: 120
     height: 30
+  host:
+    ip: 39.106.101.36
   email:
     auth: 907678041@qq.com
     passwd: lzl1593572798

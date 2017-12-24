@@ -1,6 +1,7 @@
 package com.chinaopensource.apiserver.system.user.service.imp;
 
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
+import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.exception.HasException;
 import com.chinaopensource.apiserver.common.exception.NoHasException;
@@ -100,5 +101,22 @@ public class UserServiceImp implements UserService {
 	@Override
 	public Boolean existsByPhone(String phone) {
 		return null;
+	}
+
+	@Override
+	public User findUserByVerificationCode(String verificationCode) {
+		return userMapper.findUserByVerificationCode(verificationCode);
+	}
+
+	/**
+	 * 根据ID 设置用户的激活状态
+	 * @param id
+	 * @param userStatusEnum
+	 * @return
+	 */
+	@Override
+	@Transactional
+	public Boolean updateStatus(Long id, UserStatusEnum userStatusEnum) {
+		return userMapper.updateStatus(id,userStatusEnum.getStatus());
 	}
 }

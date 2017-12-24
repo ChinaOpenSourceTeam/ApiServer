@@ -1,6 +1,7 @@
 package com.chinaopensource.apiserver.common.util.email;
 
 import com.chinaopensource.apiserver.common.configure.OpenSourceConfig;
+import com.chinaopensource.apiserver.common.util.server.ServerAttributeUtil;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +35,7 @@ public class SendEmailUtil {
      * @return
      */
     public Boolean sendEmail(@NotEmpty String emailTo,@NotEmpty String emailVerificationCode){
-//       邮件发送者登陆邮箱服务器的账号、密码。
+        //       邮件发送者登陆邮箱服务器的账号、密码。
         EmailAuth emailAuth = new EmailAuth(openSourceConfig.getAuth(),openSourceConfig.getPasswd());
         Properties properties = System.getProperties();
         properties.put(openSourceConfig.getEmailSmtpHostKey(),openSourceConfig.getEmailSmtpHostValue());
@@ -48,9 +49,18 @@ public class SendEmailUtil {
         String emailSubject = "中国开源网站激活邮件";
 //        组装邮件的内容
         StringBuilder sb = new StringBuilder();
+        sb.append("<h1>来自中国开源网站激活邮件，点击链接激活。</h1>");
+        sb.append("<h3><a href='http://");
+        sb.append(openSourceConfig.getHostIp());
+        sb.append(":");
+        sb.append(ServerAttributeUtil.getPort());
+        sb.append("/system/user/activation&code=");
         sb.append(emailVerificationCode);
+        sb.append("'>");
+        sb.append(emailVerificationCode);
+        sb.append("</a>");
+        sb.append("</h3></h1>");
         try {
-//
             mimeMessage.setFrom(new InternetAddress(openSourceConfig.getAuth()));
 //            设置收信人
             mimeMessage.setRecipients(Message.RecipientType.TO,InternetAddress.parse(emailTo));
@@ -71,5 +81,4 @@ public class SendEmailUtil {
             return false;
         }
     }
-
 }

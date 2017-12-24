@@ -11,7 +11,11 @@ public enum  ResponseCode {
 	PHONE_EXISTS(50007,"手机号码已存在"),
 	EMAIL_EXITS(50008,"邮箱已存在"),
 	ERR_VIRIFICATIOIN(50009,"验证码错误"),
-    ;
+	ERR_ACTIVATION_CODE_LENGTH(50010,"激活码长度不正确"),
+	ERR_OUT_OF_VALIDITY(50011,"激活码失效"),
+    VIRIFICATION_SUCCESS(50012,"激活成功"),
+	VIRIFICATION_ERROR(50013,"激活失败"),
+	;
 
 	ResponseCode(Integer code,String message){
 		this.code = code;
