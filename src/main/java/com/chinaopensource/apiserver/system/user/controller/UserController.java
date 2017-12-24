@@ -1,11 +1,14 @@
 package com.chinaopensource.apiserver.system.user.controller;
 
 import com.chinaopensource.apiserver.common.constant.Constants;
+import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.email.EmailAuth;
+import com.chinaopensource.apiserver.common.util.email.SendEmailUtils;
+import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.service.UserService;
@@ -29,7 +32,10 @@ public class UserController extends ControllerBase {
 	
 	@Autowired
 	private RedisOperate redisOperate;
-	
+
+	@Autowired
+	private SendEmailUtils sendEmailUtils;
+
 	@ApiOperation(value="注册用户", notes="添加用户信息")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
@@ -40,15 +46,19 @@ public class UserController extends ControllerBase {
         if(!emailAuth.getImageVerificationCode().equals("")){
             return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
         }
-        User user = userService.findUserByLoginName(emailAuth.getName());
-        if(!Objects.isNull(user)){
+//       校验用户名是否存在
+        if(userService.existsByLoginName(emailAuth.getName())){
             return renderOk(ResponseCode.ACCOUNT_EXISTS);
         }
-//		校验用户名是否存在
-//		校验邮箱是否存在
-//		校验图片验证是否正确
+        if(userService.existsBYEmail(emailAuth.getEmail())){
+            return renderOk(ResponseCode.EMAIL_EXITS);
+        }
 //        把密码进行加密运算,保存db
-
+		User user = new User();
+        user.setLoginName(emailAuth.getName());
+        user.setEmail(emailAuth.getEmail());
+        user.setAddress("");
+        user.setPassword(EncryptionUtil.getHash(emailAuth.getPasswd(), EncryptionEnum.MD5));
 //
 
 //		userService.save(user);

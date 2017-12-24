@@ -1,5 +1,6 @@
 package com.chinaopensource.apiserver.system.user.service.imp;
 
+import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.exception.HasException;
 import com.chinaopensource.apiserver.common.exception.NoHasException;
@@ -9,8 +10,10 @@ import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
 import com.chinaopensource.apiserver.system.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -19,15 +22,17 @@ public class UserServiceImp implements UserService {
 	private UserMapper userMapper;
 	
 	@Override
+	@Transactional
 	public int save(User user) throws BaseException {
 		this.existValidate(user.getLoginName(),false);
 		//进行加密
-		user.setPassword(EncryptionUtil.getHash(user.getPassword(), "MD5"));
+		user.setPassword(EncryptionUtil.getHash(user.getPassword(), EncryptionEnum.MD5));
 //		userMapper.save(user);
 		return 0;
 	}
 
 	@Override
+	@Transactional
 	public int update(User user) throws BaseException {
 		this.existValidate(user.getLoginName(), false);
 		userMapper.update(user);
@@ -35,6 +40,7 @@ public class UserServiceImp implements UserService {
 	}
 	
 	@Override
+	@Transactional
 	public void deleteUserById(Integer id) {
 		userMapper.delete(id);
 	}
@@ -52,7 +58,7 @@ public class UserServiceImp implements UserService {
 	@Override
 	public boolean loginValidate(String loginName, String password) {
 		String pwd = userMapper.findPasswordByLoginName(loginName);
-		return EncryptionUtil.getHash(password, "MD5").equals(pwd);
+		return EncryptionUtil.getHash(password, EncryptionEnum.MD5).equals(pwd);
 	}
 
 	@Override
@@ -79,5 +85,20 @@ public class UserServiceImp implements UserService {
 				throw new HasException(loginName);
 			}
 		}
+	}
+
+	@Override
+	public Boolean existsByLoginName(String loginName) {
+		return Objects.isNull(userMapper.findUserByLoginName(loginName));
+	}
+
+	@Override
+	public Boolean existsBYEmail(String email) {
+		return null;
+	}
+
+	@Override
+	public Boolean existsByPhone(String phone) {
+		return null;
 	}
 }

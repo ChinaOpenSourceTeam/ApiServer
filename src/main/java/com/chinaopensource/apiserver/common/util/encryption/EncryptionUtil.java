@@ -1,6 +1,8 @@
 package com.chinaopensource.apiserver.common.util.encryption;
 
-import java.security.MessageDigest;  
+import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
+
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;  
 
 /**
@@ -19,15 +21,14 @@ public class EncryptionUtil {
      * 因而，SHA-1 对强行攻击的强度更大。 但由于SHA-1 的循环步骤比MD5 多（80:64）且要处理的缓存大（160 比特:128 比特），SHA-1 的运行速度比MD5 慢。 
      *  
      * @param source 需要加密的字符串 
-     * @param hashType 加密类型 （MD5 和 SHA） 
+     * @param encryptionEnum 枚举类 加密类型 （MD5 和 SHA）
      * @return 
      */  
-
-    public static String getHash(String source, String hashType) {  
+    public static String getHash(String source, EncryptionEnum encryptionEnum) {
         StringBuilder sb = new StringBuilder();  
         MessageDigest md5;  
         try {  
-            md5 = MessageDigest.getInstance(hashType);  
+            md5 = MessageDigest.getInstance(encryptionEnum.getType());
             md5.update(source.getBytes());  
             for (byte b : md5.digest()) {  
                 sb.append(String.format("%02X", b)); // 10进制转16进制，X 表示以十六进制形式输出，02 表示不足两位前面补0输出  

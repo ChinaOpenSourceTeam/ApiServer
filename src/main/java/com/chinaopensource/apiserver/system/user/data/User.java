@@ -14,7 +14,7 @@ public class User {
      */
     private Long id;
     /**
-     * 账号
+     * 账号 （个性化账号）
      */
     private String loginName;
     /**
@@ -30,7 +30,7 @@ public class User {
      */
     private  Integer age;
     /**
-     * 手机号码
+     * 手机号码（账号之一）
      */
     private String phone;
     /**
@@ -42,7 +42,7 @@ public class User {
      */
     private String address;
     /**
-     * 邮箱
+     * 邮箱 （账号之一）
      */
     private String email;
     /**

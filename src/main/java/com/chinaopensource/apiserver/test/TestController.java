@@ -34,11 +34,4 @@ public class TestController extends ControllerBase{
                 +" "+openSourceConfig.getImageWidth());
     }
     
-    @RequestMapping("/authCode")
-    public void getAuthCode(HttpServletRequest request, HttpServletResponse response,HttpSession session)
-            throws IOException {
-//        System.out.println(openSourceConfig.getHeader());
-        PictureGeneratorUtil.generatorImage(request,response,openSourceConfig.getImageWidth(),openSourceConfig.getImageHeight());
-    }
-
 }

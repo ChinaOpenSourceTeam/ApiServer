@@ -2,6 +2,7 @@ package com.chinaopensource.apiserver.system.user.mapper;
 
 import java.util.List;
 
+import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +102,7 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	@Test
 	public void testFindPasswordByLoginName() {
 		String pwd = mapper.findPasswordByLoginName("liqiwei");
-		Assert.assertEquals(EncryptionUtil.getHash("123456", "MD5"), pwd);
+		Assert.assertEquals(EncryptionUtil.getHash("123456", EncryptionEnum.MD5), pwd);
 	}
 
 }

@@ -102,4 +102,12 @@ public class OpenSourceConfig {
         return email.get("content-pattern");
     }
 
+    public String getAuth(){
+        return email.get("auth");
+    }
+
+    public String getPasswd(){
+        return email.get("passwd");
+    }
+
 }

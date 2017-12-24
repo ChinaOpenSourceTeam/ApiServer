@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.mail.Message;
 import javax.mail.Session;
@@ -18,6 +19,7 @@ import java.util.Properties;
  * 发送邮件类
  * create by lzl ON 2017/12/11
  */
+@Component
 public class SendEmailUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SendEmailUtils.class);
@@ -25,8 +27,15 @@ public class SendEmailUtils {
     @Autowired
     private OpenSourceConfig openSourceConfig;
 
-    public Boolean sendEmail(@NotEmpty String userName, @NotEmpty String passwd, @NotEmpty String emailTo, @NotEmpty String emailSubject, @NotEmpty String emailBody){
-        EmailAuth emailAuth = new EmailAuth(userName,passwd);
+    /**
+     *
+     * @param emailTo
+     * @param emailVerificationCode
+     * @return
+     */
+    public Boolean sendEmail(@NotEmpty String emailTo,@NotEmpty String emailVerificationCode){
+//       邮件发送者登陆邮箱服务器的账号、密码。
+        EmailAuth emailAuth = new EmailAuth(openSourceConfig.getAuth(),openSourceConfig.getPasswd());
         Properties properties = System.getProperties();
         properties.put(openSourceConfig.getEmailSmtpHostKey(),openSourceConfig.getEmailSmtpHostValue());
         properties.put(openSourceConfig.getEmailSmtpProtocolKey(),openSourceConfig.getEmailSmtpProtocolValue());
@@ -35,9 +44,14 @@ public class SendEmailUtils {
 //      发送邮件的会话对象
         Session emailSession = Session.getInstance(properties,emailAuth);
         MimeMessage mimeMessage = new MimeMessage(emailSession);
+//       邮箱主题
+        String emailSubject = "中国开源网站激活邮件";
+//        组装邮件的内容
+        StringBuilder sb = new StringBuilder();
+        sb.append(emailVerificationCode);
         try {
-//            发送邮件服务器的所在主机
-            mimeMessage.setFrom(new InternetAddress(userName));
+//
+            mimeMessage.setFrom(new InternetAddress(openSourceConfig.getAuth()));
 //            设置收信人
             mimeMessage.setRecipients(Message.RecipientType.TO,InternetAddress.parse(emailTo));
 //              设置暗送人
@@ -47,7 +61,7 @@ public class SendEmailUtils {
 //            设置邮件的及其以及编码
             mimeMessage.setSubject(emailSubject,openSourceConfig.getEmailEncodePattern());
 //            设置邮件内容及其编码方式
-            mimeMessage.setContent(emailBody,openSourceConfig.getEmailContentPattern());
+            mimeMessage.setContent(sb.toString(),openSourceConfig.getEmailContentPattern());
             mimeMessage.setSentDate(new Date());
             Transport.send(mimeMessage);
             return true;

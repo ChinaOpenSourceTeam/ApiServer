@@ -21,4 +21,8 @@ public interface UserMapper {
 	String findPasswordByLoginName(String loginName);
 
 	User findUserByLoginName(String loginName);
+
+	User findByPhone(String phone);
+
+	User findByEmail(String email);
 }

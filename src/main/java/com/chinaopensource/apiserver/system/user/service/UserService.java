@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional
 public interface UserService {
 
 	/**
@@ -57,4 +56,26 @@ public interface UserService {
 	 * @return
 	 */
 	User findUserByLoginName(String loginName);
+
+	/**
+	 * 根据登陆名判断用户是否存在
+	 * @param loginName
+	 * @return
+	 */
+	Boolean existsByLoginName(String loginName);
+
+	/**
+	 * 根据eamil判读用户是否存在
+	 * @param email
+	 * @return
+	 */
+	Boolean existsBYEmail(String email);
+
+	/**
+	 * 根据手机号码判断用户是否存在
+	 * @param phone
+	 * @return
+	 */
+	Boolean existsByPhone(String phone);
+
 }
