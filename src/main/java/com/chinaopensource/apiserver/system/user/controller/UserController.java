@@ -100,7 +100,11 @@ public class UserController extends ControllerBase {
 			return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
 		}
 		LocalDateTime now = LocalDateTime.now();
-//		相差的时间
+//		激活的时间 2天    /   30分钟
+		Period period = Period.between(user.getCreateTime().toLocalDate(),now.toLocalDate());
+		if(period.getDays() > 2){
+			return renderOk(ResponseCode.ERR_OUT_OF_VALIDITY);
+		}
 		Duration duration = Duration.between(user.getCreateTime(),now);
 		if(duration.toMinutes() > 30L){
 //			两个时间相差30分钟，超过了验证码的有效期,激活码失效
