@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -45,9 +46,10 @@ public class UserController extends ControllerBase {
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
     @PostMapping("/saveUser")
-	public String saveUser(@Valid @RequestBody EmailAuth emailAuth) throws BaseException{
+	public String saveUser(@Valid @RequestBody EmailAuth emailAuth,HttpServletRequest request) throws BaseException{
 //	    1、校验图片验证是否正确
-        if(!emailAuth.getImageVerificationCode().equals("")){
+		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
+        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
             return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
         }
 //       校验用户名是否存在

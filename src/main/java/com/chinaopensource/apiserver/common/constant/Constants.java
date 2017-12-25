@@ -16,5 +16,7 @@ public final class Constants {
     public static final String USERINFO_TOKEN = "token";
     // 用户信息 
     public static final String USERINFO_INFO = "info";
+    
+    public static final String SESSION_PICTURE = "checkcode";
 
 }

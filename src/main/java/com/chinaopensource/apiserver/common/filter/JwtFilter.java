@@ -52,6 +52,7 @@ public class JwtFilter implements Filter {
     	urls.add("test/get");
     	urls.add("test/authCode");
     	urls.add("system/login/send");
+    	urls.add("system/user/saveUser");
     	urls.add("system/identifyingCode");
     }
 
