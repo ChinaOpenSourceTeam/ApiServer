@@ -39,6 +39,6 @@ public interface UserMapper {
 	 * @param status
 	 * @return
 	 */
-	Boolean updateStatus(Long id,Integer status);
+	Boolean updateStatus(Integer id,Integer status);
 
 }

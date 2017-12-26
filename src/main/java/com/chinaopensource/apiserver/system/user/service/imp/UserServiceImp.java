@@ -116,7 +116,7 @@ public class UserServiceImp implements UserService {
 	 */
 	@Override
 	@Transactional
-	public Boolean updateStatus(Long id, UserStatusEnum userStatusEnum) {
+	public Boolean updateStatus(Integer id, UserStatusEnum userStatusEnum) {
 		return userMapper.updateStatus(id,userStatusEnum.getStatus());
 	}
 }

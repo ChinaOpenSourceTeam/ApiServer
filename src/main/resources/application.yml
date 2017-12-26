@@ -4,4 +4,4 @@ spring:
   
 mybatis:
   mapper-locations: classpath*:com/chinaopensource/apiserver/**/mapper/*Mapper.xml
-  
+  type-aliases-package: com.chinaopensource.apiserver

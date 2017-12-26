@@ -91,5 +91,5 @@ public interface UserService {
 	 * @param id
 	 * @return
 	 */
-	Boolean updateStatus(Long id, UserStatusEnum userStatusEnum);
+	Boolean updateStatus(Integer id, UserStatusEnum userStatusEnum);
 }

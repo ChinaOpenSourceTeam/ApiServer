@@ -12,7 +12,7 @@ public class User {
     /**
      * 主键id
      */
-    private Long id;
+    private Integer id;
     /**
      * 账号 （个性化账号）
      */
@@ -62,11 +62,11 @@ public class User {
      */
     private String verificationCode;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
