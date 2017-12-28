@@ -2,38 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >  
 <mapper namespace="com.chinaopensource.apiserver.system.user.mapper.UserMapper"  >
 
-	<select id="findUserById" resultType="User"
-			parameterType="java.lang.Integer" >
+	<select id="findUserById" parameterType="java.lang.Integer" resultType="User">
 		select * from user where id = #{id}
 	</select>
 
-	<select id="findByPhone" parameterType="java.lang.String"
-			resultType="User" >
+	<select id="findByPhone" parameterType="java.lang.String" resultType="User">
 		select * from user where phone = #{phone}
 	</select>
 
-	<select id="findByEmail" parameterType="java.lang.String"
-			resultType="User">
+	<select id="findByEmail" parameterType="java.lang.String" resultType="User">
 		select * from user where email = #{email}
 	</select>
 
-	<select id="findUserByVerificationCode" parameterType="java.lang.String"
-			resultType="User">
-		select * from use
-		where verification_code = #{verificationCode}
+	<select id="findByVerificationCode" parameterType="java.lang.String" resultType="User" >
+		select * from user where verification_code = #{verificationCode}
 	</select>
 
-	<select id="findAllUser" >
+	<select id="findAllUser" resultType="User" >
 		select * from user where delete_flag != 1
 	</select>
 
+	<select id="findPasswordByLoginName" parameterType="java.lang.String" resultType="java.lang.String">
+		select password from user where id = #{id}
+	</select>
+
+	<select id="findUserByLoginName" parameterType="java.lang.String" resultType="User" >
+		select * from user where login_name = #{loginName}
+	</select>
+	
 	<update id="updateStatus" >
 		update user
 		set status = #{status}
 		where id = #{id}
 	</update>
 
-	<insert id="save" parameterType="User" >
+	<insert id="save" parameterType="com.chinaopensource.apiserver.system.user.data.User">
+		insert into user(login_name,password,nick_name,age,phone,
+		photo,address,email,status,create_time,delete_flag,verification_code)
+		values(#{User.loginName},#{User.password},#{User.nickName},#{User.age},#{User.phone},
+			#{User.photo},#{User.address},#{User.email},#{User.status},
+		    #{User.createTime},#{User.deleteFlag},#{User.verificationCode})
 	</insert>
 
 	<update id="delete" parameterType="java.lang.Integer">

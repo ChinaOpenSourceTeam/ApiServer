@@ -26,16 +26,13 @@ public class EmailAuth extends Authenticator {
      */
     private String imageVerificationCode;
 
+    public EmailAuth(){
+
+    }
+
     public EmailAuth(String name, String passwd) {
         this.name = name;
         this.passwd = passwd;
-    }
-
-    public EmailAuth(String name, String passwd, String email, String imageVerificationCode) {
-        this.name = name;
-        this.passwd = passwd;
-        this.email = email;
-        this.imageVerificationCode = imageVerificationCode;
     }
 
     @Override
@@ -74,4 +71,5 @@ public class EmailAuth extends Authenticator {
     public void setImageVerificationCode(String imageVerificationCode) {
         this.imageVerificationCode = imageVerificationCode;
     }
+
 }

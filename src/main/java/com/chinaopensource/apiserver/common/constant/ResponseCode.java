@@ -15,6 +15,12 @@ public enum  ResponseCode {
 	ERR_OUT_OF_VALIDITY(50011,"激活码失效"),
     VIRIFICATION_SUCCESS(50012,"激活成功"),
 	VIRIFICATION_ERROR(50013,"激活失败"),
+	ERR_LOGIN_NAME_START_WITH(50014,"用户名必须以字母开头"),
+	ERR_LOGIN_NAME_ILLEGAL(50015,"用户名只能是字母、数组、下划线组合"),
+	ERR_LOGIN_NAME_LENGTH(50016,"用户名长度不符合要求"),
+	ERR_EMAIL_ILLEGAL(50017,"邮箱地址非法"),
+	ERR_PASSWORD_LENGTH_ILLAGEL(50018,"密码长度在6-10位"),
+	ERR_PASSWORD_CONTENT_ILLEGAL(50019,"密码内容不符合要求"),
 	;
 
 	ResponseCode(Integer code,String message){

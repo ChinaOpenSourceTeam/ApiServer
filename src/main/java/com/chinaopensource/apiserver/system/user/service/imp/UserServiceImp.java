@@ -2,9 +2,6 @@ package com.chinaopensource.apiserver.system.user.service.imp;
 
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
-import com.chinaopensource.apiserver.common.exception.BaseException;
-import com.chinaopensource.apiserver.common.exception.HasException;
-import com.chinaopensource.apiserver.common.exception.NoHasException;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
@@ -13,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Pattern;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -24,22 +23,10 @@ public class UserServiceImp implements UserService {
 	
 	@Override
 	@Transactional
-	public int save(User user) throws BaseException {
-		this.existValidate(user.getLoginName(),false);
-		//进行加密
-		user.setPassword(EncryptionUtil.getHash(user.getPassword(), EncryptionEnum.MD5));
-//		userMapper.save(user);
-		return 0;
+	public int save(User user) {
+		return userMapper.save(user);
 	}
 
-	@Override
-	@Transactional
-	public int update(User user) throws BaseException {
-		this.existValidate(user.getLoginName(), false);
-		userMapper.update(user);
-		return 0;
-	}
-	
 	@Override
 	@Transactional
 	public void deleteUserById(Integer id) {
@@ -67,27 +54,6 @@ public class UserServiceImp implements UserService {
 		return userMapper.findUserByLoginName(loginName);
 	}
 
-	/*
-	 * 登录名  是否存在
-	 * 
-	 * loginName   登录名
-	 * flag        是否存在     true 表示登录名存在,如果不存在抛异常     
-	 *                   false 表示登录名不存在,如果存在就抛异常
-	 */
-	private void existValidate(String loginName,boolean flag) throws BaseException{
-		//登录名是否存在
-		User u= this.findUserByLoginName(loginName);
-		if (flag){
-			if(u==null){
-				throw new NoHasException(loginName);
-			}
-		} else {
-			if(u!=null){
-				throw new HasException(loginName);
-			}
-		}
-	}
-
 	@Override
 	public Boolean existsByLoginName(String loginName) {
 		return Objects.isNull(userMapper.findUserByLoginName(loginName));
@@ -95,7 +61,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public Boolean existsBYEmail(String email) {
-		return null;
+		return Objects.isNull(userMapper.findByEmail(email));
 	}
 
 	@Override
@@ -105,7 +71,7 @@ public class UserServiceImp implements UserService {
 
 	@Override
 	public User findUserByVerificationCode(String verificationCode) {
-		return userMapper.findUserByVerificationCode(verificationCode);
+		return userMapper.findByVerificationCode(verificationCode);
 	}
 
 	/**
@@ -118,5 +84,109 @@ public class UserServiceImp implements UserService {
 	@Transactional
 	public Boolean updateStatus(Integer id, UserStatusEnum userStatusEnum) {
 		return userMapper.updateStatus(id,userStatusEnum.getStatus());
+	}
+
+	/**
+	 * 根据user的loginName、时间戳
+	 * 生成邮箱的验证码
+	 * @param email
+	 * @return
+	 */
+	@Override
+	public String getEmailVerificationCode(String email) {
+		StringBuilder sb  = new StringBuilder();
+		sb.append(email);
+		sb.append(":");
+		sb.append(LocalDateTime.now().toLocalDate());
+		return EncryptionUtil.getHash(sb.toString(), EncryptionEnum.MD5);
+	}
+
+	/**
+	 * 检查登录名是否已字母开头
+	 * @param loginName
+	 * @return
+	 */
+	@Override
+	public Boolean checkLoginNameStartWith(String loginName) {
+		char start = loginName.charAt(0);
+		if((start > 'a' && start < 'z' )|| (start > 'A' && start < 'Z')){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * 检查登录名内容（符合内容）
+	 * 字母、数字、下划线
+	 * @param name
+	 * @return
+	 */
+	@Override
+	public Boolean checkLoginNameContent(String name) {
+		for(char content: name.toCharArray()){
+			if(!isLegal(content)){
+				return false;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 判断字符是否是字母
+	 * @param ch
+	 * @return
+	 */
+	private Boolean isGrapheme(char ch){
+		if((ch >= 'a' && ch <= 'z' )|| ( ch >= 'A' && ch <= 'Z')){
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	/**
+	 * 检查字符是否是字母或者数字
+	 * @param ch
+	 * @return
+	 */
+	private Boolean isGraphemeOrNumber(char ch){
+		return isGrapheme(ch) || (ch >= '1' && ch <= '9');
+	}
+
+	/**
+	 * 判断字符是否是合法字符
+	 * 字母、数字、下划线
+	 * @param ch
+	 * @return
+	 */
+	private Boolean isLegal(char ch){
+		return isGraphemeOrNumber(ch) || ('_' == ch);
+	}
+
+	/**
+	 * 检查邮箱 是否符合规则
+	 * @param email
+	 * @return
+	 */
+	@Override
+	public Boolean checkEmail(String email) {
+		Pattern pattern = Pattern.compile("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9\\u4e00-\\u9fa5]+(\\.[a-zA-Z0-9\\u4e00-\\u9fa5]+)+$");
+		return pattern.matcher(email).matches();
+	}
+
+	/**
+	 * 检查密码内容
+	 * @param password
+	 * @return
+	 */
+	@Override
+	public Boolean checkPasswordContent(String password) {
+		for(char ch : password.toCharArray()){
+			if(!isGraphemeOrNumber(ch)){
+				return false;
+			}
+		}
+		return true;
 	}
 }

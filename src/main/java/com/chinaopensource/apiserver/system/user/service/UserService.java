@@ -3,7 +3,6 @@ package com.chinaopensource.apiserver.system.user.service;
 import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.system.user.data.User;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,15 +14,8 @@ public interface UserService {
 	 * @return
 	 * @throws BaseException 
 	 */
-	int save(User user) throws BaseException;
+	int save(User user);
 
-	/**
-	 * 更新用户信息
-	 * @param user
-	 * @return
-	 * @throws BaseException 
-	 */
-	int update(User user) throws BaseException;
 	/**
 	 * 通过ID删除用户
 	 * @param id
@@ -92,4 +84,40 @@ public interface UserService {
 	 * @return
 	 */
 	Boolean updateStatus(Integer id, UserStatusEnum userStatusEnum);
+
+	/**
+	 * 根据user的email、时间戳
+	 * 生成邮箱的验证码
+	 * @param email
+	 * @return
+	 */
+	String getEmailVerificationCode(String email);
+
+	/**
+	 * 检查登录名是否已字母开头
+	 * @param loginName
+	 * @return
+	 */
+	Boolean checkLoginNameStartWith(String loginName);
+
+	/**
+	 * 检查登陆名内容
+	 * @param name
+	 * @return
+	 */
+	Boolean checkLoginNameContent(String name);
+
+	/**
+	 * 检查email是否符合规则
+	 * @param email
+	 * @return
+	 */
+	Boolean checkEmail(String email);
+
+	/**
+	 * 检查密码内容
+	 * @param password
+	 * @return
+	 */
+	Boolean checkPasswordContent(String password);
 }

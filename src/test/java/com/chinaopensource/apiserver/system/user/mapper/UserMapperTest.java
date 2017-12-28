@@ -2,6 +2,7 @@ package com.chinaopensource.apiserver.system.user.mapper;
 
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import org.junit.Assert;
 import org.junit.Test;
@@ -103,6 +104,33 @@ public class UserMapperTest extends ApiServerApplicationTests{
 	public void testFindPasswordByLoginName() {
 		String pwd = mapper.findPasswordByLoginName("liqiwei");
 		Assert.assertEquals(EncryptionUtil.getHash("123456", EncryptionEnum.MD5), pwd);
+	}
+
+	@Test
+	public void getUser(){
+		String phone = "18667129839";
+		String email = "907678041@qq.com";
+		String loginName = "lzl2798";
+		String verificationCode = "BD165181DCE1D01E466B58886C92F36F";
+		System.out.println(JSON.toJSON(mapper.findUserById(4)));
+		System.out.println(JSON.toJSON(mapper.findUserByLoginName(loginName)));
+		System.out.println(JSON.toJSON(mapper.findByEmail(email)));
+		System.out.println(JSON.toJSON(mapper.findByPhone(phone)));
+		System.out.println(JSON.toJSON(mapper.findByVerificationCode(verificationCode)));
+	}
+
+	@Test
+	public void update(){
+		System.out.println(JSON.toJSONString(mapper.findUserById(4)));
+		mapper.updateStatus(4,1);
+		System.out.println(JSON.toJSONString(mapper.findUserById(4)));
+	}
+
+	@Test
+	public void getALL(){
+		for(User user : mapper.findAllUser()){
+			System.out.println(JSON.toJSONString(user));
+		}
 	}
 
 }

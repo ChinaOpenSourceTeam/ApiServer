@@ -25,6 +25,7 @@ import javax.validation.Valid;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Date;
 import java.util.Objects;
 
 @RestController
@@ -46,43 +47,58 @@ public class UserController extends ControllerBase {
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
     @PostMapping("/saveUser")
-	public String saveUser(@Valid @RequestBody EmailAuth emailAuth,HttpServletRequest request) throws BaseException{
+	public String saveUser(@Valid @RequestBody EmailAuth emailAuth,HttpServletRequest request){
 //	    1、校验图片验证是否正确
-		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
-        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
-            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
-        }
+//		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
+//        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
+//            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
+//        }
+        String name = emailAuth.getName();
+        String email = emailAuth.getEmail();
+        String password = emailAuth.getPasswd();
+        int nameLengthMax = 18;
+        int nameLengthMin = 6;
+        int passwordLengthMin = 6;
+        int passwordLengthMax = 10;
+//        检查长度
+        if(name.length() > nameLengthMax || name.length() < nameLengthMin){
+			return renderOk(ResponseCode.ERR_LOGIN_NAME_LENGTH);
+		}
+		if(password.length() > passwordLengthMax || password.length() < passwordLengthMin){
+			return renderOk(ResponseCode.ERR_PASSWORD_LENGTH_ILLAGEL);
+		}
+		if(!userService.checkPasswordContent(password)){
+			return renderOk(ResponseCode.ERR_PASSWORD_CONTENT_ILLEGAL);
+		}
+//        对用户名进行校验
+		if(!userService.checkLoginNameStartWith(name)){
+			return renderOk(ResponseCode.ERR_LOGIN_NAME_START_WITH);
+		}
+//		检查loginName内容
+		if(!userService.checkLoginNameContent(name)){
+			return renderOk(ResponseCode.ERR_LOGIN_NAME_ILLEGAL);
+		}
+//		 对邮箱进行规则校验
+		if(!userService.checkEmail(email)){
+			return renderOk(ResponseCode.ERR_EMAIL_ILLEGAL);
+		}
 //       校验用户名是否存在
-        if(userService.existsByLoginName(emailAuth.getName())){
+        if(!userService.existsByLoginName(name)){
             return renderOk(ResponseCode.ACCOUNT_EXISTS);
         }
-        if(userService.existsBYEmail(emailAuth.getEmail())){
+//       校验邮箱是否存在
+        if(!userService.existsBYEmail(email)){
             return renderOk(ResponseCode.EMAIL_EXITS);
         }
 //        把密码进行加密运算,保存db
-		User user = new User();
-        user.setLoginName(emailAuth.getName());
-        user.setEmail(emailAuth.getEmail());
-        user.setAddress("");
-        user.setPassword(EncryptionUtil.getHash(emailAuth.getPasswd(), EncryptionEnum.MD5));
-		user.setVerificationCode(getEmailVerificationCode(user));
-
+		User user = new User(name,EncryptionUtil.getHash(password, EncryptionEnum.MD5),"",
+				0,"","","",email,
+				UserStatusEnum.UN_ACTIVATE,new Date(),0,
+				userService.getEmailVerificationCode(name));
 		userService.save(user);
+//		发送邮箱激活验证码
+//		sendEmailUtil.sendEmail(email,user.getVerificationCode());
 		return renderOk(ResponseCode.OK);
-	}
-
-	/**
-	 * 根据user的loginName和password
-	 * 生成邮箱的验证码
-	 * @param user
-	 * @return
-	 */
-	private String getEmailVerificationCode(User user){
-		StringBuilder sb  = new StringBuilder();
-		sb.append(user.getLoginName());
-		sb.append(":");
-		sb.append(user.getPassword());
-		return EncryptionUtil.getHash(sb.toString(), EncryptionEnum.MD5);
 	}
 
 	/**
@@ -101,14 +117,13 @@ public class UserController extends ControllerBase {
 //			验证码错误
 			return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
 		}
-		LocalDateTime now = LocalDateTime.now();
-//		激活的时间 2天    /   30分钟
-		Period period = Period.between(user.getCreateTime().toLocalDate(),now.toLocalDate());
-		if(period.getDays() > 2){
-			return renderOk(ResponseCode.ERR_OUT_OF_VALIDITY);
-		}
-		Duration duration = Duration.between(user.getCreateTime(),now);
-		if(duration.toMinutes() > 30L){
+		long minute = 1000*60;
+		long hour = minute*60*60;
+		long day = hour*24;
+		Date now = new Date();
+		long time = now.getTime()-user.getCreateTime().getTime();
+		long minuteTime =  time%day%hour/minute;
+		if( minuteTime > 30L){
 //			两个时间相差30分钟，超过了验证码的有效期,激活码失效
 			return renderOk(ResponseCode.ERR_OUT_OF_VALIDITY);
 		}
@@ -128,7 +143,8 @@ public class UserController extends ControllerBase {
 	@RequestMapping(value = "updateUser", method = RequestMethod.PUT)
 	//TODO 分组验证
 	public String updateUser(@Valid @RequestBody User user) throws BaseException{
-		userService.update(user);
+//		userService.update(user);
+//		更新用户信息 后期再sql中石油表达式进行优化
 		return renderOk(ResponseCode.OK);
 	}
 

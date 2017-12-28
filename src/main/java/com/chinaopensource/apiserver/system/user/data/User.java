@@ -1,14 +1,17 @@
 package com.chinaopensource.apiserver.system.user.data;
 
+import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  *  用户表
  */
 @Component
-public class User {
+public class User implements Serializable{
     /**
      * 主键id
      */
@@ -52,7 +55,7 @@ public class User {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
     /**
      * 是否删除 0未删除、1已删除
      */
@@ -61,6 +64,26 @@ public class User {
      * 邮箱验证码
      */
     private String verificationCode;
+
+    public User(){
+
+    }
+
+    public User(String loginName, String password, String nickName, Integer age, String phone, String photo, String address,
+                String email, UserStatusEnum statusEnum, Date createTime, Integer deleteFlag, String verificationCode) {
+        this.loginName = loginName;
+        this.password = password;
+        this.nickName = nickName;
+        this.age = age;
+        this.phone = phone;
+        this.photo = photo;
+        this.address = address;
+        this.email = email;
+        this.status = statusEnum.getStatus();
+        this.createTime = createTime;
+        this.deleteFlag = deleteFlag;
+        this.verificationCode = verificationCode;
+    }
 
     public Integer getId() {
         return id;
@@ -142,14 +165,6 @@ public class User {
         this.status = status;
     }
 
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
     public Integer getDeleteFlag() {
         return deleteFlag;
     }
@@ -166,9 +181,11 @@ public class User {
         this.verificationCode = verificationCode;
     }
 
-//	@NotNull
-//	@Length(min=6)
-//	private String password;
+    public Date getCreateTime() {
+        return createTime;
+    }
 
-
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 }
