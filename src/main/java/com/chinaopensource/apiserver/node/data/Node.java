@@ -1,16 +1,8 @@
-package com.chinaopensource.apiserver.blog.domain;
+package com.chinaopensource.apiserver.node.data;
 
-import org.springframework.stereotype.Component;
+import java.util.Date;
 
-import java.time.LocalDateTime;
-
-/**
- * 节点
- * create by lzl ON 2017/12/20
- */
-@Component
 public class Node {
-
     /**
      * id
      */
@@ -46,7 +38,7 @@ public class Node {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
     /**
      * 创建人
      */
@@ -54,7 +46,11 @@ public class Node {
     /**
      * 是否删除 0 未删除，1已删除
      */
-    private Integer deleteFlag;
+    private Boolean deleteFlag;
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
 
     public Integer getId() {
         return id;
@@ -120,11 +116,11 @@ public class Node {
         this.status = status;
     }
 
-    public LocalDateTime getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(LocalDateTime createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 
@@ -136,12 +132,37 @@ public class Node {
         this.createUser = createUser;
     }
 
-    public Integer getDeleteFlag() {
+    public Boolean getDeleteFlag() {
         return deleteFlag;
     }
 
-    public void setDeleteFlag(Integer deleteFlag) {
+    public void setDeleteFlag(Boolean deleteFlag) {
         this.deleteFlag = deleteFlag;
     }
-}
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Node{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", pid=" + pid +
+                ", pid1=" + pid1 +
+                ", pid2=" + pid2 +
+                ", pid3=" + pid3 +
+                ", status=" + status +
+                ", createTime=" + createTime +
+                ", createUser=" + createUser +
+                ", deleteFlag=" + deleteFlag +
+                ", updateTime=" + updateTime +
+                '}';
+    }
+}

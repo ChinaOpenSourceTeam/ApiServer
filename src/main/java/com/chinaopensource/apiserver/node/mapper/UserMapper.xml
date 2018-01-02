@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.chinaopensource.apiserver.node.mapper.NodeMapper">
+    <resultMap id="BaseResultMap" type="com.chinaopensource.apiserver.node.data.Node">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="pid" jdbcType="INTEGER" property="pid" />
+        <result column="pid1" jdbcType="INTEGER" property="pid1" />
+        <result column="pid2" jdbcType="INTEGER" property="pid2" />
+        <result column="pid3" jdbcType="INTEGER" property="pid3" />
+        <result column="status" jdbcType="TINYINT" property="status" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="create_user" jdbcType="INTEGER" property="createUser" />
+        <result column="delete_flag" jdbcType="BIT" property="deleteFlag" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, description, pid, pid1, pid2, pid3, status, create_time, create_user, delete_flag,
+        update_time
+    </sql>
+
+    <insert id="saveNode" parameterType="com.chinaopensource.apiserver.node.data.Node">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into node (name, description, pid,
+        pid1, pid2, pid3, status,
+        create_time, create_user, delete_flag)
+        values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{pid,jdbcType=INTEGER},
+        #{pid1,jdbcType=INTEGER}, #{pid2,jdbcType=INTEGER}, #{pid3,jdbcType=INTEGER}, #{status,jdbcType=TINYINT},
+        #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{deleteFlag,jdbcType=BIT})
+    </insert>
+
+    <delete id="deleteNodeById" parameterType="java.lang.Integer">
+        delete from node
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="findNodeById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from node
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <update id="updateNodeById" parameterType="com.chinaopensource.apiserver.node.data.Node">
+        update node
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="pid != null">
+                pid = #{pid,jdbcType=INTEGER},
+            </if>
+            <if test="pid1 != null">
+                pid1 = #{pid1,jdbcType=INTEGER},
+            </if>
+            <if test="pid2 != null">
+                pid2 = #{pid2,jdbcType=INTEGER},
+            </if>
+            <if test="pid3 != null">
+                pid3 = #{pid3,jdbcType=INTEGER},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser,jdbcType=INTEGER},
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag = #{deleteFlag,jdbcType=BIT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+</mapper>

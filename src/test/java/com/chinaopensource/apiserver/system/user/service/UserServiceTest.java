@@ -1,5 +1,7 @@
 package com.chinaopensource.apiserver.system.user.service;
 
+import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
+import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,9 +54,11 @@ public class UserServiceTest extends ApiServerApplicationTests{
 	// 登录人密码验证
 	@Test
 	public void testLoginValidate() {
-//		Assert.assertTrue(userService.loginValidate("liqiwei", "123456"));
+
+		System.out.println( userService.findUserByLoginName("liqiwei").getPassword());
+
+		System.out.println(EncryptionUtil.getHash("123456", EncryptionEnum.MD5));
+	//	Assert.assertTrue(userService.loginValidate("liqiwei", "123456"));
 	}
-
-
 
 }
