@@ -1,13 +1,18 @@
 package com.chinaopensource.apiserver.system.login.controller;
 
+import com.chinaopensource.apiserver.common.configure.OpenSourceConfig;
 import com.chinaopensource.apiserver.common.constant.Constants;
+import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
+import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
+import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.login.data.LoginData;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.service.UserService;
+import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -17,8 +22,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.Objects;
 
 /**
@@ -42,57 +47,45 @@ public class LoginController extends ControllerBase{
 	
 	@Autowired
 	private RedisOperate redisOperate;
-	
+
+	@Autowired
+	private OpenSourceConfig openSourceConfig;
+
 	@ApiOperation(value="获取token", notes="登录系统获取token值")
 	@PostMapping(value = "/signIn" )
 	public String signIn(@Valid @RequestBody LoginData data){
-//		需要整合shiro框架做后台的权限管理
-		if(userService.loginValidate(data.getLoginName(), data.getPassword())){
-			String token = jwtTokenUtil.generateToken(data.getLoginName());
-			// 保存token值到redis
-			redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token);
-			User user = userService.findUserByLoginName(data.getLoginName());
-			return renderOk(ResponseCode.OK,
-                    mapOf("token",token,"user",modifyBaseUserAttribute(user)));
-		}else{
+		User user = userService.findUserByLoginName(data.getLoginName());
+		if(Objects.isNull(user)){
 			return renderOk(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
 		}
+		if(UserStatusEnum.UN_ACTIVATE.getStatus().equals(user.getStatus())){
+			return renderOk(ResponseCode.ACCOUNT_UN_ACTIVATION);
+		}
+		if(!EncryptionUtil.getHash(data.getPassword(), EncryptionEnum.MD5).equals(user.getPassword())){
+			return renderOk(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
+		}
+		String token = jwtTokenUtil.generateToken(user.getLoginName());
+//		redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token);
+		return renderOk(ResponseCode.OK,
+				mapOf("token",token,"user",userService.modifyBaseUserAttribute(user)));
 	}
 
-    /**
-     * 传入的user，根据需要展示user的某些属性
-     * @param user
-     * @return
-     */
-	private User modifyBaseUserAttribute(User user){
-        User baseUser = new User();
-        baseUser.setLoginName(user.getLoginName());
-        baseUser.setPhone(user.getPhone());
-        baseUser.setEmail(user.getEmail());
-        baseUser.setAddress(user.getAddress());
-        return baseUser;
-    }
-	
 	@ApiOperation(value="删除token", notes="退出系统删除token")
     @GetMapping(value = "/signOut")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
-		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
 	})
-	public String signOut(@Min(6) String loginName){
+	public String signOut(HttpServletRequest request){
+		String token = request.getHeader(openSourceConfig.getJwtHeader());
+		String loginName = jwtTokenUtil.getUsernameFromToken(token);
+		if(Strings.isNullOrEmpty(loginName)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
         User user = userService.findUserByLoginName(loginName);
-	    if(Objects.isNull(user)){
+        if(Objects.isNull(user)){
             return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
         }
 		redisOperate.deletes(loginName+Constants.REDIS_COLON+Constants.REDIS_ALL);
-		return renderOk(ResponseCode.OK);
-	}
-
-
-	@GetMapping("/send")
-	public String sendEmail(){
-//        return renderOk(ResponseCode.OK,SendEmailUtil.sendEmail("2769917694@qq.com","lzl1593572798.",
-//                "907678041@qq.com","test","test"));
 		return renderOk(ResponseCode.OK);
 	}
 

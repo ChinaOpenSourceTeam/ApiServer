@@ -1,5 +1,6 @@
 package com.chinaopensource.apiserver.system.user.controller;
 
+import com.chinaopensource.apiserver.common.configure.OpenSourceConfig;
 import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
@@ -10,9 +11,11 @@ import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.email.EmailAuth;
 import com.chinaopensource.apiserver.common.util.email.SendEmailUtil;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
+import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.service.UserService;
+import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -42,6 +45,12 @@ public class UserController extends ControllerBase {
 	@Autowired
 	private SendEmailUtil sendEmailUtil;
 
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private OpenSourceConfig openSourceConfig;
+
 	@ApiOperation(value="注册用户", notes="添加用户信息")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
@@ -49,10 +58,10 @@ public class UserController extends ControllerBase {
     @PostMapping("/saveUser")
 	public String saveUser(@Valid @RequestBody EmailAuth emailAuth,HttpServletRequest request){
 //	    1、校验图片验证是否正确
-//		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
-//        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
-//            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
-//        }
+		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
+        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
+            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
+        }
         String name = emailAuth.getName();
         String email = emailAuth.getEmail();
         String password = emailAuth.getPasswd();
@@ -65,7 +74,7 @@ public class UserController extends ControllerBase {
 			return renderOk(ResponseCode.ERR_LOGIN_NAME_LENGTH);
 		}
 		if(password.length() > passwordLengthMax || password.length() < passwordLengthMin){
-			return renderOk(ResponseCode.ERR_PASSWORD_LENGTH_ILLAGEL);
+			return renderOk(ResponseCode.ERR_PASSWORD_LENGTH_ILLEAGL);
 		}
 		if(!userService.checkPasswordContent(password)){
 			return renderOk(ResponseCode.ERR_PASSWORD_CONTENT_ILLEGAL);
@@ -118,7 +127,7 @@ public class UserController extends ControllerBase {
 			return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
 		}
 		if(UserStatusEnum.ACTIVATED.getStatus().equals(user.getStatus())){
-			return renderOk(ResponseCode.USER_ACTIVITED);
+			return renderOk(ResponseCode.ACCOUNT_ACTIVATION);
 		}
 		long minute = 1000*60;
 		long hour = minute*60;
@@ -151,37 +160,26 @@ public class UserController extends ControllerBase {
 		return renderOk(ResponseCode.OK);
 	}
 
-	@ApiOperation(value="删除用户信息", notes="删除用户信息")
+	/**
+	 * 根据token 获取用户详情
+	 * @param request
+	 * @return
+	 */
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
-		@ApiImplicitParam(name = "id", value = "用户Id", required = true , dataType = "Integer" ,paramType = "query")
-	})
-	@RequestMapping(value = "deleteUserById", method = RequestMethod.DELETE)
-	public String deleteUserById(Integer id){
-		userService.deleteUserById(id);
-		return renderOk(ResponseCode.OK);
-	}
-	
-	@ApiOperation(value="通过ID用户信息", notes="通过ID用户信息")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
-		@ApiImplicitParam(name = "id", value = "用户Id", required = true , dataType = "Integer" ,paramType = "query")
 	})
 	@RequestMapping(value = "findUserById", method = RequestMethod.GET)
-	public String findUserById(Integer id){
-		return renderOk(ResponseCode.OK,userService.findUserById(id));
-	}
-	
-	@ApiOperation(value="通过登录名获取用户信息", notes="通过登录名获取用户信息")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
-		@ApiImplicitParam(name = "loginName", value = "登录名", required = true , dataType = "String" ,paramType = "query")
-	})
-	@RequestMapping(value = "findUserByLoginName", method = RequestMethod.GET)
-	public String findUserByLoginName(String loginName){
+	public String findUserById(HttpServletRequest request){
+		String token = request.getHeader(openSourceConfig.getJwtHeader());
+		String loginName = jwtTokenUtil.getUsernameFromToken(token);
+		if(Strings.isNullOrEmpty(loginName)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
 		User user = userService.findUserByLoginName(loginName);
-		redisOperate.setMap(user.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_INFO, BeanMapTransformation.transBeanToMap(user, null));
-		return renderOk(ResponseCode.OK,user);
+		if(Objects.isNull(user)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		return renderOk(ResponseCode.OK,mapOf("user",user));
 	}
 	
 	@ApiOperation(value="查找所有用户", notes="查找所有用户信息")

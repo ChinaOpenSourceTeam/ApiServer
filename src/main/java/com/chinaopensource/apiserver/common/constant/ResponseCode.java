@@ -6,7 +6,7 @@ public enum  ResponseCode {
 	ERR_SYS_LOGIN_PASSWORD(50002,"用户名或密码错误"),
 	ERR_SYS_TOKEN_NONE(50003,"token 不存在"),
 	ERR_SYS_TOKEN_INVALID(50004,"token 验证无效"),
-	ERR_SYS_PARAMETER_VALIDATE(50005,"参数无效"),
+	ERR_SYS_PARAMETER_VALIDATE(50005,"参数错误"),
 	ACCOUNT_EXISTS(50006,"账号已存在"),
 	PHONE_EXISTS(50007,"手机号码已存在"),
 	EMAIL_EXITS(50008,"邮箱已存在"),
@@ -19,9 +19,10 @@ public enum  ResponseCode {
 	ERR_LOGIN_NAME_ILLEGAL(50015,"用户名只能是字母、数组、下划线组合"),
 	ERR_LOGIN_NAME_LENGTH(50016,"用户名长度不符合要求"),
 	ERR_EMAIL_ILLEGAL(50017,"邮箱地址非法"),
-	ERR_PASSWORD_LENGTH_ILLAGEL(50018,"密码长度在6-10位"),
+	ERR_PASSWORD_LENGTH_ILLEAGL(50018,"密码长度在6-10位"),
 	ERR_PASSWORD_CONTENT_ILLEGAL(50019,"密码内容不符合要求"),
-	USER_ACTIVITED(50020,"用户已激活"),
+	ACCOUNT_ACTIVATION(50020,"账号已激活"),
+	ACCOUNT_UN_ACTIVATION(50021,"账号未激活"),
 	;
 
 	ResponseCode(Integer code,String message){

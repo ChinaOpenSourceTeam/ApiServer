@@ -44,12 +44,6 @@ public class UserServiceImp implements UserService {
 	}
 
 	@Override
-	public boolean loginValidate(String loginName, String password) {
-		String pwd = userMapper.findPasswordByLoginName(loginName);
-		return EncryptionUtil.getHash(password, EncryptionEnum.MD5).equals(pwd);
-	}
-
-	@Override
 	public User findUserByLoginName(String loginName) {
 		return userMapper.findUserByLoginName(loginName);
 	}
@@ -188,5 +182,20 @@ public class UserServiceImp implements UserService {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * 传入的user，根据需要展示user的某些属性
+	 * @param user
+	 * @return
+	 */
+	@Override
+	public User modifyBaseUserAttribute(User user) {
+		User baseUser = new User();
+		baseUser.setLoginName(user.getLoginName());
+		baseUser.setPhone(user.getPhone());
+		baseUser.setEmail(user.getEmail());
+		baseUser.setAddress(user.getAddress());
+		return baseUser;
 	}
 }

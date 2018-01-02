@@ -36,14 +36,6 @@ public interface UserService {
 	List<User> findAllUser();
 	
 	/**
-	 * 登录用户验证
-	 * @param loginName
-	 * @param password
-	 * @return
-	 */
-	boolean loginValidate(String loginName,String password);
-
-	/**
 	 * 通过登录名称查找用户信息
 	 * @param loginName
 	 * @return
@@ -120,4 +112,6 @@ public interface UserService {
 	 * @return
 	 */
 	Boolean checkPasswordContent(String password);
+
+	User modifyBaseUserAttribute(User user);
 }

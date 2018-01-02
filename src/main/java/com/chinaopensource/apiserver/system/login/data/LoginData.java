@@ -22,7 +22,8 @@ public class LoginData {
 	private String loginName;
 	
 	@ApiModelProperty(value="密码",example="123456")
-	@Length(min=6)
+	@NotEmpty
+	@Length(min=6,max = 10)
 	private String password;
 	
 	public String getLoginName() {
