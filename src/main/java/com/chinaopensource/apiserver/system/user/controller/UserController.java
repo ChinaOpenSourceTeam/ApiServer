@@ -117,8 +117,11 @@ public class UserController extends ControllerBase {
 //			验证码错误
 			return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
 		}
+		if(UserStatusEnum.ACTIVATED.getStatus().equals(user.getStatus())){
+			return renderOk(ResponseCode.USER_ACTIVITED);
+		}
 		long minute = 1000*60;
-		long hour = minute*60*60;
+		long hour = minute*60;
 		long day = hour*24;
 		Date now = new Date();
 		long time = now.getTime()-user.getCreateTime().getTime();

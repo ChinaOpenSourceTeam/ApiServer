@@ -21,6 +21,7 @@ public enum  ResponseCode {
 	ERR_EMAIL_ILLEGAL(50017,"邮箱地址非法"),
 	ERR_PASSWORD_LENGTH_ILLAGEL(50018,"密码长度在6-10位"),
 	ERR_PASSWORD_CONTENT_ILLEGAL(50019,"密码内容不符合要求"),
+	USER_ACTIVITED(50020,"用户已激活"),
 	;
 
 	ResponseCode(Integer code,String message){
