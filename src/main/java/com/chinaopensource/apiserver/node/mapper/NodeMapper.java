@@ -1,7 +1,11 @@
 package com.chinaopensource.apiserver.node.mapper;
 
 import com.chinaopensource.apiserver.node.data.Node;
+
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 @Mapper
@@ -15,5 +19,7 @@ public interface NodeMapper {
     Node findNodeById(Integer id);
 
     int updateNodeById(Node node);
+
+	List<Node> findNodesByNodeName(@Param("nodeName") String nodeName);
 
 }

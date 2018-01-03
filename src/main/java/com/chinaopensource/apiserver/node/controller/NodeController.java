@@ -66,4 +66,15 @@ public class NodeController extends ControllerBase {
 		return renderOk(ResponseCode.OK,this.nodeService.findNodeById(id));
 	}
 
+	@ApiOperation(value="通过节点名查询节点列表", notes="通过节点名查询节点列表")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "name", value = "节点名", dataType = "String" ,paramType = "query"),
+		@ApiImplicitParam(name = "pageNum", value = "页数", dataType = "Integer" ,paramType = "query"),
+		@ApiImplicitParam(name = "pageSize", value = "页大小", dataType = "Integer" ,paramType = "query")
+	})
+	@RequestMapping(value = "findNodesByNodeName", method = RequestMethod.GET)
+	public String findNodesByNodeName(Integer pageNum, Integer pageSize,String name){
+		return renderOk(ResponseCode.OK,this.nodeService.findNodesByNodeName(pageNum,pageSize,name));
+	}
+	
 }

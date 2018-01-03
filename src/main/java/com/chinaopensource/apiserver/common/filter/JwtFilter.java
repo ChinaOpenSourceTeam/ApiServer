@@ -55,6 +55,7 @@ public class JwtFilter implements Filter {
     	urls.add("system/user/saveUser");
     	urls.add("system/identifyingCode");
     	urls.add("node/findNodeById");
+    	urls.add("node/findNodesByNodeName");
     }
 
     @Override

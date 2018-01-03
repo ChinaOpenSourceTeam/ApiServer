@@ -81,4 +81,13 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
 
+    <select id="findNodesByNodeName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from node
+        <if test="nodeName != null">
+	        where name like CONCAT('%', #{nodeName,jdbcType=VARCHAR}, '%')
+        </if>
+    </select>
+
 </mapper>
