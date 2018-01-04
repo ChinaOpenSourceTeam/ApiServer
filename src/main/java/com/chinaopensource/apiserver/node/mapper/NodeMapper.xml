@@ -32,16 +32,11 @@
         #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, #{deleteFlag,jdbcType=BIT})
     </insert>
 
-    <delete id="deleteNodeById" parameterType="java.lang.Integer">
-        delete from node
-        where id = #{id,jdbcType=INTEGER}
-    </delete>
-
     <select id="findNodeById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List" />
         from node
-        where id = #{id,jdbcType=INTEGER}
+        where id = #{id,jdbcType=INTEGER} and delete_flag = 0
     </select>
 
     <update id="updateNodeById" parameterType="com.chinaopensource.apiserver.node.data.Node">
@@ -70,10 +65,11 @@
             </if>
             <if test="createUser != null">
                 create_user = #{createUser,jdbcType=INTEGER},
-            </if>
+            </if>            
             <if test="deleteFlag != null">
                 delete_flag = #{deleteFlag,jdbcType=BIT},
             </if>
+
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
@@ -85,8 +81,9 @@
         select
         <include refid="Base_Column_List" />
         from node
+        where delete_flag = 0
         <if test="nodeName != null">
-	        where name like CONCAT('%', #{nodeName,jdbcType=VARCHAR}, '%')
+	       and like CONCAT('%', #{nodeName,jdbcType=VARCHAR}, '%')  
         </if>
     </select>
 

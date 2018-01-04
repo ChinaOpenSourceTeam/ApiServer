@@ -14,8 +14,6 @@ public interface NodeMapper {
 
     int saveNode(Node node);
 
-    void deleteNodeById(Integer id);
-
     Node findNodeById(Integer id);
 
     int updateNodeById(Node node);

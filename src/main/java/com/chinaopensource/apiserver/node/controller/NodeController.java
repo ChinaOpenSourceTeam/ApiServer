@@ -1,19 +1,26 @@
 package com.chinaopensource.apiserver.node.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
-import com.chinaopensource.apiserver.node.data.Node;
+import com.chinaopensource.apiserver.node.data.SaveReqNode;
+import com.chinaopensource.apiserver.node.data.UpdateReqNode;
 import com.chinaopensource.apiserver.node.service.NodeService;
+
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/node")
@@ -31,8 +38,8 @@ public class NodeController extends ControllerBase {
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
     @PostMapping("/saveNode")
-	public String saveNode(@Valid @RequestBody Node node){
-		this.nodeService.saveNode(node);
+	public String saveNode(@Valid @RequestBody SaveReqNode saveNode){
+		this.nodeService.saveNode(saveNode);
 		return renderOk(ResponseCode.OK);
 	}
 
@@ -41,8 +48,8 @@ public class NodeController extends ControllerBase {
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
 	@RequestMapping(value = "updateNode", method = RequestMethod.PUT)
-	public String updateNode(@Valid @RequestBody Node node) throws BaseException{
-		this.nodeService.updateNodeById(node);
+	public String updateNode(@Valid @RequestBody UpdateReqNode updatenode) throws BaseException{
+		this.nodeService.updateNodeById(updatenode);
 		return renderOk(ResponseCode.OK);
 	}
 

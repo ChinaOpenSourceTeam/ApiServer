@@ -1,17 +1,19 @@
 package com.chinaopensource.apiserver.node.service;
 
 import com.chinaopensource.apiserver.node.data.Node;
+import com.chinaopensource.apiserver.node.data.SaveReqNode;
+import com.chinaopensource.apiserver.node.data.UpdateReqNode;
 import com.github.pagehelper.PageInfo;
 
 public interface NodeService {
 
-    int saveNode(Node node);
+    int saveNode(SaveReqNode saveNode);
 
     void deleteNodeById(Integer id);
 
     Node findNodeById(Integer id);
 
-    int updateNodeById(Node node);
+    int updateNodeById(UpdateReqNode updatenode);
 
 	PageInfo<Node> findNodesByNodeName(String nodeName);
 	
