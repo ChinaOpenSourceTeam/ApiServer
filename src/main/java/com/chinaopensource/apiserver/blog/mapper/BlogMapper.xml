@@ -1,5 +1,76 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.chinaopensource.apiserver.blog.mapper.BlogMapper" >
-
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.chinaopensource.apiserver.blog.mapper.BlogMapper">
+  <resultMap id="BaseResultMap" type="com.chinaopensource.apiserver.blog.data.Blog">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uuid" jdbcType="CHAR" property="uuid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="version" jdbcType="TINYINT" property="version" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="delete_flag" jdbcType="BIT" property="deleteFlag" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id, uuid, title,content, status, version, create_time, create_user, delete_flag, update_time
+  </sql>
+  
+    <insert id="insert" parameterType="com.chinaopensource.apiserver.blog.data.Blog">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into blog (uuid, title, status, 
+      version, create_time, create_user, 
+      delete_flag, update_time, content
+      )
+    values (#{uuid,jdbcType=CHAR}, #{title,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, 
+      #{version,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{deleteFlag,jdbcType=BIT}, #{updateTime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  
+  <select id="findBlogById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blog
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+   <update id="updateBlogById" parameterType="com.chinaopensource.apiserver.blog.data.Blog">
+    update blog
+    <set>
+      <if test="uuid != null">
+        uuid = #{uuid,jdbcType=CHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="version != null">
+        version = #{version,jdbcType=TINYINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=BIT},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
 </mapper>
