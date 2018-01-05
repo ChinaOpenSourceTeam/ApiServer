@@ -57,11 +57,12 @@ public class UserController extends ControllerBase {
 	})
     @PostMapping("/saveUser")
 	public String saveUser(@Valid @RequestBody EmailAuth emailAuth,HttpServletRequest request){
-//	    1、校验图片验证是否正确
-		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
-        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
-            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
-        }
+//	   TODO 以后更改  session有问题
+// 		1、校验图片验证是否正确
+//		String sessionVerificationCode = (String) request.getSession().getAttribute(Constants.SESSION_PICTURE);
+//        if(!emailAuth.getImageVerificationCode().equals(sessionVerificationCode)){
+//            return renderOk(ResponseCode.ERR_VIRIFICATIOIN);
+//        }
         String name = emailAuth.getName();
         String email = emailAuth.getEmail();
         String password = emailAuth.getPasswd();
