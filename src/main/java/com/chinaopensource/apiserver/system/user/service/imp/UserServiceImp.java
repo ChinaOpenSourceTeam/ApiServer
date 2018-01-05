@@ -18,6 +18,9 @@ import java.util.regex.Pattern;
 @Service
 public class UserServiceImp implements UserService {
 
+	private static final Pattern pattern =
+			Pattern.compile("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9\\u4e00-\\u9fa5]+(\\.[a-zA-Z0-9\\u4e00-\\u9fa5]+)+$");
+
 	@Autowired
 	private UserMapper userMapper;
 	
@@ -103,7 +106,7 @@ public class UserServiceImp implements UserService {
 	@Override
 	public Boolean checkLoginNameStartWith(String loginName) {
 		char start = loginName.charAt(0);
-		if((start > 'a' && start < 'z' )|| (start > 'A' && start < 'Z')){
+		if((start >= 'a' && start <= 'z' )|| (start >= 'A' && start <= 'Z')){
 			return true;
 		}else {
 			return false;
@@ -145,7 +148,7 @@ public class UserServiceImp implements UserService {
 	 * @return
 	 */
 	private Boolean isGraphemeOrNumber(char ch){
-		return isGrapheme(ch) || (ch >= '1' && ch <= '9');
+		return isGrapheme(ch) || (ch >= '0' && ch <= '9');
 	}
 
 	/**
@@ -165,7 +168,6 @@ public class UserServiceImp implements UserService {
 	 */
 	@Override
 	public Boolean checkEmail(String email) {
-		Pattern pattern = Pattern.compile("^[A-Za-z0-9\\u4e00-\\u9fa5]+@[a-zA-Z0-9\\u4e00-\\u9fa5]+(\\.[a-zA-Z0-9\\u4e00-\\u9fa5]+)+$");
 		return pattern.matcher(email).matches();
 	}
 
