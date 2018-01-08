@@ -114,4 +114,9 @@ public interface UserService {
 	Boolean checkPasswordContent(String password);
 
 	User modifyBaseUserAttribute(User user);
+
+	Integer updateUser(User user);
+
+	User findByPhone(String phone);
 }
+

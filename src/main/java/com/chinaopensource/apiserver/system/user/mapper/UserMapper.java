@@ -40,4 +40,6 @@ public interface UserMapper {
 	 */
 	Boolean updateStatus(@Param("id") Integer id,@Param("status") Integer status);
 
+	Integer updateUser(@Param("user")User user);
+
 }

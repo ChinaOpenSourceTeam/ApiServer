@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.chinaopensource.apiserver.ApiServerApplicationTests;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.system.user.data.User;
+import org.springframework.test.annotation.Rollback;
 
 public class UserServiceTest extends ApiServerApplicationTests{
 
@@ -54,11 +55,18 @@ public class UserServiceTest extends ApiServerApplicationTests{
 	// 登录人密码验证
 	@Test
 	public void testLoginValidate() {
-
 		System.out.println( userService.findUserByLoginName("liqiwei").getPassword());
-
 		System.out.println(EncryptionUtil.getHash("123456", EncryptionEnum.MD5));
 	//	Assert.assertTrue(userService.loginValidate("liqiwei", "123456"));
 	}
 
+	@Test
+	@Rollback(false)
+	public void updateUser(){
+		User user =new User();
+		user.setNickName("lzl2798");
+		user.setAddress("中国安徽阜阳");
+		user.setLoginName("lzl2798");
+		userService.updateUser(user);
+	}
 }

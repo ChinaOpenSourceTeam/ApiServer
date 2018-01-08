@@ -200,4 +200,14 @@ public class UserServiceImp implements UserService {
 		baseUser.setAddress(user.getAddress());
 		return baseUser;
 	}
+
+	@Override
+	public Integer updateUser(User user) {
+		return userMapper.updateUser(user);
+	}
+
+	@Override
+	public User findByPhone(String phone) {
+		return userMapper.findByPhone(phone);
+	}
 }

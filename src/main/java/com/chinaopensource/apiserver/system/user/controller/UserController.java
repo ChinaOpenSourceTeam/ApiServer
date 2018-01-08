@@ -155,9 +155,21 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "updateUser", method = RequestMethod.PUT)
 	//TODO 分组验证
-	public String updateUser(@Valid @RequestBody User user) throws BaseException{
-//		userService.update(user);
-//		更新用户信息 后期再sql中石油表达式进行优化
+	public String updateUser(@Valid @RequestBody User user,HttpServletRequest request) throws BaseException{
+		String token = request.getHeader(openSourceConfig.getJwtHeader());
+		String loginName = jwtTokenUtil.getUsernameFromToken(token);
+		if(Strings.isNullOrEmpty(loginName)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		String phone = user.getPhone();
+		if(Strings.isNullOrEmpty(phone) && Objects.isNull(userService.findByPhone(phone))){
+			return renderOk(ResponseCode.PHONE_EXISTS);
+		}
+		User loginUser = userService.findUserByLoginName(loginName);
+		if(Objects.isNull(loginUser)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		userService.updateUser(user);
 		return renderOk(ResponseCode.OK);
 	}
 

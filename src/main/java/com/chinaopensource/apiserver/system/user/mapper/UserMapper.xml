@@ -47,4 +47,21 @@
 	<update id="delete" parameterType="java.lang.Integer">
 		update user set  delete_flag = 1 where id = #{id}
 	</update>
+
+	<update id="updateUser" parameterType="user">
+		update user set
+		<if test="user.nickName != null">
+			nick_name = #{user.nickName},
+		</if>
+		<if test="user.phone != null">
+			phone = #{user.phone},
+		</if>
+		<if test="user.address != null">
+			address = #{user.address},
+		</if>
+		<if test="user.age != null">
+			age = #{user.age},
+		</if>
+		login_name = #{user.loginName} where login_name = #{user.loginName}
+	</update>
 </mapper>
