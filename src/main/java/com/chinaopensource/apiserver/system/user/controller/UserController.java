@@ -182,7 +182,7 @@ public class UserController extends ControllerBase {
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 	})
 	@RequestMapping(value = "findUserById", method = RequestMethod.GET)
-	public String findUserById(HttpServletRequest request){
+	public String findUser(HttpServletRequest request){
 		String token = request.getHeader(openSourceConfig.getJwtHeader());
 		String loginName = jwtTokenUtil.getUsernameFromToken(token);
 		if(Strings.isNullOrEmpty(loginName)){
