@@ -1,5 +1,9 @@
 package com.chinaopensource.apiserver.blog.service;
 
+import com.chinaopensource.apiserver.blog.data.SaveBlog;
+
 public interface BlogService {
+
+	void saveBlog(SaveBlog saveBlog);
 
 }
