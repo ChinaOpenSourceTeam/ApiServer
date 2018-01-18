@@ -198,6 +198,7 @@ public class UserServiceImp implements UserService {
 		baseUser.setPhone(user.getPhone());
 		baseUser.setEmail(user.getEmail());
 		baseUser.setAddress(user.getAddress());
+		baseUser.setId(user.getId());
 		return baseUser;
 	}
 
