@@ -1,5 +1,7 @@
 package com.chinaopensource.apiserver.node.service;
 
+import java.util.List;
+
 import com.chinaopensource.apiserver.node.data.Node;
 import com.chinaopensource.apiserver.node.data.SaveReqNode;
 import com.chinaopensource.apiserver.node.data.UpdateReqNode;
@@ -18,4 +20,6 @@ public interface NodeService {
 	PageInfo<Node> findNodesByNodeName(String nodeName);
 	
 	PageInfo<Node> findNodesByNodeName(int pageNum, int pageSize,String nodeName);
+
+	List<Node> findAllNodes();
 }
