@@ -100,10 +100,15 @@ public class UserController extends ControllerBase {
         if(!userService.existsBYEmail(email)){
             return renderOk(ResponseCode.EMAIL_EXITS);
         }
+//        密码的规则： name:password 经过MD5加密
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        sb.append(":");
+        sb.append(password);
 //        把密码进行加密运算,保存db
-		User user = new User(name,EncryptionUtil.getHash(password, EncryptionEnum.MD5),"",
+		User user = new User(name,EncryptionUtil.getHash(sb.toString(), EncryptionEnum.MD5),"",
 				0,"","","",email,
-				UserStatusEnum.UN_ACTIVATE,new Date(),0,
+				UserStatusEnum.ACTIVATED,new Date(),0,
 				userService.getEmailVerificationCode(name));
 		userService.save(user);
 //		发送邮箱激活验证码

@@ -61,7 +61,12 @@ public class LoginController extends ControllerBase{
 		if(UserStatusEnum.UN_ACTIVATE.getStatus().equals(user.getStatus())){
 			return renderOk(ResponseCode.ACCOUNT_UN_ACTIVATION);
 		}
-		if(!EncryptionUtil.getHash(data.getPassword(), EncryptionEnum.MD5).equals(user.getPassword())){
+//        密码的规则： name:password 经过MD5加密
+		StringBuilder sb = new StringBuilder();
+		sb.append(data.getLoginName());
+		sb.append(":");
+		sb.append(data.getPassword());
+		if(!EncryptionUtil.getHash(sb.toString(), EncryptionEnum.MD5).equals(user.getPassword())){
 			return renderOk(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
 		}
 		String token = jwtTokenUtil.generateToken(user.getLoginName());
