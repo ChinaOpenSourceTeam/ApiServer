@@ -84,4 +84,9 @@ public class NodeController extends ControllerBase {
 		return renderOk(ResponseCode.OK,this.nodeService.findNodesByNodeName(pageNum,pageSize,name));
 	}
 	
+	@ApiOperation(value="查找所有节点列表", notes="查找所有节点列表")
+	@RequestMapping(value = "findAllNodes", method = RequestMethod.GET)
+	public String findAllNodes(){
+		return renderOk(ResponseCode.OK,this.nodeService.findAllNodes());
+	}
 }

@@ -83,4 +83,9 @@ public class NodeServiceImpl implements NodeService{
 	public PageInfo<Node> findNodesByNodeName(String nodeName) {
 		return this.findNodesByNodeName(0, 10, nodeName);
 	}
+
+	@Override
+	public List<Node> findAllNodes() {
+		return this.nodeMapper.findNodesByNodeName(null);
+	}
 }

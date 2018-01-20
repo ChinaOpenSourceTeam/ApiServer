@@ -1,6 +1,6 @@
 package com.chinaopensource.apiserver.blog.data;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * 博客内容
@@ -28,11 +28,11 @@ public class Blog {
     /**
      * 博客的状态
      */
-    private Byte status;
+    private Integer status;
     /**
      * 博客的版本
      */
-    private Byte version;
+    private Integer version;
     /**
      * 创建时间
      */
@@ -73,16 +73,16 @@ public class Blog {
 	public void setContent(String content) {
 		this.content = content;
 	}
-	public Byte getStatus() {
+	public Integer getStatus() {
 		return status;
 	}
-	public void setStatus(Byte status) {
+	public void setStatus(Integer status) {
 		this.status = status;
 	}
-	public Byte getVersion() {
+	public Integer getVersion() {
 		return version;
 	}
-	public void setVersion(Byte version) {
+	public void setVersion(Integer version) {
 		this.version = version;
 	}
 	public Date getCreateTime() {
@@ -115,5 +115,6 @@ public class Blog {
 				+ ", version=" + version + ", createTime=" + createTime + ", createUser=" + createUser + ", deleteFlag="
 				+ deleteFlag + ", updateTime=" + updateTime + "]";
 	}
-
+	
+    
 }

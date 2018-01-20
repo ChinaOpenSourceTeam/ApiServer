@@ -24,7 +24,7 @@ import java.util.List;
  * @author lqw
  * 2017年4月8日 下午9:46:03
  */
-@WebFilter(filterName="jwtFilter",value="/*")
+//@WebFilter(filterName="jwtFilter",value="/*")
 public class JwtFilter implements Filter {
     
 	@Autowired

@@ -18,10 +18,7 @@
     id, uuid, title,content, status, version, create_time, create_user, delete_flag, update_time
   </sql>
   
-    <insert id="insert" parameterType="com.chinaopensource.apiserver.blog.data.Blog">
-    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
-      SELECT LAST_INSERT_ID()
-    </selectKey>
+    <insert id="saveBlog" parameterType="com.chinaopensource.apiserver.blog.data.Blog" useGeneratedKeys="true" keyProperty="id">
     insert into blog (uuid, title, status, 
       version, create_time, create_user, 
       delete_flag, update_time, content
@@ -73,4 +70,17 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
   
+  	<insert id="saveBlogTags">
+  		INSERT INTO  blog_node (
+  		blog_id ,
+  		node_id) VALUES 
+		<foreach collection="nodes" item="node" index="index"
+			separator=",">
+			(
+			#{blogId,jdbcType=INTEGER},
+			#{node,jdbcType=INTEGER}
+			)
+		</foreach>
+	</insert>
+	
 </mapper>
