@@ -24,10 +24,10 @@ public class NodeServiceImpl implements NodeService{
     public int saveNode(SaveReqNode saveNode) {
     	Node node =  new Node();
     	node.setName(saveNode.getName());
-    	node.setPid(saveNode.getPid());
-    	node.setPid1(saveNode.getPid1());
-    	node.setPid2(saveNode.getPid2());
-    	node.setPid3(saveNode.getPid3());
+    	node.setPid(getPid(saveNode.getPids(),0));
+    	node.setPid1(getPid(saveNode.getPids(),1));
+    	node.setPid2(getPid(saveNode.getPids(),2));
+    	node.setPid3(getPid(saveNode.getPids(),3));
     	node.setDescription(saveNode.getDescription());
     	node.setCreateUser(saveNode.getCreateUser());
     	
@@ -88,4 +88,24 @@ public class NodeServiceImpl implements NodeService{
 	public List<Node> findAllNodes() {
 		return this.nodeMapper.findNodesByNodeName(null);
 	}
+	
+    
+    /**
+     * 返回对应的pid 
+     * @param s 字符串
+     * @param pointer 位置
+     * @return
+     */
+    private static Integer getPid(String s ,int pointer) {
+    	String[] pids = s.split(",");
+    	if(pointer >= pids.length ) {
+    		return null;
+    	}
+    	String id = pids[pointer];
+    	if(id.trim().equals("")) {
+    		return null;
+    	}
+    	return Integer.valueOf(id);
+    }
+
 }
