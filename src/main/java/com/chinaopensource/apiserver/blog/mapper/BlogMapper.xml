@@ -83,4 +83,18 @@
 		</foreach>
 	</insert>
 	
+  <select id="findBlogByUuidVersion"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from blog
+    where uuid = #{uuid,jdbcType=CHAR}
+    <if test="version != null">
+         AND VERSION = #{version,jdbcType=TINYINT}
+    </if>
+    <if test="version == null">
+        ORDER BY VERSION DESC  LIMIT 1
+    </if>
+  </select>
+  
+	
 </mapper>

@@ -19,5 +19,7 @@ public interface NodeMapper {
     int updateNodeById(Node node);
 
 	List<Node> findNodesByNodeName(@Param("nodeName") String nodeName);
+	
+	List<Node> findNodesByBlogId(@Param("blogId") Integer blogId);
 
 }
