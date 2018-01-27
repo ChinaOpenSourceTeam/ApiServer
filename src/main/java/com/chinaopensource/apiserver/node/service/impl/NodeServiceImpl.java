@@ -1,10 +1,15 @@
 package com.chinaopensource.apiserver.node.service.impl;
 
+import com.chinaopensource.apiserver.blog.data.Blog;
+import com.chinaopensource.apiserver.blog.mapper.BlogMapper;
 import com.chinaopensource.apiserver.node.data.Node;
+import com.chinaopensource.apiserver.node.data.NodePage;
 import com.chinaopensource.apiserver.node.data.SaveReqNode;
 import com.chinaopensource.apiserver.node.data.UpdateReqNode;
 import com.chinaopensource.apiserver.node.mapper.NodeMapper;
 import com.chinaopensource.apiserver.node.service.NodeService;
+import com.chinaopensource.apiserver.system.user.data.User;
+import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -19,6 +24,12 @@ public class NodeServiceImpl implements NodeService{
 
     @Autowired
     private NodeMapper nodeMapper;
+    
+    @Autowired
+    private BlogMapper blogMapper;
+    
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public int saveNode(SaveReqNode saveNode) {
@@ -107,5 +118,17 @@ public class NodeServiceImpl implements NodeService{
     	}
     	return Integer.valueOf(id);
     }
+
+	@Override
+	public NodePage findNodeByNodeId(Integer nodeId) {
+		NodePage nodePage  = new NodePage();
+		Node node = this.nodeMapper.findNodeById(nodeId);
+		nodePage.setNode(node);
+		User user = this.userMapper.findUserById(node.getCreateUser());
+		nodePage.setUser(user);
+		List<Blog> blogList = this.blogMapper.findBlogByNodeId(nodeId);
+		nodePage.setBlogList(blogList);
+		return nodePage;
+	}
 
 }

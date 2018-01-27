@@ -96,5 +96,13 @@
     </if>
   </select>
   
+  <select id="findBlogByNodeId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  
+	SELECT * FROM blog WHERE id IN (
+		SELECT blog_id FROM blog_node WHERE node_id = #{node,jdbcType=INTEGER}
+	) 
+	GROUP BY UUID
+	  
+  </select>
 	
 </mapper>

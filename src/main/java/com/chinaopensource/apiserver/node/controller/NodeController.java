@@ -3,6 +3,7 @@ package com.chinaopensource.apiserver.node.controller;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
 import com.chinaopensource.apiserver.common.exception.BaseException;
-import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
 import com.chinaopensource.apiserver.node.data.SaveReqNode;
 import com.chinaopensource.apiserver.node.data.UpdateReqNode;
 import com.chinaopensource.apiserver.node.service.NodeService;
@@ -29,9 +29,6 @@ public class NodeController extends ControllerBase {
 
 	@Autowired
 	private NodeService nodeService;
-	
-	@Autowired
-	private RedisOperate redisOperate;
 
 	@ApiOperation(value="添加节点", notes="添加节点信息")
 	@ApiImplicitParams({
@@ -89,4 +86,11 @@ public class NodeController extends ControllerBase {
 	public String findAllNodes(){
 		return renderOk(ResponseCode.OK,this.nodeService.findAllNodes());
 	}
+	
+	
+	@RequestMapping(value = "/{nodeId}" , method = RequestMethod.GET)
+	public String findNodeByNodeId(@PathVariable Integer nodeId) {
+		return renderOk(ResponseCode.OK,this.nodeService.findNodeByNodeId(nodeId));
+	}
+	
 }
