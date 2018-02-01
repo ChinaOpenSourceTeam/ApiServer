@@ -2,6 +2,7 @@ package com.chinaopensource.apiserver.solr.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSON;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
+import com.chinaopensource.apiserver.common.util.Base64Util;
 import com.chinaopensource.apiserver.common.util.http.HttpProtocolUtil;
+import com.chinaopensource.apiserver.solr.data.Docs;
 import com.chinaopensource.apiserver.solr.data.SolrDomain;
 
 import io.swagger.annotations.Api;
@@ -48,8 +51,11 @@ public class SolrController extends ControllerBase {
 		
 		String result = HttpProtocolUtil.sendGet("http://www.chinaopensource.top:8080/solr/db/select", sb.toString());
 		SolrDomain sd = JSON.parseObject(result, SolrDomain.class);
-		
-		return renderOk(ResponseCode.OK,sd.getResponse().getDocs());
+		List<Docs> docsList  = sd.getResponse().getDocs();
+		for (Docs docs : docsList) {
+			Base64Util.EncoderContent(docs);
+		}
+		return renderOk(ResponseCode.OK,docsList);
 	}
 	
 }

@@ -7,6 +7,7 @@ public class Docs {
 	private String title;
     private String content;
     private int createUser;
+    private String createUserName;
     private String createTime;
     private int blogVersion;
     private int status;
@@ -41,6 +42,12 @@ public class Docs {
 	public void setCreateUser(int createUser) {
 		this.createUser = createUser;
 	}
+	public String getCreateUserName() {
+		return createUserName;
+	}
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
+	}
 	public String getCreateTime() {
 		return createTime;
 	}
@@ -65,6 +72,11 @@ public class Docs {
 	public void set_version_(long _version_) {
 		this._version_ = _version_;
 	}
+	@Override
+	public String toString() {
+		return "Docs [id=" + id + ", uuid=" + uuid + ", title=" + title + ", content=" + content + ", createUser="
+				+ createUser + ", createUserName=" + createUserName + ", createTime=" + createTime + ", blogVersion="
+				+ blogVersion + ", status=" + status + ", _version_=" + _version_ + "]";
+	}
 	
-    
 }
