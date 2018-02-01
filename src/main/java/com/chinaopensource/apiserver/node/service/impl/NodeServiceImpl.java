@@ -2,6 +2,7 @@ package com.chinaopensource.apiserver.node.service.impl;
 
 import com.chinaopensource.apiserver.blog.data.Blog;
 import com.chinaopensource.apiserver.blog.mapper.BlogMapper;
+import com.chinaopensource.apiserver.common.util.Base64Util;
 import com.chinaopensource.apiserver.node.data.Node;
 import com.chinaopensource.apiserver.node.data.NodePage;
 import com.chinaopensource.apiserver.node.data.SaveReqNode;
@@ -127,6 +128,9 @@ public class NodeServiceImpl implements NodeService{
 		User user = this.userMapper.findUserById(node.getCreateUser());
 		nodePage.setUser(user);
 		List<Blog> blogList = this.blogMapper.findBlogByNodeId(nodeId);
+		for (Blog blog : blogList) {
+			Base64Util.EncoderContent(blog);
+		}
 		nodePage.setBlogList(blogList);
 		return nodePage;
 	}
