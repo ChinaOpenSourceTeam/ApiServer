@@ -1,5 +1,6 @@
 package com.chinaopensource.apiserver.blog.service.impl;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -56,6 +57,7 @@ public class BlogServiceImpl implements BlogService {
 	public BlogPage findBlogByUuidVersion(String blogUuId, Integer version) {
 		BlogPage blogPage = new BlogPage();
 		Blog blog = this.blogMapper.findBlogByUuidVersion(blogUuId,version);
+		Base64Util.EncoderContent(blog);
 		blogPage.setBlog(blog);
 		User user = this.userMapper.findUserById(blog.getCreateUser());
 		blogPage.setUser(user);
