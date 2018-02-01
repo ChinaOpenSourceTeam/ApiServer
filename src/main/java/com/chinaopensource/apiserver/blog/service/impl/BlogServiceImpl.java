@@ -12,6 +12,7 @@ import com.chinaopensource.apiserver.blog.data.BlogPage;
 import com.chinaopensource.apiserver.blog.data.SaveBlog;
 import com.chinaopensource.apiserver.blog.mapper.BlogMapper;
 import com.chinaopensource.apiserver.blog.service.BlogService;
+import com.chinaopensource.apiserver.common.util.Base64Util;
 import com.chinaopensource.apiserver.node.data.Node;
 import com.chinaopensource.apiserver.node.mapper.NodeMapper;
 import com.chinaopensource.apiserver.system.user.data.User;
@@ -40,7 +41,7 @@ public class BlogServiceImpl implements BlogService {
 		blog.setCreateTime(new Date());
 		blog.setUpdateTime(new Date());
 		blog.setDeleteFlag(false);
-		
+		Base64Util.DecoderContent(blog);
 		this.blogMapper.saveBlog(blog);
 		
 		String tags = saveBlog.getTags();
