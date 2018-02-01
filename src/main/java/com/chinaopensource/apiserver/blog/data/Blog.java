@@ -42,6 +42,10 @@ public class Blog {
      */
     private Integer createUser;
     /**
+     * 创建人名字
+     */
+    private String createUserName;
+    /**
      * 删除标记
      */
     private Boolean deleteFlag;
@@ -97,6 +101,12 @@ public class Blog {
 	public void setCreateUser(Integer createUser) {
 		this.createUser = createUser;
 	}
+	public String getCreateUserName() {
+		return createUserName;
+	}
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
+	}
 	public Boolean getDeleteFlag() {
 		return deleteFlag;
 	}
@@ -112,9 +122,9 @@ public class Blog {
 	@Override
 	public String toString() {
 		return "Blog [id=" + id + ", uuid=" + uuid + ", title=" + title + ", content=" + content + ", status=" + status
-				+ ", version=" + version + ", createTime=" + createTime + ", createUser=" + createUser + ", deleteFlag="
-				+ deleteFlag + ", updateTime=" + updateTime + "]";
+				+ ", version=" + version + ", createTime=" + createTime + ", createUser=" + createUser
+				+ ", createUserName=" + createUserName + ", deleteFlag=" + deleteFlag + ", updateTime=" + updateTime
+				+ "]";
 	}
-	
     
 }

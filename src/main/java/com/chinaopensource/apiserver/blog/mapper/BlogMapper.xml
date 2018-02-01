@@ -9,6 +9,7 @@
     <result column="version" jdbcType="TINYINT" property="version" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="create_user" jdbcType="INTEGER" property="createUser" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
     <result column="delete_flag" jdbcType="BIT" property="deleteFlag" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
@@ -30,10 +31,10 @@
   </insert>
   
   <select id="findBlogById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from blog
-    where id = #{id,jdbcType=INTEGER}
+    SELECT node.* ,user.`nick_name` AS create_user_name 
+    FROM node 
+    	LEFT JOIN USER ON node.`create_user` = user.`id`
+    where node.id = #{id,jdbcType=INTEGER}
   </select>
   
    <update id="updateBlogById" parameterType="com.chinaopensource.apiserver.blog.data.Blog">
@@ -98,7 +99,7 @@
   
   <select id="findBlogByNodeId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
   
-	SELECT * FROM blog WHERE id IN (
+	SELECT blog.*,user.`nick_name` AS create_user_name FROM blog LEFT JOIN USER ON blog.`create_user` = user.`id` WHERE blog.`id` IN (
 		SELECT blog_id FROM blog_node WHERE node_id = #{node,jdbcType=INTEGER}
 	) 
 	GROUP BY UUID
