@@ -33,7 +33,7 @@
   <select id="findBlogById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT node.* ,user.`nick_name` AS create_user_name 
     FROM node 
-    	LEFT JOIN USER ON node.`create_user` = user.`id`
+    	LEFT JOIN user ON node.`create_user` = user.`id`
     where node.id = #{id,jdbcType=INTEGER}
   </select>
   
@@ -99,7 +99,7 @@
   
   <select id="findBlogByNodeId"  parameterType="java.lang.Integer" resultMap="BaseResultMap">
   
-	SELECT blog.*,user.`nick_name` AS create_user_name FROM blog LEFT JOIN USER ON blog.`create_user` = user.`id` WHERE blog.`id` IN (
+	SELECT blog.*,user.`nick_name` AS create_user_name FROM blog LEFT JOIN user ON blog.`create_user` = user.`id` WHERE blog.`id` IN (
 		SELECT blog_id FROM blog_node WHERE node_id = #{node,jdbcType=INTEGER}
 	) 
 	GROUP BY UUID
