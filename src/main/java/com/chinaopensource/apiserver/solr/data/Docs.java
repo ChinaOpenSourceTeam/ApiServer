@@ -10,8 +10,8 @@ public class Docs {
     private String createUserName;
     private String createTime;
     private int blogVersion;
+    private long version;
     private int status;
-    private long _version_;
 	public String getId() {
 		return id;
 	}
@@ -66,17 +66,17 @@ public class Docs {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	public long get_version_() {
-		return _version_;
+	public long getVersion() {
+		return version;
 	}
-	public void set_version_(long _version_) {
-		this._version_ = _version_;
+	public void setVersion(long version) {
+		this.version = version;
 	}
 	@Override
 	public String toString() {
 		return "Docs [id=" + id + ", uuid=" + uuid + ", title=" + title + ", content=" + content + ", createUser="
 				+ createUser + ", createUserName=" + createUserName + ", createTime=" + createTime + ", blogVersion="
-				+ blogVersion + ", status=" + status + ", _version_=" + _version_ + "]";
+				+ blogVersion + ", version=" + version + ", status=" + status + "]";
 	}
 	
 }

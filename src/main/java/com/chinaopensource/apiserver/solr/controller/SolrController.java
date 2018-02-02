@@ -53,6 +53,7 @@ public class SolrController extends ControllerBase {
 		SolrDomain sd = JSON.parseObject(result, SolrDomain.class);
 		List<Docs> docsList  = sd.getResponse().getDocs();
 		for (Docs docs : docsList) {
+			docs.setVersion(docs.getBlogVersion());
 			Base64Util.EncoderContent(docs);
 		}
 		return renderOk(ResponseCode.OK,docsList);
