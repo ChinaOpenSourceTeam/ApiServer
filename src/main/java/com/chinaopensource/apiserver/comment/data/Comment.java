@@ -13,6 +13,10 @@ public class Comment {
     private Date createTime;
 
     private Integer createUser;
+    /**
+     * 创建人名字
+     */
+    private String createUserName;
 
     private Boolean deleteFlag;
 
@@ -74,10 +78,19 @@ public class Comment {
 		this.updateTime = updateTime;
 	}
 
+	public String getCreateUserName() {
+		return createUserName;
+	}
+
+	public void setCreateUserName(String createUserName) {
+		this.createUserName = createUserName;
+	}
+
 	@Override
 	public String toString() {
 		return "Comment [id=" + id + ", content=" + content + ", blogId=" + blogId + ", createTime=" + createTime
-				+ ", createUser=" + createUser + ", deleteFlag=" + deleteFlag + ", updateTime=" + updateTime + "]";
+				+ ", createUser=" + createUser + ", createUserName=" + createUserName + ", deleteFlag=" + deleteFlag
+				+ ", updateTime=" + updateTime + "]";
 	}
 
 }
