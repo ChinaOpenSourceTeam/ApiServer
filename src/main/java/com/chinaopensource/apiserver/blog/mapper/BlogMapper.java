@@ -14,8 +14,6 @@ public interface BlogMapper {
 
 	Blog findBlogById(Integer id);
 
- //   List<Blog> selectBy(String name);
-
     int updateBlogById(Blog record);
 
 	void saveBlogTags(@Param("blogId")Integer blogId, @Param("nodes")String[] nodes);
