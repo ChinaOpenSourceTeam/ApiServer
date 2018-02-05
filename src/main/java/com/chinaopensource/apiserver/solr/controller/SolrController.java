@@ -49,7 +49,7 @@ public class SolrController extends ControllerBase {
 		sb.append("&rows=");
 		sb.append(rows);
 		
-		String result = HttpProtocolUtil.sendGet("http://www.chinaopensource.top:8080/solr/db/select", sb.toString());
+		String result = HttpProtocolUtil.sendGet("http://www.chinaopensource.top:8983/solr/db/select", sb.toString());
 		SolrDomain sd = JSON.parseObject(result, SolrDomain.class);
 		List<Docs> docsList  = sd.getResponse().getDocs();
 		for (Docs docs : docsList) {
