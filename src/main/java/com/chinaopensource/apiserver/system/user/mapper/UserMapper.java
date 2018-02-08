@@ -42,4 +42,10 @@ public interface UserMapper {
 
 	Integer updateUser(@Param("user")User user);
 
+	Integer updateUserByPara(@Param("age")Integer age,
+							 @Param("phone")String phone,
+							 @Param("email")String email,
+							 @Param("address")String address,
+							 @Param("nickName")String nickName,
+							 @Param("id")Integer id);
 }

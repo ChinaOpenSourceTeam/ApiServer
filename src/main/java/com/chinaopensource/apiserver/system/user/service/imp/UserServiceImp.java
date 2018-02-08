@@ -1,11 +1,15 @@
 package com.chinaopensource.apiserver.system.user.service.imp;
 
+import com.chinaopensource.apiserver.blog.data.Blog;
+import com.chinaopensource.apiserver.blog.service.BlogService;
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
 import com.chinaopensource.apiserver.system.user.service.UserService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +27,10 @@ public class UserServiceImp implements UserService {
 
 	@Autowired
 	private UserMapper userMapper;
-	
+
+	@Autowired
+	private BlogService blogService;
+
 	@Override
 	@Transactional
 	public int save(User user) {
@@ -210,5 +217,23 @@ public class UserServiceImp implements UserService {
 	@Override
 	public User findByPhone(String phone) {
 		return userMapper.findByPhone(phone);
+	}
+
+	@Override
+	public PageInfo<Blog> findBlogListByPage(Integer pageNum, Integer pageSize, Integer id,Integer type) {
+		PageHelper.startPage(pageNum,pageSize);
+		List<Blog> list = blogService.findListByUserIdAndDeleteFlag(id,false,type);
+		PageInfo<Blog> pageInfo = new PageInfo<>(list);
+		return pageInfo;
+	}
+
+	@Override
+	public User findUserByEmail(String email) {
+		return userMapper.findByEmail(email);
+	}
+
+	@Override
+	public Integer updateUserByPara(Integer age, String phone, String email, String address, String nickName,Integer id) {
+		return userMapper.updateUserByPara(age,phone,email,address,nickName,id);
 	}
 }

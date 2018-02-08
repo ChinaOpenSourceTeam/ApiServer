@@ -1,11 +1,10 @@
 package com.chinaopensource.apiserver.blog.mapper;
 
-import java.util.List;
-
+import com.chinaopensource.apiserver.blog.data.Blog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import com.chinaopensource.apiserver.blog.data.Blog;
+import java.util.List;
 
 @Mapper
 public interface BlogMapper {
@@ -21,4 +20,8 @@ public interface BlogMapper {
 	Blog findBlogByUuidVersion(@Param("uuid") String blogUuId , @Param("version") Integer version);
 	
 	List<Blog> findBlogByNodeId(Integer nodeId);
+
+	List<Blog> findListByUserIdAndDeleteFlag(@Param("user_id")Integer userId,
+											 @Param("delete_flag")Boolean delete_flag,
+											 @Param("type")Integer type);
 }

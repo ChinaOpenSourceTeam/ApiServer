@@ -1,12 +1,12 @@
 package com.chinaopensource.apiserver.node.service;
 
-import java.util.List;
-
 import com.chinaopensource.apiserver.node.data.Node;
 import com.chinaopensource.apiserver.node.data.NodePage;
 import com.chinaopensource.apiserver.node.data.SaveReqNode;
 import com.chinaopensource.apiserver.node.data.UpdateReqNode;
 import com.github.pagehelper.PageInfo;
+
+import java.util.List;
 
 public interface NodeService {
 
@@ -25,4 +25,6 @@ public interface NodeService {
 	List<Node> findAllNodes();
 
 	NodePage findNodeByNodeId(Integer nodeId);
+
+    List<Node> findListByUserIdAndDelete(Integer userId, Boolean delete);
 }

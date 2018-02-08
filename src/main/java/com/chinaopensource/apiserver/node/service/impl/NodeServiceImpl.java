@@ -135,4 +135,8 @@ public class NodeServiceImpl implements NodeService{
 		return nodePage;
 	}
 
+	@Override
+	public List<Node> findListByUserIdAndDelete(Integer userId,Boolean delete){
+		return nodeMapper.findListByUserIdAndDelete(userId,delete);
+    }
 }

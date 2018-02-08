@@ -64,5 +64,15 @@ public class BlogServiceImpl implements BlogService {
 		blogPage.setNodes(nodeList);
 		return blogPage;
 	}
-	
+
+	/**
+	 * 根据用户ID、是否删除状态获取blog
+	 * @param userId
+	 * @param deleteFlag
+	 * @return
+	 */
+	@Override
+	public List<Blog> findListByUserIdAndDeleteFlag(Integer userId, Boolean deleteFlag,Integer type) {
+		return blogMapper.findListByUserIdAndDeleteFlag(userId,deleteFlag,type);
+	}
 }
