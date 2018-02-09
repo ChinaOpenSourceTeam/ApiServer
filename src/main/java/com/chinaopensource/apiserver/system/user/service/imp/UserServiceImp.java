@@ -5,6 +5,7 @@ import com.chinaopensource.apiserver.blog.service.BlogService;
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
+import com.chinaopensource.apiserver.common.util.random.RandomStringUtil;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.mapper.UserMapper;
 import com.chinaopensource.apiserver.system.user.service.UserService;
@@ -34,7 +35,14 @@ public class UserServiceImp implements UserService {
 	@Override
 	@Transactional
 	public int save(User user) {
-		return userMapper.save(user);
+		userMapper.save(user);
+		int id = user.getId();
+		String nickName = user.getLoginName()+RandomStringUtil.toSerialCode(id,RandomStringUtil.NUMBER);
+		StringBuilder sb = new StringBuilder();
+		sb.append(user.getLoginName());
+		sb.append("-");
+		sb.append(nickName);
+		return userMapper.updateUserByPara(null,null,null,null,sb.toString(),id);
 	}
 
 	@Override
