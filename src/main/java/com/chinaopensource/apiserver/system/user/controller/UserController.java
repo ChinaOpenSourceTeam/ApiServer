@@ -237,7 +237,7 @@ public class UserController extends ControllerBase {
 	 * @param pageSize
 	 * @return
 	 */
-	@ApiOperation(value = "获取用户创建blog",notes = "获取用户创建blog")
+	@ApiOperation(value = "获取用户创建的blog",notes = "获取用户创建的blog")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 			@ApiImplicitParam(name = "pageNum", value = "页数", dataType = "Integer" ,paramType = "query"),
