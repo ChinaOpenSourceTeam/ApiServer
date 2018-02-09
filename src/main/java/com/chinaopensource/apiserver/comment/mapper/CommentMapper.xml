@@ -62,7 +62,7 @@
   
   <select id="findCommentByBlogId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     SELECT comment.* , user.`nick_name` AS  create_user_name 
-    FROM COMMENT LEFT JOIN USER ON comment.`create_user` = user.`id`
+    FROM comment LEFT JOIN USER ON comment.`create_user` = user.`id`
     WHERE blog_id = #{blogId,jdbcType=INTEGER}
   </select>
   
