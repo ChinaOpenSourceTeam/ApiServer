@@ -162,7 +162,7 @@ public class UserController extends ControllerBase {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
-	@RequestMapping(value = "updateUser", method = RequestMethod.PUT)
+	@PostMapping(value = "updateUser")
 	//TODO 分组验证
 	public String updateUser(@RequestParam(name = "age")Integer age,
 							 @RequestParam(name = "phone")String phone,
@@ -205,7 +205,7 @@ public class UserController extends ControllerBase {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 	})
-	@RequestMapping(value = "findUserById", method = RequestMethod.GET)
+	@GetMapping(value = "findUserById")
 	public String findUser(HttpServletRequest request){
 		String token = request.getHeader(openSourceConfig.getJwtHeader());
 		String loginName = jwtTokenUtil.getUsernameFromToken(token);
@@ -224,7 +224,7 @@ public class UserController extends ControllerBase {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
-	@RequestMapping(value = "findAllUser", method = RequestMethod.GET)
+	@GetMapping(value = "findAllUser")
 	public String findAllUser(){
 		return renderOk(ResponseCode.OK,mapOf("allUser",userService.findAllUser()));
 	}
