@@ -36,7 +36,7 @@
 		where id = #{id}
 	</update>
 
-	<insert id="save" parameterType="com.chinaopensource.apiserver.system.user.data.User" useGeneratedKeys="true" keyProperty="id">
+	<insert id="save" parameterType="User" useGeneratedKeys="true" keyProperty="User.id">
 		insert into user(login_name,password,nick_name,age,phone,
 		photo,address,email,status,create_time,delete_flag,verification_code)
 		values(#{User.loginName},#{User.password},#{User.nickName},#{User.age},#{User.phone},

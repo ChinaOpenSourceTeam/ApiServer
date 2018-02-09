@@ -1,61 +1,86 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
 
-<configuration scan="true">
+<!--<configuration scan="true">-->
 
-  	<appender name="DEBUG_LEVEL_REMAPPER" class="org.springframework.boot.logging.logback.LevelRemappingAppender">
-		<destinationLogger>org.springframework.boot</destinationLogger>
-	</appender>
-	<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
-	<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
-	<conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
-<!--<property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/> -->
-    <property name="LOG_FILE" value="d:/spring.log}"/> 
-  
-  	<property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-	<property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } --- [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>
-  	
+  	<!--<appender name="DEBUG_LEVEL_REMAPPER" class="org.springframework.boot.logging.logback.LevelRemappingAppender">-->
+		<!--<destinationLogger>org.springframework.boot</destinationLogger>-->
+	<!--</appender>-->
+	<!--&lt;!&ndash;<conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />&ndash;&gt;-->
+	<!--&lt;!&ndash;<conversionRule conversionWord="wex" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />&ndash;&gt;-->
+	<!--&lt;!&ndash;<conversionRule conversionWord="wEx" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />&ndash;&gt;-->
+<!--&lt;!&ndash;&lt;!&ndash;<property name="LOG_FILE" value="${LOG_FILE:-${LOG_PATH:-${LOG_TEMP:-${java.io.tmpdir:-/tmp}}}/spring.log}"/> &ndash;&gt;&ndash;&gt;-->
+    <!--<property name="LOG_FILE" value="./spring.log}"/>-->
+  <!---->
+  	<!--<property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(-&#45;&#45;){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>-->
+	<!--<property name="FILE_LOG_PATTERN" value="${FILE_LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss.SSS} ${LOG_LEVEL_PATTERN:-%5p} ${PID:- } -&#45;&#45; [%t] %-40.40logger{39} : %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}"/>-->
+  	<!---->
 
-	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-		<encoder>
-			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
-			<charset>utf8</charset>
-		</encoder>
-	</appender>
-	
+	<!--<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">-->
+		<!--<encoder>-->
+			<!--<pattern>${CONSOLE_LOG_PATTERN}</pattern>-->
+			<!--<charset>utf8</charset>-->
+		<!--</encoder>-->
+	<!--</appender>-->
+	<!---->
+	<!--<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+		<!--<encoder>-->
+			<!--<pattern>${FILE_LOG_PATTERN}</pattern>-->
+		<!--</encoder>-->
+		<!--<file>${LOG_FILE}</file>-->
+		<!--<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">-->
+			<!--<fileNamePattern>${LOG_FILE}.%i</fileNamePattern>-->
+		<!--</rollingPolicy>-->
+		<!--<triggeringPolicy-->
+			<!--class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">-->
+			<!--<MaxFileSize>10MB</MaxFileSize>-->
+		<!--</triggeringPolicy>-->
+	<!--</appender>-->
+
+<!--<logger name="com.chinaopensource.apiserver" level="warn"/>-->
+
+	<!--&lt;!&ndash;<logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.crsh.plugin" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.crsh.ssh" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="WARN"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;<logger name="org.springframework.boot.actuate.endpoint.jmx" additivity="false">&ndash;&gt;-->
+		<!--&lt;!&ndash;<appender-ref ref="DEBUG_LEVEL_REMAPPER"/>&ndash;&gt;-->
+	<!--&lt;!&ndash;</logger>&ndash;&gt;-->
+
+	<!---->
+  	<!--<root level="error">-->
+		<!--<appender-ref ref="CONSOLE" />-->
+		<!--<appender-ref ref="FILE" />-->
+	<!--</root>-->
+  	<!---->
+<!--</configuration>-->
+
+<configuration>
+
+	<springProperty scope="context" name="log_file" source="logging.file"/>
+
+	<include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+	<include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+
 	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<encoder>
+		<file>apiServer.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<fileNamePattern>apiServer.log-%d{yyyy-MM-dd}%i</fileNamePattern>
+			<maxFileSize>500MB</maxFileSize>
+		</rollingPolicy>
+		<append>true</append>
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
 			<pattern>${FILE_LOG_PATTERN}</pattern>
 		</encoder>
-		<file>${LOG_FILE}</file>
-		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-			<fileNamePattern>${LOG_FILE}.%i</fileNamePattern>
-		</rollingPolicy>
-		<triggeringPolicy
-			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-			<MaxFileSize>10MB</MaxFileSize>
-		</triggeringPolicy>
 	</appender>
-
-<logger name="com.chinaopensource.apiserver" level="DEBUG"/>
-
-	<!--<logger name="org.apache.catalina.startup.DigesterFactory" level="ERROR"/>-->
-	<!--<logger name="org.apache.catalina.util.LifecycleBase" level="ERROR"/>-->
-	<!--<logger name="org.apache.coyote.http11.Http11NioProtocol" level="WARN"/>-->
-	<!--<logger name="org.apache.sshd.common.util.SecurityUtils" level="WARN"/>-->
-	<!--<logger name="org.apache.tomcat.util.net.NioSelectorPool" level="WARN"/>-->
-	<!--<logger name="org.crsh.plugin" level="WARN"/>-->
-	<!--<logger name="org.crsh.ssh" level="WARN"/>-->
-	<!--<logger name="org.eclipse.jetty.util.component.AbstractLifeCycle" level="ERROR"/>-->
-	<!--<logger name="org.hibernate.validator.internal.util.Version" level="WARN"/>-->
-	<!--<logger name="org.springframework.boot.actuate.autoconfigure.CrshAutoConfiguration" level="WARN"/>-->
-	<!--<logger name="org.springframework.boot.actuate.endpoint.jmx" additivity="false">-->
-		<!--<appender-ref ref="DEBUG_LEVEL_REMAPPER"/>-->
-	<!--</logger>-->
-
-	
-  	<root level="error">
-		<appender-ref ref="CONSOLE" />
-		<appender-ref ref="FILE" />
+	<root level="INFO">
+		<appender-ref ref="CONSOLE"/>
+		<appender-ref ref="FILE"/>
 	</root>
-  	
 </configuration>
+

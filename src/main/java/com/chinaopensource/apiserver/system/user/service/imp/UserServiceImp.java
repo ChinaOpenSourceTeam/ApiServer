@@ -37,11 +37,10 @@ public class UserServiceImp implements UserService {
 	public int save(User user) {
 		userMapper.save(user);
 		int id = user.getId();
-		String nickName = user.getLoginName()+RandomStringUtil.toSerialCode(id,RandomStringUtil.NUMBER);
 		StringBuilder sb = new StringBuilder();
 		sb.append(user.getLoginName());
 		sb.append("-");
-		sb.append(nickName);
+		sb.append(RandomStringUtil.toSerialCode(id,RandomStringUtil.NUMBER));
 		return userMapper.updateUserByPara(null,null,null,null,sb.toString(),id);
 	}
 
