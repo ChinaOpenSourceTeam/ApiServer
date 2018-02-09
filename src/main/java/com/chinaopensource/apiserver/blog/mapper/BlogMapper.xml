@@ -105,5 +105,13 @@
 	GROUP BY UUID
 	  
   </select>
-	
+  
+  <select id="findListByUserIdAndDeleteFlag" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from blog
+    where create_user = #{user_id,jdbcType=INTEGER} and delete_flag = #{delete_flag,jdbcType=BOOLEAN}
+    order by create_time desc
+  </select>
+
 </mapper>

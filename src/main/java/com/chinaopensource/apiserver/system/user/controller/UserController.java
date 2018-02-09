@@ -1,20 +1,20 @@
 package com.chinaopensource.apiserver.system.user.controller;
 
+import com.chinaopensource.apiserver.blog.data.Blog;
 import com.chinaopensource.apiserver.common.configure.OpenSourceConfig;
-import com.chinaopensource.apiserver.common.constant.Constants;
 import com.chinaopensource.apiserver.common.constant.EncryptionEnum;
 import com.chinaopensource.apiserver.common.constant.ResponseCode;
 import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.controller.ControllerBase;
-import com.chinaopensource.apiserver.common.exception.BaseException;
-import com.chinaopensource.apiserver.common.util.BeanMapTransformation;
 import com.chinaopensource.apiserver.common.util.email.EmailAuth;
 import com.chinaopensource.apiserver.common.util.email.SendEmailUtil;
 import com.chinaopensource.apiserver.common.util.encryption.EncryptionUtil;
 import com.chinaopensource.apiserver.common.util.jwt.JwtTokenUtil;
 import com.chinaopensource.apiserver.common.util.redis.RedisOperate;
+import com.chinaopensource.apiserver.node.service.NodeService;
 import com.chinaopensource.apiserver.system.user.data.User;
 import com.chinaopensource.apiserver.system.user.service.UserService;
+import com.github.pagehelper.PageInfo;
 import com.google.common.base.Strings;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -25,9 +25,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.Date;
 import java.util.Objects;
 
@@ -51,6 +48,15 @@ public class UserController extends ControllerBase {
 	@Autowired
 	private OpenSourceConfig openSourceConfig;
 
+	@Autowired
+	private NodeService nodeService;
+
+	/**
+	 *  ApiOperation
+	 * @param emailAuth
+	 * @param request
+	 * @return
+	 */
 	@ApiOperation(value="注册用户", notes="添加用户信息")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
@@ -120,6 +126,7 @@ public class UserController extends ControllerBase {
 	 * 激活用户
 	 * @return
 	 */
+
 	@GetMapping("activation")
 	public String activationUser(@RequestParam("code") String code){
 //		验证的长度
@@ -160,21 +167,36 @@ public class UserController extends ControllerBase {
 	})
 	@RequestMapping(value = "updateUser", method = RequestMethod.PUT)
 	//TODO 分组验证
-	public String updateUser(@Valid @RequestBody User user,HttpServletRequest request) throws BaseException{
+	public String updateUser(@RequestParam(name = "age")Integer age,
+							 @RequestParam(name = "phone")String phone,
+							 @RequestParam(name = "email")String email,
+							 @RequestParam(name = "address")String address,
+							 @RequestParam(name = "nickName")String nickName,
+							 HttpServletRequest request) {
 		String token = request.getHeader(openSourceConfig.getJwtHeader());
 		String loginName = jwtTokenUtil.getUsernameFromToken(token);
 		if(Strings.isNullOrEmpty(loginName)){
 			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
 		}
-		String phone = user.getPhone();
-		if(Strings.isNullOrEmpty(phone) && Objects.isNull(userService.findByPhone(phone))){
-			return renderOk(ResponseCode.PHONE_EXISTS);
-		}
-		User loginUser = userService.findUserByLoginName(loginName);
-		if(Objects.isNull(loginUser)){
+		User user = userService.findUserByLoginName(loginName);
+		if( user == null){
 			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
 		}
-		userService.updateUser(user);
+		if(!Strings.isNullOrEmpty(email)){
+			if(userService.checkEmail(email)){
+				if(userService.findUserByEmail(email) != null){
+					return renderOk(ResponseCode.EMAIL_EXITS);
+				}
+			}else {
+				return renderOk(ResponseCode.ERR_EMAIL_ILLEGAL);
+			}
+		}
+		if(!Strings.isNullOrEmpty(phone)){
+			if(userService.findByPhone(phone) != null){
+				return renderOk(ResponseCode.PHONE_EXISTS);
+			}
+		}
+		userService.updateUserByPara(age,phone,email,address,nickName,user.getId());
 		return renderOk(ResponseCode.OK);
 	}
 
@@ -201,12 +223,68 @@ public class UserController extends ControllerBase {
 	}
 	
 	@ApiOperation(value="查找所有用户", notes="查找所有用户信息")
+//	 ApiImplicitParams 接口验证token使用的
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
 	@RequestMapping(value = "findAllUser", method = RequestMethod.GET)
 	public String findAllUser(){
 		return renderOk(ResponseCode.OK,mapOf("allUser",userService.findAllUser()));
+	}
+
+	/**
+	 * 根据博客所属类型 分页获取用户已创建的博客
+	 * @param request
+	 * @param type
+	 * @param pageNum
+	 * @param pageSize
+	 * @return
+	 */
+	@ApiOperation(value = "获取用户创建blog",notes = "获取用户创建blog")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
+			@ApiImplicitParam(name = "pageNum", value = "页数", dataType = "Integer" ,paramType = "query"),
+			@ApiImplicitParam(name = "pageSize", value = "页大小", dataType = "Integer" ,paramType = "query")
+	})
+	@GetMapping("/getBlog")
+	public String getComment(
+			HttpServletRequest request,
+			@RequestParam(name = "type",defaultValue = "0")Integer type,
+			@RequestParam(name ="pageNum" ,defaultValue = "1") Integer pageNum,
+			@RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize){
+		if(type == 0){
+//			表明用户当前未创建blogType
+			return renderOk();
+		}
+		String token = request.getHeader(openSourceConfig.getJwtHeader());
+		String loginName = jwtTokenUtil.getUsernameFromToken(token);
+		if(Strings.isNullOrEmpty(loginName)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		User user = userService.findUserByLoginName(loginName);
+		if(Objects.isNull(user)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		PageInfo<Blog> page = userService.findBlogListByPage(pageNum,pageSize,user.getId(),type);
+		return renderOk(ResponseCode.OK,mapOf("page_data",page));
+	}
+
+	@ApiOperation(value = "获取用户创建bolg分类",notes = "获取用户创建bolg分类")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
+	})
+	@GetMapping("/getBlogType")
+	public String getBlogType(HttpServletRequest request){
+		String token = request.getHeader(openSourceConfig.getJwtHeader());
+		String loginName = jwtTokenUtil.getUsernameFromToken(token);
+		if(Strings.isNullOrEmpty(loginName)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		User user = userService.findUserByLoginName(loginName);
+		if(Objects.isNull(user)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		return renderOk(ResponseCode.OK,mapOf("blog_type",nodeService.findListByUserIdAndDelete(user.getId(),false)));
 	}
 
 }

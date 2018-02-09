@@ -1,15 +1,19 @@
 package com.chinaopensource.apiserver.system.user.controller;
 
-import static org.junit.Assert.fail;
-
+import com.alibaba.druid.support.json.JSONUtils;
+import com.chinaopensource.apiserver.ApiServerApplicationTests;
+import com.chinaopensource.apiserver.node.data.Node;
+import com.chinaopensource.apiserver.node.service.NodeService;
+import com.chinaopensource.apiserver.system.user.data.User;
+import com.chinaopensource.apiserver.system.user.service.UserService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
-import org.springframework.test.web.client.MockRestServiceServer;
-import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.chinaopensource.apiserver.ApiServerApplicationTests;
+import java.util.List;
+
+import static org.junit.Assert.fail;
 
 public class UserControllerTest  extends ApiServerApplicationTests{
 
@@ -18,7 +22,13 @@ public class UserControllerTest  extends ApiServerApplicationTests{
 	
 	@Autowired
 	private MockHttpServletResponse response;
-	
+
+	@Autowired
+	private UserService userService;
+
+	@Autowired
+	private NodeService nodeService;
+
 	@Test
 	public void testSaveUser() {
 
@@ -49,6 +59,20 @@ public class UserControllerTest  extends ApiServerApplicationTests{
 		this.request.setRequestURI("/");
 		this.request.setMethod("GET");
 	
+	}
+
+	@Test
+	public void getBlogType(){
+		Integer id =12;
+		List<Node> nodeList = nodeService.findListByUserIdAndDelete(id,false);
+		System.out.println(JSONUtils.toJSONString("niasd"));
+	}
+
+	@Test
+	public void json(){
+		int id = 12;
+		User user = userService.findUserById(id);
+		System.out.println(JSONUtils.toJSONString(user));
 	}
 
 }

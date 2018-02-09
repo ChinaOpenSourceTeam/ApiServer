@@ -97,4 +97,14 @@
 		)
     </select>
 
+    <select id="findListByUserIdAndDelete" resultMap="BaseResultMap">
+        select id,name
+        from node
+        where delete_flag = #{delete}
+        <if test="userId != null">
+            and create_user = #{userId,jdbcType=INTEGER}
+        </if>
+        order by create_time desc
+    </select>
+
 </mapper>

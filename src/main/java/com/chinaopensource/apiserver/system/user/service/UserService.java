@@ -1,8 +1,10 @@
 package com.chinaopensource.apiserver.system.user.service;
 
+import com.chinaopensource.apiserver.blog.data.Blog;
 import com.chinaopensource.apiserver.common.constant.UserStatusEnum;
 import com.chinaopensource.apiserver.common.exception.BaseException;
 import com.chinaopensource.apiserver.system.user.data.User;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -118,5 +120,11 @@ public interface UserService {
 	Integer updateUser(User user);
 
 	User findByPhone(String phone);
+
+	PageInfo<Blog> findBlogListByPage(Integer pageNum, Integer pageSize, Integer id,Integer type);
+
+	User findUserByEmail(String email);
+
+	Integer updateUserByPara(Integer age,String phone,String email,String address,String nickName,Integer id);
 }
 

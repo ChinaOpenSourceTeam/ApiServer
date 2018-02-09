@@ -64,4 +64,24 @@
 		</if>
 		login_name = #{user.loginName} where login_name = #{user.loginName}
 	</update>
+
+	<update id="updateUserByPara" >
+		update user set
+		<if test="age != null">
+			age = #{age},
+		</if>
+		<if test="phone != null">
+			phone = #{phone},
+		</if>
+		<if test="email != null">
+			email = #{email},
+		</if>
+		<if test="address != null">
+			address = #{address},
+		</if>
+		<if test="nickName != null">
+			nick_name = #{nickName}
+		</if>
+		where id = #{id}
+	</update>
 </mapper>

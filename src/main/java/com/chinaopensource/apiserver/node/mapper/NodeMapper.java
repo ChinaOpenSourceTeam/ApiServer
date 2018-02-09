@@ -22,4 +22,6 @@ public interface NodeMapper {
 	
 	List<Node> findNodesByBlogId(@Param("blogId") Integer blogId);
 
+    List<Node> findListByUserIdAndDelete(@Param("userId")Integer userId,
+                                         @Param("delete")Boolean delete);
 }
