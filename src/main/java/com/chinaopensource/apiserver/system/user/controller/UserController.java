@@ -58,9 +58,6 @@ public class UserController extends ControllerBase {
 	 * @return
 	 */
 	@ApiOperation(value="注册用户", notes="添加用户信息")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
-	})
     @PostMapping("/saveUser")
 	public String saveUser(@Valid @RequestBody EmailAuth emailAuth,HttpServletRequest request){
 //	   TODO 以后更改  session有问题
