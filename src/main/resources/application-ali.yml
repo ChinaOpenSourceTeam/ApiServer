@@ -38,7 +38,7 @@ opensource:
   jwt:
     header: Authorization
     secret: mySecret
-    expiration: 1800
+    expiration: 30
   image:
     width: 120
     height: 30

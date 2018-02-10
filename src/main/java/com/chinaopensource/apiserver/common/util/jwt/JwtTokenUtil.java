@@ -94,7 +94,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Date generateExpirationDate() {
-        return new Date(System.currentTimeMillis() + openSourceConfig.getJwtExpiration() * 1000);
+        return new Date(System.currentTimeMillis() + openSourceConfig.getJwtExpiration() * 1000*60);
     }
 
     public Boolean isTokenExpired(String token) {
