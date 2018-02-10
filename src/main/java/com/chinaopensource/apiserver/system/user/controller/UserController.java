@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -77,9 +78,11 @@ public class UserController extends ControllerBase {
         if(name.length() > nameLengthMax || name.length() < nameLengthMin){
 			return renderOk(ResponseCode.ERR_LOGIN_NAME_LENGTH);
 		}
+//		检查密码长度
 		if(password.length() > passwordLengthMax || password.length() < passwordLengthMin){
 			return renderOk(ResponseCode.ERR_PASSWORD_LENGTH_ILLEAGL);
 		}
+//		检查密码内容
 		if(!userService.checkPasswordContent(password)){
 			return renderOk(ResponseCode.ERR_PASSWORD_CONTENT_ILLEGAL);
 		}
@@ -91,14 +94,14 @@ public class UserController extends ControllerBase {
 		if(!userService.checkLoginNameContent(name)){
 			return renderOk(ResponseCode.ERR_LOGIN_NAME_ILLEGAL);
 		}
-//		 对邮箱进行规则校验
-		if(!userService.checkEmail(email)){
-			return renderOk(ResponseCode.ERR_EMAIL_ILLEGAL);
-		}
 //       校验用户名是否存在
         if(!userService.existsByLoginName(name)){
             return renderOk(ResponseCode.ACCOUNT_EXISTS);
         }
+//		 对邮箱进行规则校验
+		if(!userService.checkEmail(email)){
+			return renderOk(ResponseCode.ERR_EMAIL_ILLEGAL);
+		}
 //       校验邮箱是否存在
         if(!userService.existsBYEmail(email)){
             return renderOk(ResponseCode.EMAIL_EXITS);
@@ -124,7 +127,7 @@ public class UserController extends ControllerBase {
 	 * @return
 	 */
 
-	@GetMapping("activation")
+	@GetMapping("/activation")
 	public String activationUser(@RequestParam("code") String code){
 //		验证的长度
 		int codeLength = 32;
@@ -162,7 +165,7 @@ public class UserController extends ControllerBase {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
-	@PostMapping(value = "updateUser")
+	@PostMapping(value = "/updateUser")
 	//TODO 分组验证
 	public String updateUser(@RequestParam(name = "age")Integer age,
 							 @RequestParam(name = "phone")String phone,
@@ -205,7 +208,7 @@ public class UserController extends ControllerBase {
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header"),
 	})
-	@GetMapping(value = "findUserById")
+	@GetMapping(value = "/findUserById")
 	public String findUser(HttpServletRequest request){
 		String token = request.getHeader(openSourceConfig.getJwtHeader());
 		String loginName = jwtTokenUtil.getUsernameFromToken(token);
@@ -216,17 +219,39 @@ public class UserController extends ControllerBase {
 		if(Objects.isNull(user)){
 			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
 		}
+		rewriteUserAttribute(user);
 		return renderOk(ResponseCode.OK,mapOf("user",user));
+	}
+
+	/**
+	 * 重写user属性 不用返回前端的属性 设置为null
+	 * @param user
+	 */
+	private void rewriteUserAttribute(User user){
+		user.setId(null);
+		user.setLoginName(null);
+		user.setVerificationCode(null);
+		user.setPassword(null);
+		user.setStatus(null);
+		user.setDeleteFlag(null);
 	}
 	
 	@ApiOperation(value="查找所有用户", notes="查找所有用户信息")
-//	 ApiImplicitParams 接口验证token使用的
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "Authorization", value = "token", required = true , dataType = "String" ,paramType = "header")
 	})
-	@GetMapping(value = "findAllUser")
-	public String findAllUser(){
-		return renderOk(ResponseCode.OK,mapOf("allUser",userService.findAllUser()));
+	@GetMapping(value = "/findAllUser")
+	public String findAllUser(HttpServletRequest request){
+		String token = request.getHeader(openSourceConfig.getJwtHeader());
+		String loginName = jwtTokenUtil.getUsernameFromToken(token);
+		if(Strings.isNullOrEmpty(loginName)){
+			return renderOk(ResponseCode.ERR_SYS_PARAMETER_VALIDATE);
+		}
+		List<User> list = userService.findAllUser();
+		for(User user : list){
+			rewriteUserAttribute(user);
+		}
+		return renderOk(ResponseCode.OK,mapOf("all_user",list));
 	}
 
 	/**
