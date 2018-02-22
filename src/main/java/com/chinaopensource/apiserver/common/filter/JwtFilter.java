@@ -72,24 +72,21 @@ public class JwtFilter implements Filter {
             return;
         } else {
         	 String token = httpRequest.getHeader(openSourceConfig.getJwtHeader());
-        	 // 是否有token
-        	 if(token==null){
-        		 httpResponse.setCharacterEncoding("UTF-8");  
-            	 httpResponse.setContentType("application/json; charset=utf-8");  
-            	 PrintWriter out = httpResponse.getWriter();  
-            	 ResponseBase rep = new ResponseBase(ResponseCode.ERR_SYS_TOKEN_NONE);
-            	 out.append(JSON.toJSONString(rep)); 
-            	 return;
-        	 } else if(!(jwtTokenUtil.validateToken(token))){
-        		 httpResponse.setCharacterEncoding("UTF-8");  
-            	 httpResponse.setContentType("application/json; charset=utf-8");  
-            	 PrintWriter out = httpResponse.getWriter();  
-            	 ResponseBase rep = new ResponseBase(ResponseCode.ERR_SYS_TOKEN_INVALID);
-            	 out.append(JSON.toJSONString(rep)); 
-            	 return;
-        	 } else {
+//        	 token 不存在或者校验不通过
+        	 if((token == null) || !jwtTokenUtil.validateToken(token)){
+                 httpResponse.setCharacterEncoding("UTF-8");
+                 httpResponse.setContentType("application/json; charset=utf-8");
+                 PrintWriter out = httpResponse.getWriter();
+                 ResponseBase rep = new ResponseBase(ResponseCode.ERR_SYS_TOKEN_NONE);
+                 out.append(JSON.toJSONString(rep));
+                 return;
+             } else {
+                 StringBuilder key = new StringBuilder();
+                 key.append(Constants.TOKEN);
+                 key.append(Constants.REDIS_COLON);
+                 key.append(jwtTokenUtil.getUsernameFromToken(token));
         		 // 刷新token值
-        		 redisOperate.set(jwtTokenUtil.getUsernameFromToken(token)+Constants.REDIS_COLON+Constants.TOKEN, jwtTokenUtil.refreshToken(token));
+        		 redisOperate.set(key.toString(), jwtTokenUtil.refreshToken(token));
         		 // TODO 请求的日志记录  用户是否存在  请求的接口的权限
         		 chain.doFilter(httpRequest, httpResponse);
         	 }
