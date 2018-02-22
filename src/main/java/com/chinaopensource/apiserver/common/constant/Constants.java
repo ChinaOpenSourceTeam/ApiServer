@@ -13,10 +13,10 @@ public final class Constants {
     public static final String REDIS_ALL = "*";
     
     // 用户信息   token
-    public static final String USERINFO_TOKEN = "token";
+    public static final String TOKEN = "TOKEN";
     // 用户信息 
-    public static final String USERINFO_INFO = "info";
+    public static final String INFO = "INFO";
     
-    public static final String SESSION_PICTURE = "checkcode";
+    public static final String SESSION_PICTURE = "CHECK_CODE";
 
 }

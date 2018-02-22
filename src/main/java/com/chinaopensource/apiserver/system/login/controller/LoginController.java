@@ -70,7 +70,7 @@ public class LoginController extends ControllerBase{
 			return renderOk(ResponseCode.ERR_SYS_LOGIN_PASSWORD);
 		}
 		String token = jwtTokenUtil.generateToken(user.getLoginName());
-		redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, token);
+		redisOperate.set(data.getLoginName()+Constants.REDIS_COLON+Constants.TOKEN, token);
 		return renderOk(ResponseCode.OK,
 				mapOf("token",token,"user",userService.modifyBaseUserAttribute(user)));
 	}

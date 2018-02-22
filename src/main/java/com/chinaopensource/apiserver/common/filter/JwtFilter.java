@@ -89,7 +89,7 @@ public class JwtFilter implements Filter {
             	 return;
         	 } else {
         		 // 刷新token值
-        		 redisOperate.set(jwtTokenUtil.getUsernameFromToken(token)+Constants.REDIS_COLON+Constants.USERINFO_TOKEN, jwtTokenUtil.refreshToken(token));
+        		 redisOperate.set(jwtTokenUtil.getUsernameFromToken(token)+Constants.REDIS_COLON+Constants.TOKEN, jwtTokenUtil.refreshToken(token));
         		 // TODO 请求的日志记录  用户是否存在  请求的接口的权限
         		 chain.doFilter(httpRequest, httpResponse);
         	 }
